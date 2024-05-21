@@ -15,7 +15,10 @@ public class Inicio extends javax.swing.JFrame {
      */
     public Inicio() {
         initComponents();
+
     }
+
+    String comprobando;
 
     /**
      * This method is called from within the constructor to initialize the form.
