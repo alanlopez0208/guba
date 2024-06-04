@@ -13,6 +13,11 @@ import modelos.EstudianteModelo;
 import net.miginfocom.swing.MigLayout;
 import event.EventoAbrirForm;
 import event.EventoCerrarForm;
+import forms.maestros.AgregarMaestroForm;
+import forms.maestros.EditarMaestroForm;
+import forms.maestros.MaestroForm;
+import forms.maestros.VerMaestrosForm;
+import modelos.MaestroModelo;
 
 public class Main extends javax.swing.JFrame {
 
@@ -20,6 +25,7 @@ public class Main extends javax.swing.JFrame {
     private MainForm main;
     private Menu menu;
     private VerEstudiantesForm verEstudiantesForm;
+    private VerMaestrosForm verMaestrosForm;
 
     public Main() {
         initComponents();
@@ -37,45 +43,106 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void menuSelected(int menuIndex, int subMenuIndex) {
                 System.out.println("Menu Index : " + menuIndex + " Submenu Index " + subMenuIndex);
-                if (menuIndex == 0) {
-                    main.showForm(new InicioForm());
-                } else if (menuIndex == 1) {
-                    if (subMenuIndex == 2) {
-                        verEstudiantesForm = new VerEstudiantesForm();
+                switch (menuIndex) {
+                    case 0:
+                        main.showForm(new InicioForm());
+                        break;
+                    case 1:
+                        if (subMenuIndex == 2) {
+                            verEstudiantesForm = new VerEstudiantesForm();
 
-                        verEstudiantesForm.addEventoForm(new EventoAbrirForm() {
-                            @Override
-                            public void abrirForm(EstudianteModelo modelo, int index) {
-                                if (index == 0) {
-                                    main.showForm(new EstudianteForm(modelo));
-                                } else if (index == 1) {
-                                    EditarEstudiante editarEstudianteForm = new EditarEstudiante(modelo);
-                                    editarEstudianteForm.addEvento(new EventoCerrarForm() {
-                                        @Override
-                                        public void cerrarForm() {
-                                            verEstudiantesForm.actualizarTabla();
-                                            main.showForm(verEstudiantesForm);
-                                        }
-                                    });
-                                    main.showForm(editarEstudianteForm);
+                            verEstudiantesForm.addEventoForm(new EventoAbrirForm() {
+                                @Override
+                                public void abrirForm(Object modelo, int index) {
+                                    if (index == 0) {
+                                        EstudianteForm estudianteForm = new EstudianteForm((EstudianteModelo) modelo, new EventoCerrarForm() {
+                                            @Override
+                                            public void cerrarForm() {
+                                                main.showForm(verEstudiantesForm);
+                                            }
+                                        });
+
+                                        main.showForm(estudianteForm);
+                                    } else if (index == 1) {
+                                        EditarEstudiante editarEstudianteForm = new EditarEstudiante((EstudianteModelo) modelo);
+                                        editarEstudianteForm.addEvento(new EventoCerrarForm() {
+                                            @Override
+                                            public void cerrarForm() {
+                                                main.showForm(verEstudiantesForm);
+                                            }
+                                        });
+                                        main.showForm(editarEstudianteForm);
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                        main.showForm(verEstudiantesForm);
+                            main.showForm(verEstudiantesForm);
 
-                    } else if (subMenuIndex == 3) {
-                        EventoCerrarForm evento = new EventoCerrarForm(){
-                            @Override
-                            public void cerrarForm() {
-                                 verEstudiantesForm.actualizarTabla();
-                                  main.showForm(verEstudiantesForm);
-                            }
-                            
-                        };
-                        
-                        main.showForm(new AgregarAlumnoForm(evento));
-                    }
+                        } else if (subMenuIndex == 3) {
+                            EventoCerrarForm evento = new EventoCerrarForm() {
+                                @Override
+                                public void cerrarForm() {
+                                    verEstudiantesForm.actualizarTabla();
+                                    main.showForm(verEstudiantesForm);
+                                }
+
+                            };
+
+                            main.showForm(new AgregarAlumnoForm(evento));
+                        }
+                        break;
+                    case 2:
+                        if (subMenuIndex == 2) {
+                            verMaestrosForm = new VerMaestrosForm();
+
+                            verMaestrosForm.addEventoForm(new EventoAbrirForm() {
+                                @Override
+                                public void abrirForm(Object modelo, int index) {
+                                    if (index == 0) {
+                                        MaestroForm maestro = new MaestroForm((MaestroModelo) modelo, new EventoCerrarForm() {
+                                            @Override
+                                            public void cerrarForm() {
+                                                main.showForm(verMaestrosForm);
+                                            }
+
+                                        });
+
+                                        main.showForm(maestro);
+                                    }
+                                    if (index == 1) {
+                                        System.out.println("Se va abrir el editar alumno");
+                                        EditarMaestroForm editarMaestro = new EditarMaestroForm((MaestroModelo) modelo);
+                                        editarMaestro.addEvento(new EventoCerrarForm() {
+                                            @Override
+                                            public void cerrarForm() {
+                                                main.showForm(verMaestrosForm);
+                                            }
+
+                                        });
+
+                                        main.showForm(editarMaestro);
+                                    }
+                                }
+
+                            });
+
+                            main.showForm(verMaestrosForm);
+
+                        } else if (subMenuIndex == 3) {
+                            EventoCerrarForm evento = new EventoCerrarForm() {
+                                @Override
+                                public void cerrarForm() {
+                                    verMaestrosForm.actualizarTabla();
+                                    main.showForm(verMaestrosForm);
+                                }
+
+                            };
+
+                            main.showForm(new AgregarMaestroForm(evento));
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
 
@@ -93,33 +160,28 @@ public class Main extends javax.swing.JFrame {
         bg = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1169, Short.MAX_VALUE)
+            .addGap(0, 1200, Short.MAX_VALUE)
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 510, Short.MAX_VALUE)
+            .addGap(0, 522, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(bg)
-                .addGap(25, 25, 25))
+            .addComponent(bg, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(bg)
         );
 
         pack();

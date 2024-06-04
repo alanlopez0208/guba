@@ -23,24 +23,24 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         opAlumno = new OpAlumno();
         accion = new EventoAccion() {
             @Override
-            public void ver(EstudianteModelo modelo) {
-                System.out.println("Se selecciono " + modelo.getMatricula() + " para ver ");
-                eventoForm.abrirForm(modelo, 0);
+            public void ver(Object modelo) {
+                EstudianteModelo estudiante = (EstudianteModelo) modelo;
+                System.out.println("Se selecciono " + estudiante.getMatricula() + " para ver ");
+                eventoForm.abrirForm((EstudianteModelo) modelo, 0);
             }
 
             @Override
-            public void borrar(EstudianteModelo modelo) {
-                System.out.println("Se selecciono " + modelo.getMatricula() + " eliminar ");
+            public void borrar(Object modelo) {
+                EstudianteModelo estudiante = (EstudianteModelo) modelo;
+                System.out.println("Se selecciono " + estudiante.getMatricula() + " eliminar ");
                 actualizarTabla();
             }
 
             @Override
-            public void editar(EstudianteModelo modelo) {
+            public void editar(Object modelo) {
                 eventoForm.abrirForm(modelo, 1);
-
             }
         };
-
         actualizarTabla();
 
     }
@@ -54,8 +54,6 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
             tabla1.addRow(alumno.toRowTable(accion));
         });
     }
-    
-   
 
     public void addEventoForm(EventoAbrirForm eventoForm) {
         this.eventoForm = eventoForm;

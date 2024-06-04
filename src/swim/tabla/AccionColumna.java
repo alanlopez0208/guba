@@ -77,15 +77,15 @@ public class AccionColumna extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
-         this.accionModelo.getAccion().borrar(this.accionModelo.getEstudiante());
+         this.accionModelo.getAccion().borrar(this.accionModelo.getModelo());
     }//GEN-LAST:event_btn3ActionPerformed
 
     private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
-        this.accionModelo.getAccion().ver(this.accionModelo.getEstudiante());
+        this.accionModelo.getAccion().ver(this.accionModelo.getModelo());
     }//GEN-LAST:event_btn1ActionPerformed
 
     private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
-          this.accionModelo.getAccion().editar(this.accionModelo.getEstudiante());
+          this.accionModelo.getAccion().editar(this.accionModelo.getModelo());
     }//GEN-LAST:event_btn2ActionPerformed
 
 

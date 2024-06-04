@@ -1,18 +1,19 @@
-package forms.estudiantes;
+package forms.maestros;
 
-import modelos.EstudianteModelo;
+
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
 import java.util.ArrayList;
-import operaciones.OpAlumno;
+import modelos.MaestroModelo;
+import operaciones.OpMaestro;
 
-public class VerEstudiantesForm extends javax.swing.JPanel {
+public class VerMaestrosForm extends javax.swing.JPanel {
 
     private EventoAbrirForm eventoForm;
-    private OpAlumno opAlumno;
+    private OpMaestro opMaestro;
     private EventoAccion accion;
 
-    public VerEstudiantesForm() {
+    public VerMaestrosForm() {
         initComponents();
         tabla1.setColumnEditor(4);
         tabla1.fixTable(jScrollPane1);
@@ -20,22 +21,24 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
     }
 
     private void iniciarTabla() {
-        opAlumno = new OpAlumno();
+        opMaestro = new OpMaestro();
         accion = new EventoAccion() {
             @Override
-            public void ver(EstudianteModelo modelo) {
-                System.out.println("Se selecciono " + modelo.getMatricula() + " para ver ");
+            public void ver(Object modelo) {
+                MaestroModelo maestro = (MaestroModelo) modelo;
+                System.out.println("Se selecciono " + maestro.getRfc() + " para ver ");
                 eventoForm.abrirForm(modelo, 0);
             }
 
             @Override
-            public void borrar(EstudianteModelo modelo) {
-                System.out.println("Se selecciono " + modelo.getMatricula() + " eliminar ");
+            public void borrar(Object modelo) {
+                MaestroModelo maestro = (MaestroModelo) modelo;
+                System.out.println("Se selecciono " + maestro.getRfc()+ " eliminar ");
                 actualizarTabla();
             }
 
             @Override
-            public void editar(EstudianteModelo modelo) {
+            public void editar(Object modelo) {
                 eventoForm.abrirForm(modelo, 1);
 
             }
@@ -48,7 +51,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
     public void actualizarTabla() {
         tabla1.clear();
         System.out.println("se Actualizo la tabla");
-        ArrayList<EstudianteModelo> lista = opAlumno.getEstudiantes();
+        ArrayList<MaestroModelo> lista =opMaestro.getMaestros();
 
         lista.forEach((alumno) -> {
             tabla1.addRow(alumno.toRowTable(accion));
@@ -80,7 +83,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         jLabel1.setBackground(new java.awt.Color(51, 51, 51));
         jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Estudiantes: ");
+        jLabel1.setText("Maestros:");
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -90,7 +93,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Matricula", "Nombre", "Apellido Paterno", "Apellido Materno", "Acciones"
+                "RFC", "Nombre", "Apellido Paterno", "Apellido Materno", "Acciones"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -133,7 +136,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Buscar por: ");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Matricula", "Nombre", "Apellido Paterno", "Apellido Materno" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "RFC", "Nombre", "Apellido Paterno", "Apellido Materno" }));
 
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);
         myPanel2.setLayout(myPanel2Layout);

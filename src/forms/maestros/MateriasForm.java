@@ -1,27 +1,22 @@
-package forms.estudiantes;
+package forms.maestros;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.util.ArrayList;
-import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-import modelos.CalificacionModelo;
-import operaciones.OpCalificaciones;
 
-public class CalificacionesForm extends javax.swing.JPanel {
+public class MateriasForm extends javax.swing.JPanel {
 
     
-    OpCalificaciones opCalificacion;
-    public CalificacionesForm() {
+
+    public MateriasForm() {
         initComponents();
         init();
     }
 
     private void init() {
-        opCalificacion = new OpCalificaciones();
+     jScrollPane1.setOpaque(false);
         tabla1.getTableHeader().setReorderingAllowed(false);
         tabla1.getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
@@ -29,31 +24,14 @@ public class CalificacionesForm extends javax.swing.JPanel {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 c.setFont(new Font("Malgun Gothic", Font.BOLD, 12));
                 c.setForeground(Color.black);
-                if (column <= 6 && column >=3) {
-                    c.setBackground(new Color(20, 90, 95));
-                    c.setForeground(Color.WHITE);
-                } else if (column <= 10 && column >= 7) {
-                    c.setBackground(new Color(104, 108, 133));
-                    c.setForeground(Color.WHITE);
-                } else {
-                    c.setBackground(Color.WHITE);
-                }
-
-                if (c instanceof JLabel) {
-                    ((JLabel) c).setBorder(new EmptyBorder(10, 5, 10, 5));
-                }
-
+               
                 return c;
             }
 
         });
         
         
-        ArrayList<CalificacionModelo> lista = opCalificacion.getCalificaciones("");
-
-        lista.forEach((calificacion) -> {
-            tabla1.addRow(calificacion.toRowTable());
-        });
+     
     }
 
     @SuppressWarnings("unchecked")
@@ -66,12 +44,6 @@ public class CalificacionesForm extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox<>();
         myPanel2 = new swim.panel.MyPanel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jSeparator3 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla1 = new swim.tabla.Tabla();
 
@@ -98,11 +70,11 @@ public class CalificacionesForm extends javax.swing.JPanel {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(93, 93, 93)
+                .addGap(29, 29, 29)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(403, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         myPanel1Layout.setVerticalGroup(
             myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,25 +90,9 @@ public class CalificacionesForm extends javax.swing.JPanel {
 
         myPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTextField2.setEditable(false);
-        jTextField2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel2.setText("No. de Asignaturas: ");
-
-        jTextField1.setEditable(false);
-        jTextField1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Promedio : ");
-
-        jSeparator1.setBackground(new java.awt.Color(51, 51, 51));
-        jSeparator1.setForeground(new java.awt.Color(51, 51, 51));
-
-        jSeparator3.setBackground(new java.awt.Color(51, 51, 51));
-        jSeparator3.setForeground(new java.awt.Color(51, 51, 51));
-
+        jScrollPane1.setBackground(new java.awt.Color(255, 51, 255));
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setForeground(new java.awt.Color(204, 51, 0));
         jScrollPane1.setOpaque(false);
 
         tabla1.setBackground(new java.awt.Color(255, 255, 255));
@@ -145,32 +101,15 @@ public class CalificacionesForm extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Semestre", "Grupo", "Materia", "U I Parcial I", "U I Parcial II", "U I Parcial III", "Promedio UI", "U II Parcial I", "U II Parcial II", "U II Parcial III", "Promedio UII", "Trabajo Final", "Promedio"
+                "Clave", "Carrera", "Nombre", "Grupo", "Semestre"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, true, true, true, true, true, true, true, true, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         tabla1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tabla1.setOpaque(false);
         jScrollPane1.setViewportView(tabla1);
         if (tabla1.getColumnModel().getColumnCount() > 0) {
-            tabla1.getColumnModel().getColumn(0).setMinWidth(150);
-            tabla1.getColumnModel().getColumn(2).setMinWidth(200);
-            tabla1.getColumnModel().getColumn(3).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(4).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(5).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(6).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(7).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(8).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(9).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(10).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(11).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(12).setMinWidth(90);
+            tabla1.getColumnModel().getColumn(1).setMinWidth(150);
+            tabla1.getColumnModel().getColumn(2).setMinWidth(150);
         }
 
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);
@@ -178,43 +117,16 @@ public class CalificacionesForm extends javax.swing.JPanel {
         myPanel2Layout.setHorizontalGroup(
             myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(myPanel2Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(myPanel2Layout.createSequentialGroup()
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(152, 152, 152))
-                    .addGroup(myPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)))
-                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jSeparator1)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(myPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 877, Short.MAX_VALUE)
                 .addContainerGap())
         );
         myPanel2Layout.setVerticalGroup(
             myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(myPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(0, 0, 0)
-                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -243,15 +155,9 @@ public class CalificacionesForm extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private swim.panel.MyPanel myPanel1;
     private swim.panel.MyPanel myPanel2;
     private swim.tabla.Tabla tabla1;

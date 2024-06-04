@@ -1,12 +1,11 @@
 package swim.tabla;
 
-import modelos.EstudianteModelo;
 
 public interface EventoAccion {
 
-    public void ver(EstudianteModelo modelo);
+    public void ver(Object modelo);
 
-    public void borrar(EstudianteModelo modelo);
+    public void borrar(Object modelo);
 
-    public void editar(EstudianteModelo modelo);
+    public void editar(Object modelo);
 }

@@ -1,22 +1,25 @@
-package forms.estudiantes;
+package forms.maestros;
 
 import componentes.ButtonsHeader;
 import event.EventButtonsHeader;
+import event.EventoCerrarForm;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.JPanel;
-import modelos.EstudianteModelo;
+import modelos.MaestroModelo;
 import net.miginfocom.swing.MigLayout;
 
-public class EstudianteForm extends javax.swing.JPanel {
+public class MaestroForm extends javax.swing.JPanel {
 
-    EstudianteModelo modelo;
+    MaestroModelo modelo;
     MigLayout layout;
-    EstudianteDatosForm estudianteDatos;
+    MaestroDatosForm maestroDatos;
     ButtonsHeader header;
     EventButtonsHeader eventButtonsHeader;
+    EventoCerrarForm eventoCerrar;
 
-    public EstudianteForm(EstudianteModelo modelo) {
+    public MaestroForm(MaestroModelo modelo,   EventoCerrarForm eventoCerrar) {
+        this.eventoCerrar = eventoCerrar;
         initComponents();
         this.modelo = modelo;
         init();
@@ -31,16 +34,17 @@ public class EstudianteForm extends javax.swing.JPanel {
         menu.setOpaque(false);
         menu.setLayout(new BorderLayout());
 
-        estudianteDatos = new EstudianteDatosForm(modelo);
+        maestroDatos = new MaestroDatosForm(modelo);
         eventButtonsHeader = new EventButtonsHeader() {
             @Override
             public void onSelectButton(int index) {
                 switch (index) {
                     case 0:
-                        showForm(estudianteDatos);
+                        showForm(maestroDatos);
                         break;
                     case 1:
-                        showForm(new CalificacionesForm());
+                      
+                        showForm(new MateriasForm());
                         break;
                     case 2:
                         showForm(new AdicionalesForm());
@@ -53,10 +57,10 @@ public class EstudianteForm extends javax.swing.JPanel {
         };
 
         header.addEventButtonsHeader(eventButtonsHeader);
-
+       header.addEventoCerrar(eventoCerrar);
         this.add(header, "h 50!, wrap");
         this.add(menu, "w 100%, h 100%");
-        menu.add(estudianteDatos);
+        menu.add(maestroDatos);
     }
 
     public void showForm(Component form) {
@@ -65,6 +69,12 @@ public class EstudianteForm extends javax.swing.JPanel {
         this.add(form, "w 100%, h 100%");
         repaint();
         revalidate();
+    }
+    
+    
+    public void addEventoCerrar( EventoCerrarForm eventoCerrar){
+        this.eventoCerrar = eventoCerrar;
+        
     }
 
     @SuppressWarnings("unchecked")
