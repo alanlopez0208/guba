@@ -5,13 +5,13 @@ import java.util.regex.Pattern;
 import modelos.EstudianteModelo;
 
 import event.EventoCerrarForm;
-import operaciones.OpAlumno;
+import operaciones.OpAlumnos;
 
 public class EditarEstudiante extends javax.swing.JPanel {
 
     private EstudianteModelo alumno;
     private EventoCerrarForm evento;
-    OpAlumno opAlumno;
+    OpAlumnos opAlumno;
 
     public EditarEstudiante(EstudianteModelo modelo) {
         initComponents();
@@ -20,7 +20,7 @@ public class EditarEstudiante extends javax.swing.JPanel {
     }
 
     private void init() {
-        opAlumno = new OpAlumno();
+        opAlumno = new OpAlumnos();
         this.txtMatricula.setText(alumno.getNombre());
         this.txtNombre.setText(alumno.getApPaterno());
         this.txtApPat.setText(alumno.getApMaterno());

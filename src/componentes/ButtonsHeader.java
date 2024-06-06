@@ -1,21 +1,46 @@
 package componentes;
 
 import event.EventButtonsHeader;
+import event.EventoCerrarForm;
 import java.awt.Color;
+import swim.botones.ButtonRounded;
 
 public class ButtonsHeader extends javax.swing.JPanel {
 
     private Color colorSelected = new Color(20, 90, 95);
     private Color colorUnselected = new Color(104, 108, 133);
     EventButtonsHeader eventButtonsHeader;
+    EventoCerrarForm eventoCerrar;
 
     public ButtonsHeader() {
         initComponents();
+        buttonBack.setContentAreaFilled(false);
+        buttonBack.setBackground(new Color(0, 0, 0, 0));
     }
 
     public void addEventButtonsHeader(EventButtonsHeader eventButtonsHeader) {
         this.eventButtonsHeader = eventButtonsHeader;
     }
+
+    public void addEventoCerrar(EventoCerrarForm eventoCerrar) {
+        System.out.println("Hola soy la cabecera");
+        this.eventoCerrar = eventoCerrar;
+    
+    }
+
+    public ButtonRounded getBtn1() {
+        return btn1;
+    }
+
+    public ButtonRounded getBtn2() {
+        return btn2;
+    }
+
+    public ButtonRounded getBtn3() {
+        return btn3;
+    }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -24,6 +49,7 @@ public class ButtonsHeader extends javax.swing.JPanel {
         btn1 = new swim.botones.ButtonRounded();
         btn2 = new swim.botones.ButtonRounded();
         btn3 = new swim.botones.ButtonRounded();
+        buttonBack = new javax.swing.JButton();
 
         setOpaque(false);
 
@@ -60,28 +86,40 @@ public class ButtonsHeader extends javax.swing.JPanel {
             }
         });
 
+        buttonBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/back.png"))); // NOI18N
+        buttonBack.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        buttonBack.setOpaque(true);
+        buttonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(16, 16, 16)
+                .addComponent(buttonBack)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
                 .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(407, Short.MAX_VALUE))
+                .addGap(159, 159, 159))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btn3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonBack))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -108,10 +146,15 @@ public class ButtonsHeader extends javax.swing.JPanel {
         eventButtonsHeader.onSelectButton(1);
     }//GEN-LAST:event_btn2ActionPerformed
 
+    private void buttonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackActionPerformed
+      this.eventoCerrar.cerrarForm();
+    }//GEN-LAST:event_buttonBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private swim.botones.ButtonRounded btn1;
     private swim.botones.ButtonRounded btn2;
     private swim.botones.ButtonRounded btn3;
+    private javax.swing.JButton buttonBack;
     // End of variables declaration//GEN-END:variables
 }
