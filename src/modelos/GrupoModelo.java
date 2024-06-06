@@ -7,26 +7,22 @@ import swim.tabla.EventoAccion;
 
 public class GrupoModelo {
     
-    String id;
+    int id;
     String nombre;
     String semestre;
     ArrayList<MateriaModelo> materias;
+
     
-    
-     public GrupoModelo(String id, String nombre) {
+     public GrupoModelo(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
-    
-
-
-   
   
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -4,12 +4,12 @@ import modelos.EstudianteModelo;
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
 import java.util.ArrayList;
-import operaciones.OpAlumno;
+import operaciones.OpAlumnos;
 
 public class VerEstudiantesForm extends javax.swing.JPanel {
 
     private EventoAbrirForm eventoForm;
-    private OpAlumno opAlumno;
+    private OpAlumnos opAlumno;
     private EventoAccion accion;
 
     public VerEstudiantesForm() {
@@ -20,7 +20,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
     }
 
     private void iniciarTabla() {
-        opAlumno = new OpAlumno();
+        opAlumno = new OpAlumnos();
         accion = new EventoAccion() {
             @Override
             public void ver(Object modelo) {

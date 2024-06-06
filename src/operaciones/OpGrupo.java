@@ -11,11 +11,11 @@ public class OpGrupo {
         ArrayList<GrupoModelo> grupos = new ArrayList<>();
 
         // Crear instancias de GrupoModelo usando las listas de MateriaModelo
-        grupos.add(new GrupoModelo("GRP001", "Grupo A"));
-        grupos.add(new GrupoModelo("GRP002", "Grupo B"));
-        grupos.add(new GrupoModelo("GRP003", "Grupo C" ));
-        grupos.add(new GrupoModelo("GRP004", "Grupo D"));
-        grupos.add(new GrupoModelo("GRP005", "Grupo E"));
+        grupos.add(new GrupoModelo(1, "Grupo A"));
+        grupos.add(new GrupoModelo(2, "Grupo B"));
+        grupos.add(new GrupoModelo(3, "Grupo C" ));
+        grupos.add(new GrupoModelo(4, "Grupo D"));
+        grupos.add(new GrupoModelo(5, "Grupo E"));
 
         return grupos;
     }
