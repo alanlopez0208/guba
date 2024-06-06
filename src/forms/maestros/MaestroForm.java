@@ -18,7 +18,7 @@ public class MaestroForm extends javax.swing.JPanel {
     EventButtonsHeader eventButtonsHeader;
     EventoCerrarForm eventoCerrar;
 
-    public MaestroForm(MaestroModelo modelo,   EventoCerrarForm eventoCerrar) {
+    public MaestroForm(MaestroModelo modelo, EventoCerrarForm eventoCerrar) {
         this.eventoCerrar = eventoCerrar;
         initComponents();
         this.modelo = modelo;
@@ -30,6 +30,7 @@ public class MaestroForm extends javax.swing.JPanel {
         this.setLayout(layout);
 
         header = new ButtonsHeader();
+        header.getBtn2().setText("Materias");
         JPanel menu = new JPanel();
         menu.setOpaque(false);
         menu.setLayout(new BorderLayout());
@@ -43,7 +44,7 @@ public class MaestroForm extends javax.swing.JPanel {
                         showForm(maestroDatos);
                         break;
                     case 1:
-                      
+
                         showForm(new MateriasForm());
                         break;
                     case 2:
@@ -57,7 +58,8 @@ public class MaestroForm extends javax.swing.JPanel {
         };
 
         header.addEventButtonsHeader(eventButtonsHeader);
-       header.addEventoCerrar(eventoCerrar);
+        header.addEventoCerrar(eventoCerrar);
+
         this.add(header, "h 50!, wrap");
         this.add(menu, "w 100%, h 100%");
         menu.add(maestroDatos);
@@ -70,11 +72,10 @@ public class MaestroForm extends javax.swing.JPanel {
         repaint();
         revalidate();
     }
-    
-    
-    public void addEventoCerrar( EventoCerrarForm eventoCerrar){
+
+    public void addEventoCerrar(EventoCerrarForm eventoCerrar) {
         this.eventoCerrar = eventoCerrar;
-        
+
     }
 
     @SuppressWarnings("unchecked")

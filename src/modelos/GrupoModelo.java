@@ -1,40 +1,64 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+package modelos;
+
+import java.util.ArrayList;
+import swim.tabla.AccionModelo;
+import swim.tabla.EventoAccion;
+
 
 public class GrupoModelo {
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("JDialog Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 200);
-
-        JButton button = new JButton("Show Dialog");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JDialog dialog = new JDialog(frame, "Dialog Title", true);
-                dialog.setSize(200, 150);
-                dialog.setLayout(new BorderLayout());
-
-                JLabel label = new JLabel("This is a JDialog", SwingConstants.CENTER);
-                dialog.add(label, BorderLayout.CENTER);
-
-                JButton okButton = new JButton("OK");
-                okButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        dialog.dispose();
-                    }
-                });
-                dialog.add(okButton, BorderLayout.SOUTH);
-
-                dialog.setLocationRelativeTo(frame);
-                dialog.setVisible(true);
-            }
-        });
-
-        frame.getContentPane().add(button);
-        frame.setVisible(true);
+    
+    String id;
+    String nombre;
+    String semestre;
+    ArrayList<MateriaModelo> materias;
+    
+    
+     public GrupoModelo(String id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
     }
+    
+
+
+   
+  
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getSemestre() {
+        return semestre;
+    }
+
+    public void setSemestre(String semestre) {
+        this.semestre = semestre;
+    }
+
+    public ArrayList<MateriaModelo> getMaterias() {
+        return materias;
+    }
+
+    public void setMaterias(ArrayList<MateriaModelo> materias) {
+        this.materias = materias;
+    }
+    
+    
+    
+     public Object[] toRowTable(EventoAccion evento){
+             return new Object[]{this.getId(), this.getNombre(), this.semestre, new AccionModelo(this, evento)};
+   
+    }
+    
 }

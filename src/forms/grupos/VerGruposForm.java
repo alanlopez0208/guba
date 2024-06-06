@@ -1,32 +1,36 @@
-package forms.estudiantes;
+package forms.grupos;
+
 
 import modelos.EstudianteModelo;
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
+import event.EventoCerrarForm;
 import java.util.ArrayList;
-import operaciones.OpAlumno;
+import modelos.GrupoModelo;
+import operaciones.OpGrupo;
 
-public class VerEstudiantesForm extends javax.swing.JPanel {
+public class VerGruposForm extends javax.swing.JPanel {
 
     private EventoAbrirForm eventoForm;
-    private OpAlumno opAlumno;
+
+    private OpGrupo opGrupo;
     private EventoAccion accion;
 
-    public VerEstudiantesForm() {
+    public VerGruposForm() {
         initComponents();
-        tabla1.setColumnEditor(4);
+        tabla1.setColumnEditor(3);
         tabla1.fixTable(jScrollPane1);
         iniciarTabla();
     }
 
     private void iniciarTabla() {
-        opAlumno = new OpAlumno();
+        opGrupo = new OpGrupo();
         accion = new EventoAccion() {
             @Override
             public void ver(Object modelo) {
-                EstudianteModelo estudiante = (EstudianteModelo) modelo;
-                System.out.println("Se selecciono " + estudiante.getMatricula() + " para ver ");
-                eventoForm.abrirForm((EstudianteModelo) modelo, 0);
+                GrupoModelo grupo = (GrupoModelo) modelo;
+                System.out.println("Se selecciono " + grupo.getId() + " para ver ");
+                eventoForm.abrirForm((GrupoModelo) modelo, 0);
             }
 
             @Override
@@ -48,10 +52,10 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
     public void actualizarTabla() {
         tabla1.clear();
         System.out.println("se Actualizo la tabla");
-        ArrayList<EstudianteModelo> lista = opAlumno.getEstudiantes();
+        ArrayList<GrupoModelo> lista = opGrupo.getGrupos();
 
-        lista.forEach((alumno) -> {
-            tabla1.addRow(alumno.toRowTable(accion));
+        lista.forEach((grupo) -> {
+            tabla1.addRow(grupo.toRowTable(accion));
         });
     }
 
@@ -59,6 +63,9 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         this.eventoForm = eventoForm;
     }
 
+
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -78,7 +85,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         jLabel1.setBackground(new java.awt.Color(51, 51, 51));
         jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Estudiantes: ");
+        jLabel1.setText("Grupos:");
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -88,11 +95,11 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Matricula", "Nombre", "Apellido Paterno", "Apellido Materno", "Acciones"
+                "Identificador", "Nombre", "Semestre ", "Acciones"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -131,7 +138,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Buscar por: ");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Matricula", "Nombre", "Apellido Paterno", "Apellido Materno" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre" }));
 
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);
         myPanel2.setLayout(myPanel2Layout);

@@ -13,6 +13,10 @@ import modelos.EstudianteModelo;
 import net.miginfocom.swing.MigLayout;
 import event.EventoAbrirForm;
 import event.EventoCerrarForm;
+import forms.grupos.AgregarGrupo;
+import forms.grupos.EditarGrupo;
+import forms.grupos.VerGrupo;
+import forms.grupos.VerGruposForm;
 import forms.maestros.AgregarMaestroForm;
 import forms.maestros.EditarMaestroForm;
 import forms.maestros.MaestroForm;
@@ -44,10 +48,8 @@ public class Main extends javax.swing.JFrame {
             public void menuSelected(int menuIndex, int subMenuIndex) {
                 System.out.println("Menu Index : " + menuIndex + " Submenu Index " + subMenuIndex);
                 switch (menuIndex) {
-                    case 0:
-                        main.showForm(new InicioForm());
-                        break;
-                    case 1:
+                    case 0 -> main.showForm(new InicioForm());
+                    case 1 -> {
                         if (subMenuIndex == 2) {
                             verEstudiantesForm = new VerEstudiantesForm();
 
@@ -90,8 +92,8 @@ public class Main extends javax.swing.JFrame {
 
                             main.showForm(new AgregarAlumnoForm(evento));
                         }
-                        break;
-                    case 2:
+                    }
+                    case 2 -> {
                         if (subMenuIndex == 2) {
                             verMaestrosForm = new VerMaestrosForm();
 
@@ -140,9 +142,62 @@ public class Main extends javax.swing.JFrame {
 
                             main.showForm(new AgregarMaestroForm(evento));
                         }
-                        break;
-                    default:
-                        break;
+                    }
+
+                    case 3 -> {
+                        VerGruposForm verGrupos = new VerGruposForm();
+                        if (subMenuIndex == 2) {
+
+                            verGrupos.addEventoForm(new EventoAbrirForm() {
+                                @Override
+                                public void abrirForm(Object modelo, int index) {
+                                    if (index == 0) {
+                                        VerGrupo verGrupo = new VerGrupo();
+                                        verGrupo.addEventoCerrar(new EventoCerrarForm() {
+                                            @Override
+                                            public void cerrarForm() {
+                                                main.showForm(verGrupos);
+
+                                            }
+                                        });
+                                        main.showForm(verGrupo);
+                                    } else if (index == 1) {
+                                        EditarGrupo editarGrupo = new EditarGrupo();
+
+                                        editarGrupo.addEventoCerrar(new EventoCerrarForm() {
+                                            @Override
+                                            public void cerrarForm() {
+                                                main.showForm(verGrupos);
+
+                                            }
+
+                                        });
+                                        main.showForm(editarGrupo);
+                                    }
+                                }
+
+                            });
+                            main.showForm(verGrupos);
+                        }
+
+                        if (subMenuIndex == 3) {
+
+                            AgregarGrupo agregarGrupo = new AgregarGrupo();
+
+                            agregarGrupo.addEventoCerrar(new EventoCerrarForm() {
+                                @Override
+                                public void cerrarForm() {
+                                    main.showForm(verGrupos);
+
+                                }
+
+                            });
+
+                            main.showForm(agregarGrupo);
+                        }
+                    }
+                    default -> {
+                    }
                 }
             }
 

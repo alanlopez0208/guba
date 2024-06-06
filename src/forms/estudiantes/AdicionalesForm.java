@@ -1,5 +1,7 @@
 package forms.estudiantes;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -60,6 +62,11 @@ public class AdicionalesForm extends javax.swing.JPanel {
         buttonRounded1.setBackground(new java.awt.Color(20, 90, 95));
         buttonRounded1.setForeground(new java.awt.Color(255, 255, 255));
         buttonRounded1.setText("Crear Reporte");
+        buttonRounded1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRounded1ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Usuario: ");
 
@@ -318,6 +325,10 @@ public class AdicionalesForm extends javax.swing.JPanel {
 
 
     }//GEN-LAST:event_btnShowPassActionPerformed
+
+    private void buttonRounded1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRounded1ActionPerformed
+  
+    }//GEN-LAST:event_buttonRounded1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

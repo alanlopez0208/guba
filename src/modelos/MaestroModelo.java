@@ -1,5 +1,6 @@
 package modelos;
 
+import java.util.ArrayList;
 import swim.tabla.AccionModelo;
 import swim.tabla.EventoAccion;
 
@@ -19,14 +20,14 @@ public class MaestroModelo {
     private String municipio;
     private String cv;
     private String grado;
+    ArrayList<MateriaModelo> materias;
 
-    public MaestroModelo() {
-    }
 
-    public MaestroModelo(String rfc, String curp, String apPat, String apMat, String genero, String correoPer, String correoIns, String domicilio, String celular, String estado, String municipio, String cv, String grado) {
+    public MaestroModelo(String rfc, String curp, String apPat, String nombre, String apMat, String genero, String correoPer, String correoIns, String domicilio, String celular, String estado, String municipio, String cv, String grado) {
         this.rfc = rfc;
         this.curp = curp;
         this.apPat = apPat;
+        this.nombre = nombre;
         this.apMat = apMat;
         this.genero = genero;
         this.correoPer = correoPer;
@@ -38,6 +39,25 @@ public class MaestroModelo {
         this.cv = cv;
         this.grado = grado;
     }
+
+    public MaestroModelo(String rfc, String curp, String apPat, String nombre, String apMat, String genero, String correoPer, String correoIns, String domicilio, String celular, String estado, String municipio, String cv, String grado, ArrayList<MateriaModelo> materias) {
+        this.rfc = rfc;
+        this.curp = curp;
+        this.apPat = apPat;
+        this.nombre = nombre;
+        this.apMat = apMat;
+        this.genero = genero;
+        this.correoPer = correoPer;
+        this.correoIns = correoIns;
+        this.domicilio = domicilio;
+        this.celular = celular;
+        this.estado = estado;
+        this.municipio = municipio;
+        this.cv = cv;
+        this.grado = grado;
+        this.materias = materias;
+    }
+
 
     public String getRfc() {
         return rfc;

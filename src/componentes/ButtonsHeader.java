@@ -3,6 +3,7 @@ package componentes;
 import event.EventButtonsHeader;
 import event.EventoCerrarForm;
 import java.awt.Color;
+import swim.botones.ButtonRounded;
 
 public class ButtonsHeader extends javax.swing.JPanel {
 
@@ -26,6 +27,20 @@ public class ButtonsHeader extends javax.swing.JPanel {
         this.eventoCerrar = eventoCerrar;
     
     }
+
+    public ButtonRounded getBtn1() {
+        return btn1;
+    }
+
+    public ButtonRounded getBtn2() {
+        return btn2;
+    }
+
+    public ButtonRounded getBtn3() {
+        return btn3;
+    }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
