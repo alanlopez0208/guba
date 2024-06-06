@@ -18,10 +18,9 @@ public class EstudianteModelo {
     private String escProcedencia;
     private String grado;
     private String grupo;
-    private String semestre;
-    private String status;
-    
-    public EstudianteModelo() {
+    private String Status;
+    //HOLA
+    public EstudianteModelo(String string, String string1, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9, String string10, String string11, String string12, String string13) {
     }
 
 
@@ -46,8 +45,7 @@ public class EstudianteModelo {
         this.escProcedencia = escProcedencia;
         this.grado = grado;
         this.grupo = grupo;
-        this.semestre = semestre;
-        this.status = status;
+        this.Status = status;
     }
 
     
@@ -155,20 +153,13 @@ public class EstudianteModelo {
         this.grupo = grupo;
     }
 
-    public String getSemestre() {
-        return semestre;
-    }
-
-    public void setSemestre(String semestre) {
-        this.semestre = semestre;
-    }
-
+  
     public String getStatus() {
-        return status;
+        return Status;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.Status = status;
     }
 
     public Object[] toRowTable(EventoAccion evento) {

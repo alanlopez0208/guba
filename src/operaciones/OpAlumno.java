@@ -7,6 +7,7 @@ public class OpAlumno {
 
     public ArrayList<EstudianteModelo> getEstudiantes() {
         ArrayList<EstudianteModelo> lista = new ArrayList<>();
+<<<<<<< Updated upstream
 
         // Crear 5 instancias de EstudianteModelo
         EstudianteModelo estudiante1 = new EstudianteModelo("2023001", "Juan", "Perez", "Lopez",
@@ -46,6 +47,67 @@ public class OpAlumno {
     }
 
     //Metodo para actualizar alumno
+=======
+        String sql = "SELECT IdAlumno, Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, CorreoInstitucional, "
+                + "Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, Grupo, Status "
+                + "FROM Alumnos";
+        
+        try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+            
+            while (rs.next()) {
+                EstudianteModelo estudiante = mapResultSetToEstudiante(rs);
+                lista.add(estudiante);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al recuperar estudiantes", e);
+        }
+        return lista;
+    }
+    
+    public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
+        ArrayList<EstudianteModelo> resultados = new ArrayList<>();
+        String sql = "SELECT IdAlumno, Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, CorreoInstitucional, "
+                + "Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, Grupo, status "
+                + "FROM Alumnos WHERE Matricula LIKE ? OR Nombre LIKE ? OR ApellidoPaterno LIKE ? OR ApellidoMaterno LIKE ?";
+        
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            String likeParam = "%" + filtro + "%";
+            for (int i = 1; i <= 4; i++) {
+                pstmt.setString(i, likeParam);
+            }
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    EstudianteModelo estudiante = mapResultSetToEstudiante(rs);
+                    resultados.add(estudiante);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al buscar estudiantes", e);
+        }
+        return resultados;
+    }
+    
+    private EstudianteModelo mapResultSetToEstudiante(ResultSet rs) throws SQLException {
+        return new EstudianteModelo(
+                rs.getString("Matricula"),
+                rs.getString("Nombre"),
+                rs.getString("ApellidoPaterno"),
+                rs.getString("ApellidoMaterno"),
+                rs.getString("CorreoPersonal"),
+                rs.getString("CorreoInstitucional"),
+                rs.getString("Generacion"),
+                rs.getString("Celular"),
+                rs.getString("Estado"),
+                rs.getString("Municipio"),
+                rs.getString("EscuelaProcedencia"),
+                rs.getString("GradoEstudios"),
+                rs.getString("Grupo"),
+                rs.getString("Status")
+        );
+    }
+    
+>>>>>>> Stashed changes
     public boolean updateAlumno(EstudianteModelo estudianteModelo) {
             //Logica para actualizar
             //tiene que retornar true si se pudo y false si no
