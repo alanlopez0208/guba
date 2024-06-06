@@ -92,4 +92,10 @@ public class OpCalificaciones {
 
         return true;
     }
+    
+     public CalificacionModelo returestudiante(String matricula) {
+            //Logica para actualizar
+            //tiene que retornar true si se pudo y false si no
+        return  new CalificacionModelo();
+    }
 }

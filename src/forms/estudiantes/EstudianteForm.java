@@ -2,6 +2,7 @@ package forms.estudiantes;
 
 import componentes.ButtonsHeader;
 import event.EventButtonsHeader;
+import event.EventoCerrarForm;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.JPanel;
@@ -15,10 +16,12 @@ public class EstudianteForm extends javax.swing.JPanel {
     EstudianteDatosForm estudianteDatos;
     ButtonsHeader header;
     EventButtonsHeader eventButtonsHeader;
+    EventoCerrarForm eventoCerrar;
 
-    public EstudianteForm(EstudianteModelo modelo) {
+    public EstudianteForm(EstudianteModelo modelo, EventoCerrarForm eventoCerrar) {
         initComponents();
         this.modelo = modelo;
+        this.eventoCerrar = eventoCerrar;
         init();
     }
 
@@ -53,6 +56,8 @@ public class EstudianteForm extends javax.swing.JPanel {
         };
 
         header.addEventButtonsHeader(eventButtonsHeader);
+       
+        header.addEventoCerrar(eventoCerrar);
 
         this.add(header, "h 50!, wrap");
         this.add(menu, "w 100%, h 100%");
@@ -65,6 +70,10 @@ public class EstudianteForm extends javax.swing.JPanel {
         this.add(form, "w 100%, h 100%");
         repaint();
         revalidate();
+    }
+
+    public void addEventoCerrar(EventoCerrarForm eventoCerrar) {
+        this.eventoCerrar = eventoCerrar;
     }
 
     @SuppressWarnings("unchecked")

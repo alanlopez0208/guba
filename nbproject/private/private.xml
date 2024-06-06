@@ -3,7 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Alan%20Lopez/Documentos/NetBeansProjects/Guba/src/main/Main.java</file>
+            <file>file:/D:/Alan%20Lopez/Documentos/NetBeansProjects/Guba/src/modelos/GrupoModelo.java</file>
+            <file>file:/D:/Alan%20Lopez/Documentos/NetBeansProjects/Guba/src/modelos/EstudianteModelo.java</file>
+            <file>file:/D:/Alan%20Lopez/Documentos/NetBeansProjects/Guba/src/operaciones/OpAlumno.java</file>
+            <file>file:/D:/Alan%20Lopez/Documentos/NetBeansProjects/Guba/src/operaciones/conexion/Conexion.java</file>
+            <file>file:/D:/Alan%20Lopez/Documentos/NetBeansProjects/Guba/src/operaciones/OpGrupo.java</file>
+            <file>file:/D:/Alan%20Lopez/Documentos/NetBeansProjects/Guba/src/operaciones/OpGrupos.java</file>
+            <file>file:/D:/Alan%20Lopez/Documentos/NetBeansProjects/Guba/src/operaciones/OpCalificaciones.java</file>
+            <file>file:/D:/Alan%20Lopez/Documentos/NetBeansProjects/Guba/src/forms/maestros/EditarMaestroForm.java</file>
         </group>
     </open-files>
 </project-private>

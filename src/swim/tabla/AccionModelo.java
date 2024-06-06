@@ -1,23 +1,21 @@
 package swim.tabla;
 
-import modelos.EstudianteModelo;
-
 public class AccionModelo {
 
-    private EstudianteModelo estudiante;
+    private Object modelo;
     private EventoAccion accion;
 
-    public AccionModelo(EstudianteModelo estudiante, EventoAccion accion ) {
-        this.estudiante = estudiante;
+    public AccionModelo(Object modelo, EventoAccion accion ) {
+        this.modelo = modelo;
         this.accion = accion;
     }
 
-    public EstudianteModelo getEstudiante() {
-        return estudiante;
+    public Object getModelo() {
+        return modelo;
     }
 
-    public void setEstudiante(EstudianteModelo estudiante) {
-        this.estudiante = estudiante;
+    public void setEstudiante(Object modelo) {
+        this.modelo = modelo;
     }
 
     public EventoAccion getAccion() {
