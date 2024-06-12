@@ -1,76 +1,93 @@
 package forms.maestros;
 
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import event.EventoCerrarForm;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelos.MaestroModelo;
-import operaciones.OpAlumno;
+import operaciones.OpMaestro;
 
 public class EditarMaestroForm extends javax.swing.JPanel {
 
-    private MaestroModelo maestro;
+    private MaestroModelo modelo;
     private EventoCerrarForm evento;
-    OpAlumno opAlumno;
+    private OpMaestro opMaestro;
 
     public EditarMaestroForm(MaestroModelo modelo) {
         initComponents();
-        this.maestro = modelo;
+        this.modelo = modelo;
         init();
     }
 
     private void init() {
-        opAlumno = new OpAlumno();
-        /*
-        this.txtMatricula.setText(alumno.getNombre());
-        this.txtNombre.setText(alumno.getApPaterno());
-        this.txtApPat.setText(alumno.getApMaterno());
-        this.txtCelular.setText(alumno.getNumCelular());
-        this.txtCorreoIns.setText(alumno.getEmailInstitucional());
-        this.txtCorreoPer.setText(alumno.getEmailPersonal());
-        this.txtEstado.setText(alumno.getEstado());
-        this.txtMunicipio.setText(alumno.getMunicipio());
-        this.txtEscuelaProc.setText(alumno.getEscProcedencia());*/
+        opMaestro = new OpMaestro();
+        this.txtRfc.setText(modelo.getRfc());
+        this.txtNombre.setText(modelo.getNombre());
+        this.txtApPat.setText(modelo.getApPat());
+        this.txtApMat.setText(modelo.getApMat());
+
+        this.txtGrado.setText(modelo.getGrado());
+        this.txtDomicilio.setText(modelo.getDomicilio());
+        this.txtCurp.setText(modelo.getCurp());
+        this.txtCorreoIns.setText(modelo.getCorreoIns());
+        this.txtCorreoPer.setText(modelo.getCorreoPer());
+
+        this.txtCelular.setText(modelo.getCelular());
+        this.txtEstado.setText(modelo.getEstado());
+        this.txtMunicipio.setText(modelo.getMunicipio());
     }
 
     public boolean esValido() {
-        if (txtMatricula.getText().trim().isEmpty()) {
+        if (txtRfc.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese el RFC");
             return false;
         }
         if (txtNombre.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese el Nombre");
             return false;
         }
-        if (txtMatricula.getText().trim().isEmpty()) {
-            return false;
-        }
-        if (txtNombre.getText().trim().isEmpty()) {
+
+        if (txtApMat.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese el Apellido Materno");
             return false;
         }
         if (txtApPat.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese el Apellido Paterno");
             return false;
         }
-        if (txtEscuelaProc.getText().trim().isEmpty()) {
+        if (txtDomicilio.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese el Domicilio");
+            return false;
+        }
+        if (txtCurp.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese la CURP");
             return false;
         }
         if (!esValidoCorreo(txtCorreoPer.getText().trim())) {
+            JOptionPane.showMessageDialog(null, "Ingrese un correo personal valido");
             return false;
         }
         if (!esValidoCorreo(txtCorreoIns.getText().trim())) {
+            JOptionPane.showMessageDialog(null, "Ingrese un correo institucional valido");
             return false;
         }
         if (!esValidoNumero(txtCelular.getText().trim())) {
+            JOptionPane.showMessageDialog(null, "Ingrese su numero telefonico");
             return false;
         }
         if (txtEstado.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese el Estado");
             return false;
         }
-        if (txtEstado.getText().trim().isEmpty()) {
+        if (txtGrado.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese el grado de estudios");
             return false;
         }
         if (txtMunicipio.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese el Municipio");
             return false;
         }
         return true;
@@ -81,13 +98,14 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         Pattern pattern = Pattern.compile(numeroRegex);
         Matcher matcher = pattern.matcher(numero);
         return matcher.matches();
-
     }
 
     private boolean esValidoCorreo(String correo) {
-        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0]+\\.[a-z]{2,}$";
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(correo);
+
+        System.out.println(matcher.matches());
         return matcher.matches();
     }
 
@@ -96,15 +114,12 @@ public class EditarMaestroForm extends javax.swing.JPanel {
     private void initComponents() {
 
         myPanel1 = new swim.panel.MyPanel();
-        txtMatricula = new javax.swing.JTextField();
+        txtRfc = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         txtNombre = new javax.swing.JTextField();
         jSeparator3 = new javax.swing.JSeparator();
         txtApPat = new javax.swing.JTextField();
-        jSeparator7 = new javax.swing.JSeparator();
-        txtEscuelaProc = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
         jSeparator8 = new javax.swing.JSeparator();
         txtCorreoPer = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -134,16 +149,23 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         jLabel17 = new javax.swing.JLabel();
         txtCv = new javax.swing.JTextField();
         buscarCv = new swim.botones.ButtonRounded();
+        jLabel18 = new javax.swing.JLabel();
+        jSeparator13 = new javax.swing.JSeparator();
+        txtCurp = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtDomicilio = new javax.swing.JTextField();
+        jSeparator7 = new javax.swing.JSeparator();
         buttonRounded1 = new swim.botones.ButtonRounded();
         Editar = new swim.botones.ButtonRounded();
         jLabel1 = new javax.swing.JLabel();
 
         myPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        txtMatricula.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        txtMatricula.addActionListener(new java.awt.event.ActionListener() {
+        txtRfc.setEditable(false);
+        txtRfc.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtRfc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMatriculaActionPerformed(evt);
+                txtRfcActionPerformed(evt);
             }
         });
 
@@ -155,17 +177,6 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         });
 
         txtApPat.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        txtEscuelaProc.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        txtEscuelaProc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtEscuelaProcActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel7.setText("Domicilio:");
 
         txtCorreoPer.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         txtCorreoPer.addActionListener(new java.awt.event.ActionListener() {
@@ -266,9 +277,32 @@ public class EditarMaestroForm extends javax.swing.JPanel {
 
         buscarCv.setBackground(new java.awt.Color(0, 51, 51));
         buscarCv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/14.png"))); // NOI18N
+        buscarCv.setEnabled(false);
         buscarCv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscarCvActionPerformed(evt);
+            }
+        });
+
+        jLabel18.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel18.setText("CURP:");
+
+        txtCurp.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtCurp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCurpActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel7.setText("Domicilio:");
+
+        txtDomicilio.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtDomicilio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDomicilioActionPerformed(evt);
             }
         });
 
@@ -278,7 +312,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
             myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(myPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(myPanel1Layout.createSequentialGroup()
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(myPanel1Layout.createSequentialGroup()
@@ -308,20 +342,27 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                                 .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtCorreoIns, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jSeparator8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCorreoPer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jSeparator7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtEscuelaProc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtCorreoPer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(myPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel12)
                             .addGap(109, 109, 109)
                             .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel18)
+                            .addGroup(myPanel1Layout.createSequentialGroup()
+                                .addGap(159, 159, 159)
+                                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jSeparator13, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCurp, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel7)))
                     .addComponent(jLabel8)
                     .addComponent(jLabel10)
                     .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(327, 327, 327)
+                        .addGap(424, 424, 424)
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,7 +371,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                     .addGroup(myPanel1Layout.createSequentialGroup()
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtMatricula, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                                .addComponent(txtRfc, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
                                 .addComponent(jSeparator1))
                             .addComponent(jLabel13))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -341,16 +382,17 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                             .addComponent(jLabel14))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtApPat, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                                .addComponent(jSeparator3))
-                            .addComponent(jLabel15))
+                            .addGroup(myPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(txtApPat)
+                            .addComponent(jSeparator3))
                         .addGap(18, 18, 18)
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel16)
                             .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtApMat)
-                                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtApMat, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                                .addComponent(jSeparator4)))))
                 .addContainerGap(47, Short.MAX_VALUE))
         );
         myPanel1Layout.setVerticalGroup(
@@ -363,21 +405,17 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                     .addComponent(jLabel15)
                     .addComponent(jLabel16))
                 .addGap(3, 3, 3)
+                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRfc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtApPat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtApMat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtApPat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addComponent(txtApMat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(myPanel1Layout.createSequentialGroup()
@@ -393,13 +431,19 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(buscarCv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addGap(8, 8, 8)
+                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(txtCurp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addComponent(jSeparator13, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(txtEscuelaProc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(txtDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
                 .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txtCorreoPer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -457,7 +501,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Editar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -483,69 +527,47 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombreActionPerformed
-
-    private void txtEscuelaProcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEscuelaProcActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEscuelaProcActionPerformed
-
-    private void txtCorreoPerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoPerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCorreoPerActionPerformed
-
-    private void txtCorreoInsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoInsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCorreoInsActionPerformed
-
-    private void txtCelularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCelularActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCelularActionPerformed
-
-    private void txtEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEstadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEstadoActionPerformed
-
-    private void txtMunicipioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMunicipioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMunicipioActionPerformed
 
     private void buttonRounded1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRounded1ActionPerformed
         this.evento.cerrarForm();
     }//GEN-LAST:event_buttonRounded1ActionPerformed
 
     private void EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarActionPerformed
-
         if (esValido()) {
-            System.out.println("Si se puede Editar");
-           /*
-            alumno.setNombre( this.txtNombre.getText());
-           
-            boolean esCorreto = opAlumno.updateAlumno(alumno);
-            if (esCorreto) {
-                System.out.println("Si se edito");
-                evento.cerrarForm();
-            } else {
-                System.out.println("No se edito");
-            }*/
-        } else {
-            System.out.println("No se puede Editae");
+            int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de actualizar al alumno : " + txtNombre.getText() + " con matricula: " + txtRfc.getText() + " ?");
+
+            if (option == JOptionPane.OK_OPTION) {
+
+                modelo.setRfc(txtRfc.getText().trim());
+                modelo.setNombre(txtNombre.getText().trim());
+                modelo.setApPat(txtApPat.getText().trim());
+                modelo.setApMat(txtApMat.getText().trim());
+                modelo.setCorreoPer(txtCorreoPer.getText().trim());
+                modelo.setCorreoIns(txtCorreoIns.getText().trim());
+                modelo.setCv("------");
+                modelo.setCelular(txtCelular.getText().trim());
+                modelo.setEstado(txtEstado.getText().trim());
+                modelo.setMunicipio(txtMunicipio.getText().trim());
+                modelo.setDomicilio(txtDomicilio.getText().trim());
+                modelo.setCurp(txtCurp.getText().trim());
+                modelo.setGrado(txtGrado.getText().trim());
+
+                modelo.setPasswordTemp(txtRfc.getText().trim());
+
+                boolean agregar = opMaestro.updateDocente(modelo);
+
+                if (agregar) {
+                    JOptionPane.showMessageDialog(null, "Docemte Correctamente Actualizado");
+                    evento.cerrarForm();
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo agregar");
+                }
+            }
         }
-
     }//GEN-LAST:event_EditarActionPerformed
-
-    private void txtMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatriculaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMatriculaActionPerformed
-
-    private void txtGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGradoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtGradoActionPerformed
 
     private void buscarCvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarCvActionPerformed
         // TODO add your handling code here:
@@ -553,15 +575,55 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         JFileChooser cvChooser = new JFileChooser();
 
         FileNameExtensionFilter filtro = new FileNameExtensionFilter(
-            "PDF", "pdf");
+                "PDF", "pdf");
         cvChooser.setFileFilter(filtro);
 
         int returnVal = cvChooser.showOpenDialog(null);
 
-        if(returnVal == JFileChooser.APPROVE_OPTION){
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
             txtCv.setText(cvChooser.getSelectedFile().getName());
         }
     }//GEN-LAST:event_buscarCvActionPerformed
+
+    private void txtGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGradoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtGradoActionPerformed
+
+    private void txtMunicipioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMunicipioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMunicipioActionPerformed
+
+    private void txtEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEstadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEstadoActionPerformed
+
+    private void txtCelularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCelularActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCelularActionPerformed
+
+    private void txtCorreoInsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoInsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCorreoInsActionPerformed
+
+    private void txtCorreoPerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoPerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCorreoPerActionPerformed
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void txtRfcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRfcActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRfcActionPerformed
+
+    private void txtCurpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCurpActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCurpActionPerformed
+
+    private void txtDomicilioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDomicilioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDomicilioActionPerformed
 
     public void addEvento(EventoCerrarForm evento) {
         this.evento = evento;
@@ -582,6 +644,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
@@ -591,6 +654,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator12;
+    private javax.swing.JSeparator jSeparator13;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
@@ -604,12 +668,13 @@ public class EditarMaestroForm extends javax.swing.JPanel {
     private javax.swing.JTextField txtCelular;
     private javax.swing.JTextField txtCorreoIns;
     private javax.swing.JTextField txtCorreoPer;
+    private javax.swing.JTextField txtCurp;
     private javax.swing.JTextField txtCv;
-    private javax.swing.JTextField txtEscuelaProc;
+    private javax.swing.JTextField txtDomicilio;
     private javax.swing.JTextField txtEstado;
     private javax.swing.JTextField txtGrado;
-    private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtMunicipio;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtRfc;
     // End of variables declaration//GEN-END:variables
 }

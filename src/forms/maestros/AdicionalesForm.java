@@ -5,17 +5,25 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import modelos.MaestroModelo;
 
 
 public class AdicionalesForm extends javax.swing.JPanel {
-    boolean bandera;
+    private boolean bandera;
+    private MaestroModelo modelo;
     
-    
-    public AdicionalesForm() {
+    public AdicionalesForm(MaestroModelo modelo) {
         initComponents();
         bandera = false;
+
+        this.modelo = modelo;
+        init();
     }
 
+    private void init(){
+        this.txtUsuario.setText(modelo.getRfc());
+        this.txtPass.setText(modelo.getPasswordTemp());
+    }
   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -30,7 +38,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
         myPanel2 = new swim.panel.MyPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtUsuario = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         btnPass = new javax.swing.JButton();
         txtPass = new javax.swing.JPasswordField();
@@ -55,7 +63,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
 
         jLabel4.setText("Contraseña: ");
 
-        jTextField1.setEditable(false);
+        txtUsuario.setEditable(false);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("Portal Web");
@@ -83,7 +91,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
                             .addComponent(jLabel4))
                         .addGap(29, 29, 29)
                         .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
                             .addComponent(txtPass))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPass, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -102,7 +110,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(21, 21, 21)
                         .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -196,7 +204,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
 
             String contraseña = new String(charPassword);
 
-            if (usuario.equals("alan") && contraseña.equals("1234")) {
+            if (usuario.equals("user") && contraseña.equals("user")) {
                 btnPass.setIcon(new ImageIcon((getClass().getResource("/icon/abierto.png"))));
                 txtPass.setEchoChar('\0');
                 bandera = true;
@@ -209,8 +217,6 @@ public class AdicionalesForm extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPass;
-    private javax.swing.JButton btnShowPass;
-    private javax.swing.JButton btnShowPass1;
     private swim.botones.ButtonRounded buttonRounded1;
     private javax.swing.JComboBox<String> jComboBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
@@ -219,9 +225,9 @@ public class AdicionalesForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField1;
     private swim.panel.MyPanel myPanel1;
     private swim.panel.MyPanel myPanel2;
     private javax.swing.JPasswordField txtPass;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

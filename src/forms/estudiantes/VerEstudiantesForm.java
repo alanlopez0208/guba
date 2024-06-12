@@ -4,12 +4,12 @@ import modelos.EstudianteModelo;
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
 import java.util.ArrayList;
-import operaciones.OpAlumnos;
+import operaciones.OpAlumno;
 
 public class VerEstudiantesForm extends javax.swing.JPanel {
 
     private EventoAbrirForm eventoForm;
-    private OpAlumnos opAlumno;
+    private OpAlumno opAlumno;
     private EventoAccion accion;
 
     public VerEstudiantesForm() {
@@ -20,7 +20,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
     }
 
     private void iniciarTabla() {
-        opAlumno = new OpAlumnos();
+        opAlumno = new OpAlumno();
         accion = new EventoAccion() {
             @Override
             public void ver(Object modelo) {
@@ -47,9 +47,8 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
 
     public void actualizarTabla() {
         tabla1.clear();
-        System.out.println("se Actualizo la tabla");
         ArrayList<EstudianteModelo> lista = opAlumno.getEstudiantes();
-
+        System.out.println(lista.size());
         lista.forEach((alumno) -> {
             tabla1.addRow(alumno.toRowTable(accion));
         });
@@ -69,7 +68,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         tabla1 = new swim.tabla.Tabla();
         myPanel2 = new swim.panel.MyPanel();
         jSeparator1 = new javax.swing.JSeparator();
-        jTextField1 = new javax.swing.JTextField();
+        txtBuscar = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
 
@@ -124,8 +123,13 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
 
         myPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTextField1.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
-        jTextField1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtBuscar.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
+        txtBuscar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyReleased(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
@@ -145,7 +149,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jSeparator1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         myPanel2Layout.setVerticalGroup(
@@ -153,7 +157,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
             .addGroup(myPanel2Layout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -183,6 +187,19 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
+        if (txtBuscar.getText().length() > 0) {
+
+            ArrayList<EstudianteModelo> lista = opAlumno.buscarEstudiantes(txtBuscar.getText());
+            System.out.println(lista.size());
+            lista.forEach((alumno) -> {
+                tabla1.addRow(alumno.toRowTable(accion));
+            });
+        } else {
+            actualizarTabla();
+        }
+    }//GEN-LAST:event_txtBuscarKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> jComboBox1;
@@ -190,9 +207,9 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
     private swim.panel.MyPanel myPanel1;
     private swim.panel.MyPanel myPanel2;
     private swim.tabla.Tabla tabla1;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

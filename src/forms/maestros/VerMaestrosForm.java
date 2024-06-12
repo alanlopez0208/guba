@@ -51,7 +51,7 @@ public class VerMaestrosForm extends javax.swing.JPanel {
     public void actualizarTabla() {
         tabla1.clear();
         System.out.println("se Actualizo la tabla");
-        ArrayList<MaestroModelo> lista =opMaestro.getMaestros();
+        ArrayList<MaestroModelo> lista =opMaestro.getDocentes();
 
         lista.forEach((alumno) -> {
             tabla1.addRow(alumno.toRowTable(accion));

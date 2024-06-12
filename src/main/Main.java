@@ -42,16 +42,18 @@ public class Main extends javax.swing.JFrame {
         bg.setLayout(layout);
         menu = new Menu();
         main = new MainForm();
+        verEstudiantesForm = new VerEstudiantesForm();
+        verMaestrosForm = new VerMaestrosForm();
 
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void menuSelected(int menuIndex, int subMenuIndex) {
                 System.out.println("Menu Index : " + menuIndex + " Submenu Index " + subMenuIndex);
                 switch (menuIndex) {
-                    case 0 -> main.showForm(new InicioForm());
+                    case 0 ->
+                        main.showForm(new InicioForm());
                     case 1 -> {
                         if (subMenuIndex == 2) {
-                            verEstudiantesForm = new VerEstudiantesForm();
 
                             verEstudiantesForm.addEventoForm(new EventoAbrirForm() {
                                 @Override
@@ -60,6 +62,7 @@ public class Main extends javax.swing.JFrame {
                                         EstudianteForm estudianteForm = new EstudianteForm((EstudianteModelo) modelo, new EventoCerrarForm() {
                                             @Override
                                             public void cerrarForm() {
+                                                verEstudiantesForm.actualizarTabla();
                                                 main.showForm(verEstudiantesForm);
                                             }
                                         });
@@ -70,6 +73,7 @@ public class Main extends javax.swing.JFrame {
                                         editarEstudianteForm.addEvento(new EventoCerrarForm() {
                                             @Override
                                             public void cerrarForm() {
+                                                verEstudiantesForm.actualizarTabla();
                                                 main.showForm(verEstudiantesForm);
                                             }
                                         });
@@ -95,7 +99,6 @@ public class Main extends javax.swing.JFrame {
                     }
                     case 2 -> {
                         if (subMenuIndex == 2) {
-                            verMaestrosForm = new VerMaestrosForm();
 
                             verMaestrosForm.addEventoForm(new EventoAbrirForm() {
                                 @Override
@@ -104,6 +107,7 @@ public class Main extends javax.swing.JFrame {
                                         MaestroForm maestro = new MaestroForm((MaestroModelo) modelo, new EventoCerrarForm() {
                                             @Override
                                             public void cerrarForm() {
+                                                verMaestrosForm.actualizarTabla();
                                                 main.showForm(verMaestrosForm);
                                             }
 
@@ -112,11 +116,12 @@ public class Main extends javax.swing.JFrame {
                                         main.showForm(maestro);
                                     }
                                     if (index == 1) {
-                                        System.out.println("Se va abrir el editar alumno");
+
                                         EditarMaestroForm editarMaestro = new EditarMaestroForm((MaestroModelo) modelo);
                                         editarMaestro.addEvento(new EventoCerrarForm() {
                                             @Override
                                             public void cerrarForm() {
+                                                verMaestrosForm.actualizarTabla();
                                                 main.showForm(verMaestrosForm);
                                             }
 
@@ -137,7 +142,6 @@ public class Main extends javax.swing.JFrame {
                                     verMaestrosForm.actualizarTabla();
                                     main.showForm(verMaestrosForm);
                                 }
-
                             };
 
                             main.showForm(new AgregarMaestroForm(evento));
@@ -157,7 +161,6 @@ public class Main extends javax.swing.JFrame {
                                             @Override
                                             public void cerrarForm() {
                                                 main.showForm(verGrupos);
-
                                             }
                                         });
                                         main.showForm(verGrupo);
@@ -187,8 +190,8 @@ public class Main extends javax.swing.JFrame {
                             agregarGrupo.addEventoCerrar(new EventoCerrarForm() {
                                 @Override
                                 public void cerrarForm() {
-                                    main.showForm(verGrupos);
 
+                                    main.showForm(verGrupos);
                                 }
 
                             });

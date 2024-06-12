@@ -10,6 +10,7 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
 
     public EstudianteDatosForm(EstudianteModelo modelo) {
         initComponents();
+        comboGeneracion.setEnabled(false);
         this.modelo = modelo;
         init();
     }
@@ -18,10 +19,17 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         this.txtMatricula.setText(modelo.getMatricula());
         this.txtNombre.setText(modelo.getNombre());
         this.txtApPat.setText(modelo.getApPaterno());
-        this.txtCelular.setText(modelo.getNumCelular());
+        this.txtApMat.setText(modelo.getApMaterno());
+
+        this.txtGrado.setText(modelo.getGrado());
+        
+        this.txtEscuelaProc.setText(modelo.getEscProcedencia());
         this.txtCorreoIns.setText(modelo.getEmailInstitucional());
         this.txtCorreoPer.setText(modelo.getEmailPersonal());
+        
+        this.txtCelular.setText(modelo.getNumCelular());
         this.txtEstado.setText(modelo.getEstado());
+        this.txtMunicipio.setText(modelo.getMunicipio());
     }
 
     public boolean esCorrecto() {
@@ -49,16 +57,16 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         if (esValidoCorreo(txtCorreoIns.getText().trim())) {
             return false;
         }
-        if(esValidoNumero(txtCelular.getText().trim())){
+        if (esValidoNumero(txtCelular.getText().trim())) {
             return false;
         }
-        if(txtEstado.getText().trim().isEmpty()){
+        if (txtEstado.getText().trim().isEmpty()) {
             return false;
         }
-        if(txtEstado.getText().trim().isEmpty()){
+        if (txtEstado.getText().trim().isEmpty()) {
             return false;
         }
-        if(txtMunicipio.getText().trim().isEmpty()){
+        if (txtMunicipio.getText().trim().isEmpty()) {
             return false;
         }
         return true;
@@ -93,7 +101,6 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         comboGeneracion = new javax.swing.JComboBox<>();
         jSeparator7 = new javax.swing.JSeparator();
@@ -114,7 +121,6 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         jLabel12 = new javax.swing.JLabel();
         txtMunicipio = new javax.swing.JTextField();
         jSeparator12 = new javax.swing.JSeparator();
-        comboSexo = new javax.swing.JComboBox<>();
         comboGrupo = new javax.swing.JComboBox<>();
         comboSemestre = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
@@ -125,7 +131,7 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         jLabel17 = new javax.swing.JLabel();
         txtApMat = new javax.swing.JTextField();
         jSeparator4 = new javax.swing.JSeparator();
-        txtMunicipio1 = new javax.swing.JTextField();
+        txtGrado = new javax.swing.JTextField();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
 
@@ -157,20 +163,17 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("Grupo:");
+        jLabel3.setEnabled(false);
 
         jLabel4.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(51, 51, 51));
         jLabel4.setText("Semestre:");
 
-        jLabel5.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel5.setText("Sexo:");
-
         jLabel6.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("Generacion:");
 
-        comboGeneracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hombre", "Mujer" }));
+        comboGeneracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---------" }));
         comboGeneracion.setToolTipText("");
 
         txtEscuelaProc.setEditable(false);
@@ -245,21 +248,21 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
             }
         });
 
-        comboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hombre", "Mujer" }));
-        comboSexo.setToolTipText("");
-
-        comboGrupo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hombre", "Mujer" }));
+        comboGrupo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----------------" }));
         comboGrupo.setToolTipText("");
+        comboGrupo.setEnabled(false);
 
-        comboSemestre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hombre", "Mujer" }));
+        comboSemestre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--------------" }));
         comboSemestre.setToolTipText("");
+        comboSemestre.setEnabled(false);
 
         jLabel13.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(51, 51, 51));
         jLabel13.setText("Status:");
 
-        comboSexo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hombre", "Mujer" }));
+        comboSexo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Dado de Baja" }));
         comboSexo1.setToolTipText("");
+        comboSexo1.setEnabled(false);
 
         jLabel14.setFont(new java.awt.Font("Malgun Gothic", 1, 12)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(51, 51, 51));
@@ -280,11 +283,11 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         txtApMat.setEditable(false);
         txtApMat.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        txtMunicipio1.setEditable(false);
-        txtMunicipio1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        txtMunicipio1.addActionListener(new java.awt.event.ActionListener() {
+        txtGrado.setEditable(false);
+        txtGrado.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtGrado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMunicipio1ActionPerformed(evt);
+                txtGradoActionPerformed(evt);
             }
         });
 
@@ -295,6 +298,37 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
             .addGroup(myPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(myPanel1Layout.createSequentialGroup()
+                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addGroup(myPanel1Layout.createSequentialGroup()
+                                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(myPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel12)
+                                        .addGap(109, 109, 109)
+                                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(myPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel9)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(comboGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(txtEscuelaProc, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtCorreoPer, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtCorreoIns, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(38, 38, 38)
+                                .addComponent(jLabel11)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtMunicipio, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(jSeparator12)))
                     .addComponent(jLabel8)
                     .addGroup(myPanel1Layout.createSequentialGroup()
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -321,57 +355,25 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jSeparator5)
-                                    .addComponent(txtMunicipio1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
+                                    .addComponent(txtGrado, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
                                 .addGap(39, 39, 39)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(comboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(23, 23, 23)
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
                             .addComponent(jLabel4)
                             .addComponent(jLabel13))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(comboSexo1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(comboSexo, 0, 125, Short.MAX_VALUE)
+                            .addComponent(comboSexo1, 0, 125, Short.MAX_VALUE)
                             .addComponent(comboSemestre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(myPanel1Layout.createSequentialGroup()
                         .addGap(356, 356, 356)
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtApPat)
                             .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel16)))
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(myPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel12)
-                                    .addGap(109, 109, 109)
-                                    .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(myPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel9)
-                                    .addGap(18, 18, 18)
-                                    .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(comboGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(txtEscuelaProc, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtCorreoPer, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtCorreoIns, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtMunicipio)
-                            .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel16))))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         myPanel1Layout.setVerticalGroup(
@@ -408,27 +410,22 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(comboSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(comboSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(myPanel1Layout.createSequentialGroup()
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(comboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtMunicipio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(4, 4, 4)
                         .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(comboGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
+                .addGap(20, 20, 20)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel7)
@@ -451,25 +448,21 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
                 .addGap(7, 7, 7)
                 .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(txtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
+                    .addComponent(jLabel12)
+                    .addComponent(txtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/profile.png"))); // NOI18N
@@ -529,16 +522,15 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMunicipioActionPerformed
 
-    private void txtMunicipio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMunicipio1ActionPerformed
+    private void txtGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGradoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtMunicipio1ActionPerformed
+    }//GEN-LAST:event_txtGradoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> comboGeneracion;
     private javax.swing.JComboBox<String> comboGrupo;
     private javax.swing.JComboBox<String> comboSemestre;
-    private javax.swing.JComboBox<String> comboSexo;
     private javax.swing.JComboBox<String> comboSexo1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -552,7 +544,6 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -576,9 +567,9 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
     private javax.swing.JTextField txtCorreoPer;
     private javax.swing.JTextField txtEscuelaProc;
     private javax.swing.JTextField txtEstado;
+    private javax.swing.JTextField txtGrado;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtMunicipio;
-    private javax.swing.JTextField txtMunicipio1;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

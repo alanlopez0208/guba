@@ -19,10 +19,14 @@ public class EstudianteModelo {
     private String grado;
     private String grupo;
     private String Status;
-    //HOLA pruebea
-    public EstudianteModelo(String string, String string1, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9, String string10, String string11, String string12, String string13) {
-    }
+    private String password;
+    private String passwordTemporal;
+    
+    
+    
 
+    public EstudianteModelo() {
+    }
 
     public EstudianteModelo(String matricula, String nombre, String apPaterno, String apMaterno) {
         this.matricula = matricula;
@@ -162,8 +166,31 @@ public class EstudianteModelo {
         this.Status = status;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPasswordTemporal() {
+        return passwordTemporal;
+    }
+
+    public void setPasswordTemporal(String passwordTemporal) {
+        this.passwordTemporal = passwordTemporal;
+    }
+    
+    
+
     public Object[] toRowTable(EventoAccion evento) {
-        return new Object[]{this.getMatricula(), this.getNombre(), this.getApMaterno(), this.getApMaterno(), new AccionModelo(this, evento)};
+        return new Object[]{this.getMatricula(), this.getNombre(),this.getApPaterno(),this.getApMaterno(), new AccionModelo(this, evento)};
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 
 }

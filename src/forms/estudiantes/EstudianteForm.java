@@ -30,6 +30,7 @@ public class EstudianteForm extends javax.swing.JPanel {
         this.setLayout(layout);
 
         header = new ButtonsHeader();
+        header.getBtn2().setEnabled(false);
         JPanel menu = new JPanel();
         menu.setOpaque(false);
         menu.setLayout(new BorderLayout());
@@ -46,7 +47,7 @@ public class EstudianteForm extends javax.swing.JPanel {
                         showForm(new CalificacionesForm());
                         break;
                     case 2:
-                        showForm(new AdicionalesForm());
+                        showForm(new AdicionalesForm(modelo));
                         break;
                     default:
                         break;

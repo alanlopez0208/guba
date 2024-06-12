@@ -6,14 +6,22 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import modelos.EstudianteModelo;
 
 public class AdicionalesForm extends javax.swing.JPanel {
 
     boolean bandera;
-
-    public AdicionalesForm() {
+    EstudianteModelo estudiante;
+    public AdicionalesForm( EstudianteModelo estudiante) {
         initComponents();
+        this.estudiante = estudiante;
         bandera = false;
+        init();
+    }
+    
+    private void init(){
+        txtUsuario.setText(estudiante.getMatricula());
+        txtPass.setText(estudiante.getPasswordTemporal());
     }
 
     @SuppressWarnings("unchecked")
@@ -29,7 +37,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
         myPanel2 = new swim.panel.MyPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtUsuario = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtPass = new javax.swing.JPasswordField();
         btnShowPass = new javax.swing.JButton();
@@ -53,11 +61,14 @@ public class AdicionalesForm extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
         jLabel1.setText("Reporte: ");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----------------------" }));
+        jComboBox1.setEnabled(false);
 
         jLabel2.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Fecha: ");
+
+        jDateChooser1.setEnabled(false);
 
         buttonRounded1.setBackground(new java.awt.Color(20, 90, 95));
         buttonRounded1.setForeground(new java.awt.Color(255, 255, 255));
@@ -72,7 +83,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
 
         jLabel4.setText("Contraseña: ");
 
-        jTextField1.setEditable(false);
+        txtUsuario.setEditable(false);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("Portal Web");
@@ -100,7 +111,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
                             .addComponent(jLabel4))
                         .addGap(29, 29, 29)
                         .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
                             .addComponent(txtPass))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnShowPass, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -117,7 +128,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -314,7 +325,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
 
             String contraseña = new String(charPassword);
 
-            if (usuario.equals("alan") && contraseña.equals("1234")) {
+            if (usuario.equals("user") && contraseña.equals("user")) {
                 btnShowPass.setIcon(new ImageIcon((getClass().getResource("/icon/abierto.png"))));
                 txtPass.setEchoChar('\0');
                 bandera = true;
@@ -348,7 +359,6 @@ public class AdicionalesForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
@@ -358,5 +368,6 @@ public class AdicionalesForm extends javax.swing.JPanel {
     private swim.panel.MyPanel myPanel2;
     private swim.panel.MyPanel myPanel3;
     private javax.swing.JPasswordField txtPass;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

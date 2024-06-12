@@ -20,9 +20,14 @@ public class MaestroModelo {
     private String municipio;
     private String cv;
     private String grado;
+    private String passwordTemp;
+    private String foto;
+    
     ArrayList<MateriaModelo> materias;
 
-
+    public MaestroModelo() {
+    }
+    
     public MaestroModelo(String rfc, String curp, String apPat, String nombre, String apMat, String genero, String correoPer, String correoIns, String domicilio, String celular, String estado, String municipio, String cv, String grado) {
         this.rfc = rfc;
         this.curp = curp;
@@ -172,7 +177,21 @@ public class MaestroModelo {
     }
     
     
-  
+    public String getPasswordTemp() {
+        return passwordTemp;
+    }
+
+    public void setPasswordTemp(String passwordTemp) {
+        this.passwordTemp = passwordTemp;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
     
     public Object[] toRowTable(EventoAccion evento){
              return new Object[]{this.getRfc(), this.getNombre(), this.getApPat(), this.getApMat(), new AccionModelo(this, evento)};
