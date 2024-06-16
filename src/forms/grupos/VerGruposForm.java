@@ -1,11 +1,9 @@
 package forms.grupos;
 
-
-import modelos.EstudianteModelo;
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
-import event.EventoCerrarForm;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import modelos.GrupoModelo;
 import operaciones.OpGrupo;
 
@@ -20,6 +18,7 @@ public class VerGruposForm extends javax.swing.JPanel {
         initComponents();
         tabla1.setColumnEditor(3);
         tabla1.fixTable(jScrollPane1);
+        opGrupo = new OpGrupo();
         iniciarTabla();
     }
 
@@ -35,14 +34,26 @@ public class VerGruposForm extends javax.swing.JPanel {
 
             @Override
             public void borrar(Object modelo) {
-                EstudianteModelo estudiante = (EstudianteModelo) modelo;
-                System.out.println("Se selecciono " + estudiante.getMatricula() + " eliminar ");
-                actualizarTabla();
+                GrupoModelo grupo = (GrupoModelo) modelo;
+                int response = JOptionPane.showConfirmDialog(null, "Estas Seguro en Elimnar a " + grupo.getNombre() + " del semestre : " + grupo.getSemestre());
+                if (response == JOptionPane.OK_OPTION) {
+
+                    boolean seElimino = opGrupo.eliminarGrupo(Integer.parseInt(grupo.getId()));
+
+                    if (seElimino) {
+                        JOptionPane.showMessageDialog(null, "El grupo se elimino con exito");
+                        actualizarTabla();
+                        return;
+
+                    }
+                    JOptionPane.showMessageDialog(null, "Hubo un error al eliminar");
+                }
             }
 
             @Override
             public void editar(Object modelo) {
-                eventoForm.abrirForm(modelo, 1);
+                GrupoModelo grupo = (GrupoModelo) modelo;
+                eventoForm.abrirForm(grupo, 1);
             }
         };
         actualizarTabla();
@@ -51,21 +62,16 @@ public class VerGruposForm extends javax.swing.JPanel {
 
     public void actualizarTabla() {
         tabla1.clear();
-        System.out.println("se Actualizo la tabla");
         ArrayList<GrupoModelo> lista = opGrupo.getGrupos();
-
-        lista.forEach((grupo) -> {
-            tabla1.addRow(grupo.toRowTable(accion));
-        });
+        for (int i = 0; i < lista.size(); i++) {
+            tabla1.addRow(lista.get(i).toRowTable(accion));
+        }
     }
 
     public void addEventoForm(EventoAbrirForm eventoForm) {
         this.eventoForm = eventoForm;
     }
 
-
-    
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -87,7 +93,9 @@ public class VerGruposForm extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
         jLabel1.setText("Grupos:");
 
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         tabla1.setModel(new javax.swing.table.DefaultTableModel(

@@ -73,8 +73,16 @@ public class Tabla extends JTable {
     }
 
     public void clear() {
+
+        if (this.isEditing()) {
+            this.getCellEditor().stopCellEditing();
+        }
         DefaultTableModel mod = (DefaultTableModel) getModel();
-        mod.setNumRows(0);
+        int count = mod.getRowCount();
+
+        for (int i = count - 1; i >= 0; i--) {
+            mod.removeRow(i);
+        }
     }
 
     public void fixTable(JScrollPane scroll) {

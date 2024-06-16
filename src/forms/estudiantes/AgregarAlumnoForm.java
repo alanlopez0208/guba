@@ -5,7 +5,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import modelos.EstudianteModelo;
-import operaciones.FotoAlumno;
 import operaciones.OpAlumno;
 import swim.Imagen;
 
@@ -14,7 +13,6 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
     private EventoCerrarForm evento;
     private OpAlumno opAlumno;
     private Imagen imagen;
-    FotoAlumno fotoAlumno;
 
     public AgregarAlumnoForm(EventoCerrarForm evento) {
         initComponents();

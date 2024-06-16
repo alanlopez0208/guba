@@ -167,11 +167,6 @@ public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
             throw new RuntimeException("Error al crear estudiante", e);
         }
     }
-    public static void main(String[] args) {
-        OpAlumno alumno = new OpAlumno();
-          ArrayList<EstudianteModelo> lista = alumno.buscarEstudiantes("");
-            System.out.println(lista.size());
-           
-    }
+   
     
 }

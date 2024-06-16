@@ -4,6 +4,8 @@ import modelos.EstudianteModelo;
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import operaciones.OpAlumno;
 
 public class VerEstudiantesForm extends javax.swing.JPanel {
@@ -16,11 +18,12 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         initComponents();
         tabla1.setColumnEditor(4);
         tabla1.fixTable(jScrollPane1);
+        opAlumno = new OpAlumno();
         iniciarTabla();
+
     }
 
     private void iniciarTabla() {
-        opAlumno = new OpAlumno();
         accion = new EventoAccion() {
             @Override
             public void ver(Object modelo) {
@@ -32,8 +35,13 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
             @Override
             public void borrar(Object modelo) {
                 EstudianteModelo estudiante = (EstudianteModelo) modelo;
-                System.out.println("Se selecciono " + estudiante.getMatricula() + " eliminar ");
-                actualizarTabla();
+                int response = JOptionPane.showConfirmDialog(null, "Estas Seguro en Elimnar a " + estudiante.getNombre() + " " + " " + estudiante.getApPaterno() + " con matricula: " + estudiante.getMatricula());
+                if (response == JOptionPane.OK_OPTION) {
+
+                    opAlumno.deleteAlumno(estudiante.getMatricula());
+                    JOptionPane.showMessageDialog(null, "El alumno se ha eliminado con exito");
+                    actualizarTabla();
+                }
             }
 
             @Override
@@ -41,17 +49,30 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
                 eventoForm.abrirForm(modelo, 1);
             }
         };
-        actualizarTabla();
+        ArrayList<EstudianteModelo> lista = opAlumno.getEstudiantes();
+
+        lista.forEach((alumno) -> {
+            tabla1.addRow(alumno.toRowTable(accion));
+        });
 
     }
 
     public void actualizarTabla() {
-        tabla1.clear();
+        
+        if (tabla1.isEditing()) {
+            tabla1.getCellEditor().stopCellEditing();
+        }
+        DefaultTableModel model = (DefaultTableModel) tabla1.getModel();
+        int rows = model.getRowCount();
+        for (int i = rows - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+
         ArrayList<EstudianteModelo> lista = opAlumno.getEstudiantes();
-        System.out.println(lista.size());
-        lista.forEach((alumno) -> {
-            tabla1.addRow(alumno.toRowTable(accion));
-        });
+
+        for (int i = 0; i < lista.size(); i++) {
+            tabla1.addRow(lista.get(i).toRowTable(accion));
+        }
     }
 
     public void addEventoForm(EventoAbrirForm eventoForm) {

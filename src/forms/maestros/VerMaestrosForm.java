@@ -1,9 +1,9 @@
 package forms.maestros;
 
-
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import modelos.MaestroModelo;
 import operaciones.OpMaestro;
 
@@ -26,15 +26,20 @@ public class VerMaestrosForm extends javax.swing.JPanel {
             @Override
             public void ver(Object modelo) {
                 MaestroModelo maestro = (MaestroModelo) modelo;
-                System.out.println("Se selecciono " + maestro.getRfc() + " para ver ");
                 eventoForm.abrirForm(modelo, 0);
             }
 
             @Override
             public void borrar(Object modelo) {
                 MaestroModelo maestro = (MaestroModelo) modelo;
-                System.out.println("Se selecciono " + maestro.getRfc()+ " eliminar ");
-                actualizarTabla();
+                int response = JOptionPane.showConfirmDialog(null, "Estas Seguro en Elimnar a " + maestro.getNombre() + " " + " " + maestro.getApPat() + " con RFC: " + maestro.getRfc());
+                if (response == JOptionPane.OK_OPTION) {
+                    opMaestro.deleteDocente(maestro.getRfc());
+
+                  
+                    JOptionPane.showMessageDialog(null, "El alumno se ha eliminado con exito");
+                    actualizarTabla();
+                }
             }
 
             @Override
@@ -49,16 +54,17 @@ public class VerMaestrosForm extends javax.swing.JPanel {
     }
 
     public void actualizarTabla() {
+         if (tabla1.isEditing()) {
+            tabla1.getCellEditor().stopCellEditing();
+        }
         tabla1.clear();
-        System.out.println("se Actualizo la tabla");
-        ArrayList<MaestroModelo> lista =opMaestro.getDocentes();
+       
+        ArrayList<MaestroModelo> lista = opMaestro.getDocentes();
 
-        lista.forEach((alumno) -> {
-            tabla1.addRow(alumno.toRowTable(accion));
+        lista.forEach((docente) -> {
+            tabla1.addRow(docente.toRowTable(accion));
         });
     }
-    
-   
 
     public void addEventoForm(EventoAbrirForm eventoForm) {
         this.eventoForm = eventoForm;

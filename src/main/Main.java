@@ -21,7 +21,7 @@ import forms.maestros.AgregarMaestroForm;
 import forms.maestros.EditarMaestroForm;
 import forms.maestros.MaestroForm;
 import forms.maestros.VerMaestrosForm;
-import modelos.MaestroModelo;
+import modelos.*;
 
 public class Main extends javax.swing.JFrame {
 
@@ -30,6 +30,7 @@ public class Main extends javax.swing.JFrame {
     private Menu menu;
     private VerEstudiantesForm verEstudiantesForm;
     private VerMaestrosForm verMaestrosForm;
+    private VerGruposForm verGrupos;
 
     public Main() {
         initComponents();
@@ -44,6 +45,7 @@ public class Main extends javax.swing.JFrame {
         main = new MainForm();
         verEstudiantesForm = new VerEstudiantesForm();
         verMaestrosForm = new VerMaestrosForm();
+        verGrupos = new VerGruposForm();
 
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
@@ -91,7 +93,6 @@ public class Main extends javax.swing.JFrame {
                                     verEstudiantesForm.actualizarTabla();
                                     main.showForm(verEstudiantesForm);
                                 }
-
                             };
 
                             main.showForm(new AgregarAlumnoForm(evento));
@@ -124,17 +125,12 @@ public class Main extends javax.swing.JFrame {
                                                 verMaestrosForm.actualizarTabla();
                                                 main.showForm(verMaestrosForm);
                                             }
-
                                         });
-
                                         main.showForm(editarMaestro);
                                     }
                                 }
-
                             });
-
                             main.showForm(verMaestrosForm);
-
                         } else if (subMenuIndex == 3) {
                             EventoCerrarForm evento = new EventoCerrarForm() {
                                 @Override
@@ -143,38 +139,42 @@ public class Main extends javax.swing.JFrame {
                                     main.showForm(verMaestrosForm);
                                 }
                             };
-
                             main.showForm(new AgregarMaestroForm(evento));
                         }
                     }
 
                     case 3 -> {
-                        VerGruposForm verGrupos = new VerGruposForm();
+
                         if (subMenuIndex == 2) {
 
                             verGrupos.addEventoForm(new EventoAbrirForm() {
                                 @Override
                                 public void abrirForm(Object modelo, int index) {
                                     if (index == 0) {
-                                        VerGrupo verGrupo = new VerGrupo();
+                                        GrupoModelo grupo = (GrupoModelo) modelo;
+                                        VerGrupo verGrupo = new VerGrupo(grupo);
                                         verGrupo.addEventoCerrar(new EventoCerrarForm() {
                                             @Override
                                             public void cerrarForm() {
+                                                verGrupos.actualizarTabla();
                                                 main.showForm(verGrupos);
                                             }
                                         });
+
                                         main.showForm(verGrupo);
+
                                     } else if (index == 1) {
-                                        EditarGrupo editarGrupo = new EditarGrupo();
+                                        System.out.println(modelo);
+                                        EditarGrupo editarGrupo = new EditarGrupo((GrupoModelo) modelo);
 
                                         editarGrupo.addEventoCerrar(new EventoCerrarForm() {
                                             @Override
                                             public void cerrarForm() {
+                                                verGrupos.actualizarTabla();
                                                 main.showForm(verGrupos);
-
                                             }
-
                                         });
+
                                         main.showForm(editarGrupo);
                                     }
                                 }
@@ -190,12 +190,11 @@ public class Main extends javax.swing.JFrame {
                             agregarGrupo.addEventoCerrar(new EventoCerrarForm() {
                                 @Override
                                 public void cerrarForm() {
-
+                                    verGrupos.actualizarTabla();
                                     main.showForm(verGrupos);
                                 }
 
                             });
-
                             main.showForm(agregarGrupo);
                         }
                     }

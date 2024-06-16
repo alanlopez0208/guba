@@ -7,22 +7,25 @@ import swim.tabla.EventoAccion;
 
 public class GrupoModelo {
     
-    int id;
+    String id;
     String nombre;
     String semestre;
     ArrayList<MateriaModelo> materias;
 
+    public GrupoModelo() {
+    }
+
     
-     public GrupoModelo(int id, String nombre) {
+     public GrupoModelo(String id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
   
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -49,9 +52,6 @@ public class GrupoModelo {
     public void setMaterias(ArrayList<MateriaModelo> materias) {
         this.materias = materias;
     }
-    
-    
-    
      public Object[] toRowTable(EventoAccion evento){
              return new Object[]{this.getId(), this.getNombre(), this.semestre, new AccionModelo(this, evento)};
    

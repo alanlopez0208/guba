@@ -3,17 +3,26 @@ package forms.grupos;
 import event.EventoCerrarForm;
 import java.awt.Image;
 import java.io.InputStream;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import modelos.GrupoModelo;
+import modelos.MateriaModelo;
+import operaciones.OpGrupo;
 import swim.Imagen;
 
 public class VerGrupo extends javax.swing.JPanel {
 
     private EventoCerrarForm eventoCerrar;
     private Imagen imagen;
+    private final GrupoModelo grupoModelo;
+    private final OpGrupo opGrupo;
 
-    public VerGrupo() {
+    public VerGrupo(GrupoModelo grupoModelo) {
         initComponents();
+        this.grupoModelo = grupoModelo;
+        opGrupo = new OpGrupo();
         init();
+
     }
 
     private void init() {
@@ -21,22 +30,35 @@ public class VerGrupo extends javax.swing.JPanel {
         InputStream input = this.getClass().getResourceAsStream("/icon/back.png");
         Image iconoBack = imagen.toImageResizable(input, 40, 40);
         btnCerrar.setIcon(new ImageIcon(iconoBack));
+
+        txtGrupo.setText(grupoModelo.getNombre());
+        txtSemestre.setText(grupoModelo.getSemestre());
+        iniciarTabla();
     }
 
     public void addEventoCerrar(EventoCerrarForm eventoCerrar) {
         this.eventoCerrar = eventoCerrar;
     }
 
-    
-    
+    public void iniciarTabla() {
+        ArrayList<MateriaModelo> lista = opGrupo.getMateriasByGrupo(grupoModelo.getId());
+
+        for (int i = 0; i < lista.size(); i++) {
+            MateriaModelo materia = lista.get(i);
+            tabla1.addRow(new Object[]{
+                materia.getIdMateria(), materia.getNombre(), materia.getHcba(), materia.getHti(), materia.getCreditos()
+            });
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         myPanel1 = new swim.panel.MyPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtGrupo = new javax.swing.JTextField();
+        txtSemestre = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabla1 = new swim.tabla.Tabla();
@@ -51,6 +73,10 @@ public class VerGrupo extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
         jLabel1.setText("Materias:");
 
+        txtGrupo.setEditable(false);
+
+        txtSemestre.setEditable(false);
+
         jLabel2.setBackground(new java.awt.Color(51, 51, 51));
         jLabel2.setFont(new java.awt.Font("Malgun Gothic", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
@@ -62,10 +88,7 @@ public class VerGrupo extends javax.swing.JPanel {
         tabla1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         tabla1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Clave", "Nombre", "HCBA", "HTI", "Creditos"
@@ -80,6 +103,9 @@ public class VerGrupo extends javax.swing.JPanel {
             }
         });
         jScrollPane2.setViewportView(tabla1);
+        if (tabla1.getColumnModel().getColumnCount() > 0) {
+            tabla1.getColumnModel().getColumn(1).setMinWidth(150);
+        }
 
         buttonRounded1.setBackground(new java.awt.Color(0, 102, 102));
         buttonRounded1.setForeground(new java.awt.Color(255, 255, 255));
@@ -113,11 +139,11 @@ public class VerGrupo extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel3)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(31, 31, 31)
                             .addComponent(jLabel2)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(buttonRounded1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jLabel1)))
@@ -132,9 +158,9 @@ public class VerGrupo extends javax.swing.JPanel {
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(buttonRounded1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel3)))
                 .addGap(17, 17, 17)
                 .addComponent(jLabel1)
@@ -173,9 +199,9 @@ public class VerGrupo extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private swim.panel.MyPanel myPanel1;
     private swim.tabla.Tabla tabla1;
+    private javax.swing.JTextField txtGrupo;
+    private javax.swing.JTextField txtSemestre;
     // End of variables declaration//GEN-END:variables
 }

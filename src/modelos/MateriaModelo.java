@@ -1,13 +1,18 @@
 package modelos;
 
 public class MateriaModelo {
-    
+
     String clave;
+    String idMateria;
     String nombre;
     String hcba;
     String hti;
     String creditos;
     String carrera;
+    String semestre;
+
+    public MateriaModelo() {
+    }
 
     public MateriaModelo(String clave, String nombre, String hcba, String hti, String creditos, String carrera) {
         this.clave = clave;
@@ -17,6 +22,16 @@ public class MateriaModelo {
         this.creditos = creditos;
         this.carrera = carrera;
     }
+
+    public String getIdMateria() {
+        return idMateria;
+    }
+
+    public void setIdMateria(String idMateria) {
+        this.idMateria = idMateria;
+    }
+
+    
     
     public String getClave() {
         return clave;
@@ -65,11 +80,18 @@ public class MateriaModelo {
     public void setCarrera(String carrera) {
         this.carrera = carrera;
     }
-    
-    
-    
-    
-    
-    
-    
+
+    public String getSemestre() {
+        return semestre;
+    }
+
+    public void setSemestre(String semestre) {
+        this.semestre = semestre;
+    }
+
+    @Override
+    public String toString() {
+        return  nombre;
+    }
+
 }
