@@ -21,7 +21,7 @@ public class EstudianteModelo {
     private String Status;
     private String password;
     private String passwordTemporal;
-    
+    private String foto;
     
     
 
@@ -180,6 +180,14 @@ public class EstudianteModelo {
 
     public void setPasswordTemporal(String passwordTemporal) {
         this.passwordTemporal = passwordTemporal;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
     
     

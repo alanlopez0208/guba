@@ -1,8 +1,13 @@
 package forms.estudiantes;
 
+import dialogs.CamaraDialog;
 import event.EventoCerrarForm;
+import java.awt.Image;
+import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelos.EstudianteModelo;
 import operaciones.OpAlumno;
@@ -13,14 +18,15 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
     private EventoCerrarForm evento;
     private OpAlumno opAlumno;
     private Imagen imagen;
+    private String path;
 
     public AgregarAlumnoForm(EventoCerrarForm evento) {
         initComponents();
         this.evento = evento;
-       // init();
+        init();
 
     }
-    /**
+
     private void init() {
         imagen = new Imagen();
         InputStream input = this.getClass().getResourceAsStream("/icon/fotografia.png");
@@ -29,11 +35,8 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
 
         input = this.getClass().getResourceAsStream("/icon/carpeta.png");
         iconoBack = imagen.toImageResizable(input, 40, 40);
-        btnGaleria.setIcon(new ImageIcon(iconoBack));
+        btnArchivos.setIcon(new ImageIcon(iconoBack));
     }
-    
-    
-    **/
 
     public void addEvento(EventoCerrarForm evento) {
         this.evento = evento;
@@ -145,7 +148,9 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         txtGrado = new javax.swing.JTextField();
         jSeparator5 = new javax.swing.JSeparator();
         buttonRounded1 = new swim.botones.ButtonRounded();
-        jLabel1 = new javax.swing.JLabel();
+        txtFoto = new javax.swing.JLabel();
+        btnArchivos = new swim.botones.ButtonRounded();
+        btnCamara = new swim.botones.ButtonRounded();
 
         myPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -475,33 +480,65 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/profile.png"))); // NOI18N
+        txtFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/profile.png"))); // NOI18N
+        txtFoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 102)));
+
+        btnArchivos.setBackground(new java.awt.Color(20, 90, 95));
+        btnArchivos.setForeground(new java.awt.Color(255, 255, 255));
+        btnArchivos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/agregar alumno.png"))); // NOI18N
+        btnArchivos.setToolTipText("");
+        btnArchivos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnArchivosActionPerformed(evt);
+            }
+        });
+
+        btnCamara.setBackground(new java.awt.Color(20, 90, 95));
+        btnCamara.setForeground(new java.awt.Color(255, 255, 255));
+        btnCamara.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/agregar alumno.png"))); // NOI18N
+        btnCamara.setToolTipText("");
+        btnCamara.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCamaraActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(buttonRounded1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCamara, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnArchivos, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(myPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(buttonRounded1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(myPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(188, 188, 188)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(buttonRounded1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(myPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(123, 123, 123)
+                        .addComponent(txtFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnArchivos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCamara, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -561,9 +598,12 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
                 estudiante.setStatus("Activo");
                 estudiante.setPassword("-----");
                 estudiante.setPasswordTemporal(txtMatricula.getText().trim());
+                if(path != null){
+                    estudiante.setFoto(path);
+                }
 
                 opAlumno = new OpAlumno();
-                boolean agregar = opAlumno.crearAlumno(estudiante);
+                boolean agregar = opAlumno.crearAlumno(estudiante, path);
 
                 if (agregar) {
                     JOptionPane.showMessageDialog(null, "Alumno Correctamente Agregado");
@@ -585,13 +625,35 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtGradoActionPerformed
 
+    private void btnArchivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArchivosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnArchivosActionPerformed
+
+    private void btnCamaraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCamaraActionPerformed
+        if (!txtMatricula.getText().isEmpty()) {
+
+            CamaraDialog dialogo = new CamaraDialog(null, true, txtMatricula.getText().trim());
+            dialogo.setVisible(true);
+
+            if (dialogo.getPath() != null) {
+                path = dialogo.getPath();
+                ImageIcon foto = new ImageIcon(dialogo.getPath());
+                Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(txtFoto.getWidth(), txtFoto.getHeight(), Image.SCALE_SMOOTH));
+                txtFoto.setIcon(iconoBack);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes de Ingresar la matricula del alumno para tomarle la foto");
+        }
+    }//GEN-LAST:event_btnCamaraActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private swim.botones.ButtonRounded btnArchivos;
+    private swim.botones.ButtonRounded btnCamara;
     private swim.botones.ButtonRounded buttonRounded1;
     private javax.swing.JComboBox<String> comboGeneracion;
     private javax.swing.JComboBox<String> comboGrupo;
     private javax.swing.JComboBox<String> comboSemestre;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -625,6 +687,7 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
     private javax.swing.JTextField txtCorreoPer;
     private javax.swing.JTextField txtEscuelaProc;
     private javax.swing.JTextField txtEstado;
+    private javax.swing.JLabel txtFoto;
     private javax.swing.JTextField txtGrado;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtMunicipio;

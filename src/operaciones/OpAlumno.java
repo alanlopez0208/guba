@@ -75,6 +75,7 @@ public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
         estudiante.setStatus(rs.getString("Status"));
         estudiante.setPassword(rs.getString("Password"));
         estudiante.setPasswordTemporal(rs.getString("PasswordTemporal"));
+        estudiante.setFoto(rs.getString("Foto"));
         return estudiante;
     }
 
@@ -138,10 +139,10 @@ public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
     }
 
     // Método para agregar un nuevo alumno11
-    public boolean crearAlumno(EstudianteModelo estudianteModelo) {
+    public boolean crearAlumno(EstudianteModelo estudianteModelo, String foto ) {
         String sql = "INSERT INTO Alumnos (Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, "
-                + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, PasswordTemporal) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, PasswordTemporal"+(foto != null ? ",Foto ":"") + " )"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? "+(foto != null ? ",?":"") + ")";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -160,13 +161,14 @@ public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
             pstmt.setString(13, estudianteModelo.getGrupo());
             pstmt.setString(14, estudianteModelo.getStatus());
             pstmt.setString(15, estudianteModelo.getMatricula());
+            if(foto != null){
+                  pstmt.setString(16, foto);
+            }
 
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Error al crear estudiante", e);
         }
-    }
-   
-    
+    }    
 }

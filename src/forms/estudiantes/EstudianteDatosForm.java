@@ -1,7 +1,10 @@
 package forms.estudiantes;
 
+import java.awt.Image;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import modelos.EstudianteModelo;
 
 public class EstudianteDatosForm extends javax.swing.JPanel {
@@ -22,14 +25,22 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         this.txtApMat.setText(modelo.getApMaterno());
 
         this.txtGrado.setText(modelo.getGrado());
-        
+
         this.txtEscuelaProc.setText(modelo.getEscProcedencia());
         this.txtCorreoIns.setText(modelo.getEmailInstitucional());
         this.txtCorreoPer.setText(modelo.getEmailPersonal());
-        
+
         this.txtCelular.setText(modelo.getNumCelular());
         this.txtEstado.setText(modelo.getEstado());
         this.txtMunicipio.setText(modelo.getMunicipio());
+
+        if (modelo.getFoto() != null) {
+
+            String path = modelo.getFoto();
+            ImageIcon foto = new ImageIcon(path);
+            Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
+            txtFoto.setIcon(iconoBack);
+        }
     }
 
     public boolean esCorrecto() {
@@ -133,7 +144,7 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         jSeparator4 = new javax.swing.JSeparator();
         txtGrado = new javax.swing.JTextField();
         jSeparator5 = new javax.swing.JSeparator();
-        jLabel1 = new javax.swing.JLabel();
+        txtFoto = new javax.swing.JLabel();
 
         myPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -465,7 +476,7 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
                     .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/profile.png"))); // NOI18N
+        txtFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/profile.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -473,7 +484,7 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addComponent(txtFoto)
                 .addGap(18, 18, 18)
                 .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -482,7 +493,7 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(119, 119, 119)
-                .addComponent(jLabel1)
+                .addComponent(txtFoto)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -532,7 +543,6 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> comboGrupo;
     private javax.swing.JComboBox<String> comboSemestre;
     private javax.swing.JComboBox<String> comboSexo1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -567,6 +577,7 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
     private javax.swing.JTextField txtCorreoPer;
     private javax.swing.JTextField txtEscuelaProc;
     private javax.swing.JTextField txtEstado;
+    private javax.swing.JLabel txtFoto;
     private javax.swing.JTextField txtGrado;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtMunicipio;
