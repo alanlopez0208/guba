@@ -275,10 +275,10 @@ public class AgregarGrupo extends javax.swing.JPanel {
 
         comboSemestre.addItem("--------");
         comboCarreras.addItem("--------");
-        comboSemestre.addItem("I");
-        comboSemestre.addItem("II");
-        comboSemestre.addItem("III");
-        comboSemestre.addItem("IIII");
+        comboSemestre.addItem("1");
+        comboSemestre.addItem("2");
+        comboSemestre.addItem("3");
+        comboSemestre.addItem("4");
         comboSemestre.setEnabled(false);
         //materias.setEnabled(false);
 

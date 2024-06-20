@@ -24,7 +24,6 @@ public class OpGrupo {
         grupo.setId(rs.getString("IdGrupo"));
         grupo.setNombre(rs.getString("Nombre"));
         grupo.setSemestre(rs.getString("Semestre"));
-
         return grupo;
     }
 
@@ -40,10 +39,12 @@ public class OpGrupo {
                 listaGrupos.add(grupo);
             }
         } catch (SQLException e) {
-            System.out.println("Error al recuperar grupos: " + e.getMessage());
+            System.out.println("Error al recuperar todos grupos: " + e.getMessage());
         }
         return listaGrupos;
     }
+    
+    
 
     //Metodo para obtener las material del Grupo
     public ArrayList<MateriaModelo> getMateriasByGrupo(String idGrupo) {
@@ -221,7 +222,7 @@ public class OpGrupo {
 
     // Método para seleccionar un grupo 
     public GrupoModelo seleccionarGrupo(int idGrupo) {
-        String sql = "SELECT IdGrupo, Nombre, Semestre, IdMateria FROM Grupos WHERE IdGrupo = ?";
+        String sql = "SELECT IdGrupo, Nombre, Semestre FROM Grupos WHERE IdGrupo = ?";
         GrupoModelo grupoSeleccionado = null;
 
         try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {

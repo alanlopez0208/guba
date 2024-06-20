@@ -36,7 +36,7 @@ public class OpAlumno {
     public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
         ArrayList<EstudianteModelo> resultados = new ArrayList<>();
         String sql = "SELECT IdAlumno, Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, CorreoInstitucional, "
-                + "Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status "
+                + "Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, Genero "
                 + "FROM Alumnos WHERE Matricula LIKE ? OR Nombre LIKE ? OR ApellidoPaterno LIKE ? OR ApellidoMaterno LIKE ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -76,6 +76,7 @@ public class OpAlumno {
         estudiante.setStatus(rs.getString("Status"));
         estudiante.setPassword(rs.getString("Password"));
         estudiante.setPasswordTemporal(rs.getString("PasswordTemporal"));
+          estudiante.setSexo(rs.getString("Genero"));
         estudiante.setFoto(rs.getString("Foto"));
         return estudiante;
     }
@@ -83,7 +84,7 @@ public class OpAlumno {
     public boolean updateAlumno(EstudianteModelo estudianteModelo) {
         String sql = "UPDATE Alumnos SET Nombre = ?, ApellidoPaterno = ?, ApellidoMaterno = ?, CorreoPersonal = ?, "
                 + "CorreoInstitucional = ?, Generacion = ?, Celular = ?, Estado = ?, Municipio = ?, "
-                + "EscuelaProcedencia = ?, GradoEstudios = ?, IdGrupo = ?, Status = ?"
+                + "EscuelaProcedencia = ?, GradoEstudios = ?, IdGrupo = ?, Status = ?, Genero = ?"
                 + (estudianteModelo.getFoto() != null ? ", Foto = ?" : "")
                 + "WHERE Matricula = ?";
 
@@ -101,11 +102,12 @@ public class OpAlumno {
             pstmt.setString(11, estudianteModelo.getGrado());
             pstmt.setString(12, estudianteModelo.getGrupo());
             pstmt.setString(13, estudianteModelo.getStatus());
+              pstmt.setString(14, estudianteModelo.getSexo());
             if (estudianteModelo.getFoto() != null) {
-                pstmt.setString(14, estudianteModelo.getFoto());
-                pstmt.setString(15, estudianteModelo.getMatricula());
+                pstmt.setString(15, estudianteModelo.getFoto());
+                pstmt.setString(16, estudianteModelo.getMatricula());
             } else {
-                pstmt.setString(14, estudianteModelo.getMatricula());
+                pstmt.setString(15, estudianteModelo.getMatricula());
             }
 
             int affectedRows = pstmt.executeUpdate();
@@ -149,7 +151,7 @@ public class OpAlumno {
     // Método para agregar un nuevo alumno11
     public boolean crearAlumno(EstudianteModelo estudianteModelo) {
         String sql = "INSERT INTO Alumnos (Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, "
-                + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, PasswordTemporal" + (estudianteModelo.getFoto() != null ? ",Foto " : "") + " )"
+                + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, PasswordTemporal, Genero" + (estudianteModelo.getFoto() != null ? ",Foto " : "") + " )"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? " + (estudianteModelo.getFoto() != null ? ",?" : "") + ")";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -169,8 +171,9 @@ public class OpAlumno {
             pstmt.setString(13, estudianteModelo.getGrupo());
             pstmt.setString(14, estudianteModelo.getStatus());
             pstmt.setString(15, estudianteModelo.getMatricula());
+             pstmt.setString(16, estudianteModelo.getSexo());
             if (estudianteModelo.getFoto() != null) {
-                pstmt.setString(16, estudianteModelo.getFoto());
+                pstmt.setString(17, estudianteModelo.getFoto());
             }
 
             int affectedRows = pstmt.executeUpdate();

@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -17,7 +18,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import modelos.GrupoModelo;
 import modelos.EstudianteModelo;
+import operaciones.OpGrupo;
 import operaciones.OpAlumno;
 import swim.Imagen;
 
@@ -25,6 +28,7 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
 
     private EventoCerrarForm evento;
     private OpAlumno opAlumno;
+    private OpGrupo opGrupo;
     private Imagen imagen;
     private BufferedImage img;
     private String path;
@@ -32,6 +36,7 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
     public AgregarAlumnoForm(EventoCerrarForm evento) {
         initComponents();
         this.evento = evento;
+        opGrupo = new OpGrupo();
         init();
 
     }
@@ -45,6 +50,10 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         input = this.getClass().getResourceAsStream("/icon/carpeta.png");
         iconoBack = imagen.toImageResizable(input, 40, 40);
         btnArchivos.setIcon(new ImageIcon(iconoBack));
+        ArrayList<GrupoModelo> allGrupos = opGrupo.getGrupos();
+        allGrupos.forEach((grupo) -> {
+            comboGrupo.addItem(grupo);
+        });
     }
 
     public void addEvento(EventoCerrarForm evento) {
@@ -93,6 +102,14 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Ingrese  el Municipo de Procedencia");
             return false;
         }
+        if(comboGrupo.getSelectedIndex() <= 0){
+                JOptionPane.showMessageDialog(null, "Selecciona el grupo que debe de estar el alumno");
+            return false;
+        }
+         if(comboSexo.getSelectedIndex() <= 0){
+                JOptionPane.showMessageDialog(null, "Selecciona el sexo del alumno");
+            return false;
+        }
         return true;
     }
 
@@ -125,7 +142,6 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         txtApMat = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         comboGeneracion = new javax.swing.JComboBox<>();
         jSeparator7 = new javax.swing.JSeparator();
@@ -146,8 +162,7 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         jLabel12 = new javax.swing.JLabel();
         txtMunicipio = new javax.swing.JTextField();
         jSeparator12 = new javax.swing.JSeparator();
-        comboGrupo = new javax.swing.JComboBox<>();
-        comboSemestre = new javax.swing.JComboBox<>();
+        comboGrupo = new javax.swing.JComboBox();
         txtMatricula = new javax.swing.JTextField();
         jSeparator4 = new javax.swing.JSeparator();
         jLabel13 = new javax.swing.JLabel();
@@ -156,6 +171,8 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         jLabel16 = new javax.swing.JLabel();
         txtGrado = new javax.swing.JTextField();
         jSeparator5 = new javax.swing.JSeparator();
+        jLabel5 = new javax.swing.JLabel();
+        comboSexo = new javax.swing.JComboBox<>();
         buttonRounded1 = new swim.botones.ButtonRounded();
         txtFoto = new javax.swing.JLabel();
         btnArchivos = new swim.botones.ButtonRounded();
@@ -186,10 +203,6 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("Grupo:");
-
-        jLabel4.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel4.setText("Semestre:");
 
         jLabel6.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
@@ -264,13 +277,8 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
             }
         });
 
-        comboGrupo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----------------" }));
+        comboGrupo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "----------------" }));
         comboGrupo.setToolTipText("");
-        comboGrupo.setEnabled(false);
-
-        comboSemestre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-----------------" }));
-        comboSemestre.setToolTipText("");
-        comboSemestre.setEnabled(false);
 
         txtMatricula.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         txtMatricula.addActionListener(new java.awt.event.ActionListener() {
@@ -302,6 +310,13 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel5.setText("Sexo: ");
+
+        comboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-----------------", "Hombre", "Mujer" }));
+        comboSexo.setToolTipText("");
+
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);
         myPanel2.setLayout(myPanel2Layout);
         myPanel2Layout.setHorizontalGroup(
@@ -330,59 +345,63 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
                                     .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(myPanel2Layout.createSequentialGroup()
-                            .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel8)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel2Layout.createSequentialGroup()
-                                    .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, myPanel2Layout.createSequentialGroup()
-                                            .addComponent(jLabel6)
-                                            .addGap(210, 210, 210))
-                                        .addGroup(myPanel2Layout.createSequentialGroup()
-                                            .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, myPanel2Layout.createSequentialGroup()
-                                                    .addComponent(jLabel2)
-                                                    .addGap(31, 31, 31)
-                                                    .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(myPanel2Layout.createSequentialGroup()
-                                                    .addGap(75, 75, 75)
-                                                    .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                            .addGap(69, 69, 69)))
-                                    .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel2Layout.createSequentialGroup()
+                                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, myPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(210, 210, 210))
+                                    .addGroup(myPanel2Layout.createSequentialGroup()
+                                        .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, myPanel2Layout.createSequentialGroup()
+                                                .addComponent(jLabel2)
+                                                .addGap(31, 31, 31)
+                                                .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(myPanel2Layout.createSequentialGroup()
+                                                .addGap(75, 75, 75)
+                                                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(69, 69, 69)))
+                                .addGap(33, 33, 33)
+                                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel2Layout.createSequentialGroup()
+                                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel2Layout.createSequentialGroup()
+                                            .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(txtApPat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel15))
+                                            .addGap(29, 29, 29)
+                                            .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel16)
+                                                .addComponent(txtApMat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(myPanel2Layout.createSequentialGroup()
                                         .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(myPanel2Layout.createSequentialGroup()
+                                                .addComponent(jLabel5)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(myPanel2Layout.createSequentialGroup()
                                                 .addComponent(jLabel3)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(comboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(comboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(myPanel2Layout.createSequentialGroup()
+                                                .addComponent(jLabel11)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jLabel4)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(comboSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel2Layout.createSequentialGroup()
-                                                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel2Layout.createSequentialGroup()
-                                                    .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(txtApPat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabel15))
-                                                    .addGap(29, 29, 29)
-                                                    .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel16)
-                                                        .addComponent(txtApMat, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                        .addGroup(myPanel2Layout.createSequentialGroup()
-                                            .addGap(163, 163, 163)
-                                            .addComponent(jLabel11)
-                                            .addGap(18, 18, 18)
-                                            .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(txtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                .addGroup(myPanel2Layout.createSequentialGroup()
-                                    .addComponent(jLabel7)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtEscuelaProc, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGap(10, 10, 10)))
+                                                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(txtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGap(25, 25, 25)))
+                                .addGap(24, 24, 24))
+                            .addGroup(myPanel2Layout.createSequentialGroup()
+                                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addGroup(myPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtEscuelaProc, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(10, 10, 10))))
                     .addGroup(myPanel2Layout.createSequentialGroup()
                         .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
@@ -432,15 +451,16 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
                     .addComponent(comboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(comboSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(comboGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -607,6 +627,9 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
                 estudiante.setStatus("Activo");
                 estudiante.setPassword("-----");
                 estudiante.setPasswordTemporal(txtMatricula.getText().trim());
+                GrupoModelo grupo = (GrupoModelo) comboGrupo.getSelectedItem();
+                estudiante.setGrupo(grupo.getId());
+                estudiante.setSexo(comboSexo.getSelectedItem().toString());
                 if (img != null) {
                     try {
                         File outputFile = new File("D:\\Alan Lopez\\Imagenes\\probando\\" + txtMatricula.getText() + ".jpg");
@@ -718,8 +741,8 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
     private swim.botones.ButtonRounded btnCamara;
     private swim.botones.ButtonRounded buttonRounded1;
     private javax.swing.JComboBox<String> comboGeneracion;
-    private javax.swing.JComboBox<String> comboGrupo;
-    private javax.swing.JComboBox<String> comboSemestre;
+    private javax.swing.JComboBox comboGrupo;
+    private javax.swing.JComboBox<String> comboSexo;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -729,7 +752,7 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

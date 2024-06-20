@@ -87,6 +87,8 @@ public class VerCarrerasForm extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
 
+        setEnabled(false);
+
         myPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setBackground(new java.awt.Color(51, 51, 51));
@@ -146,12 +148,14 @@ public class VerCarrerasForm extends javax.swing.JPanel {
 
         jTextField1.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
         jTextField1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jTextField1.setEnabled(false);
 
         jLabel2.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Buscar por: ");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre" }));
+        jComboBox1.setEnabled(false);
 
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);
         myPanel2.setLayout(myPanel2Layout);

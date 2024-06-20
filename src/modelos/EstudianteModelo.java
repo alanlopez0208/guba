@@ -22,7 +22,7 @@ public class EstudianteModelo {
     private String password;
     private String passwordTemporal;
     private String foto;
-    
+    private String sexo;
     
 
     public EstudianteModelo() {
@@ -188,6 +188,14 @@ public class EstudianteModelo {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
     }
     
     

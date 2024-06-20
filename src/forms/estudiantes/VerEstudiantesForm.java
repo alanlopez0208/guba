@@ -146,6 +146,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
 
         txtBuscar.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
         txtBuscar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtBuscar.setEnabled(false);
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtBuscarKeyReleased(evt);
@@ -157,6 +158,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         jLabel2.setText("Buscar por: ");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Matricula", "Nombre", "Apellido Paterno", "Apellido Materno" }));
+        jComboBox1.setEnabled(false);
 
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);
         myPanel2.setLayout(myPanel2Layout);
