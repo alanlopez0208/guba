@@ -1,8 +1,11 @@
 package modelos;
 
+import swim.tabla.AccionModelo;
+import swim.tabla.EventoAccion;
+
 public class MateriaModelo {
 
-    String clave;
+    String id;
     String idMateria;
     String nombre;
     String hcba;
@@ -10,12 +13,13 @@ public class MateriaModelo {
     String creditos;
     String carrera;
     String semestre;
+    CarrerasModelo carreraModelo;
 
     public MateriaModelo() {
     }
 
     public MateriaModelo(String clave, String nombre, String hcba, String hti, String creditos, String carrera) {
-        this.clave = clave;
+        this.id = clave;
         this.nombre = nombre;
         this.hcba = hcba;
         this.hti = hti;
@@ -31,14 +35,12 @@ public class MateriaModelo {
         this.idMateria = idMateria;
     }
 
-    
-    
     public String getClave() {
-        return clave;
+        return id;
     }
 
     public void setClave(String clave) {
-        this.clave = clave;
+        this.id = clave;
     }
 
     public String getNombre() {
@@ -89,9 +91,23 @@ public class MateriaModelo {
         this.semestre = semestre;
     }
 
+    public CarrerasModelo getCarreraModelo() {
+        return carreraModelo;
+    }
+
+    public void setCarreraModelo(CarrerasModelo carreraModelo) {
+        this.carreraModelo = carreraModelo;
+    }
+
     @Override
     public String toString() {
-        return  nombre;
+        return nombre;
+    }
+
+    public Object[] toRowTable(EventoAccion eventoAccion) {
+        return new Object[]{
+            this.getNombre(), this.getCreditos(), this.getSemestre(), this.getCarreraModelo().getNombre(), new AccionModelo(this, eventoAccion)
+        };
     }
 
 }

@@ -47,9 +47,9 @@
                       <Component id="myPanel2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
-                      <Component id="txtFoto" min="-2" pref="164" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="111" max="-2" attributes="0"/>
+                      <Component id="txtFoto" min="-2" pref="214" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="btnArchivos" alignment="1" min="-2" pref="62" max="-2" attributes="0"/>
                           <Component id="btnCamara" alignment="1" min="-2" pref="62" max="-2" attributes="0"/>

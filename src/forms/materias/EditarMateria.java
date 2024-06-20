@@ -1,57 +1,58 @@
-package forms.grupos;
+package forms.materias;
+
 
 import event.EventoCerrarForm;
 import java.awt.Image;
-import java.awt.event.ItemEvent;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import modelos.CarrerasModelo;
-import modelos.GrupoModelo;
 import modelos.MateriaModelo;
 import operaciones.OpCarreras;
-import operaciones.OpGrupo;
 import operaciones.OpMaterias;
 import swim.Imagen;
 
-public class EditarGrupo extends javax.swing.JPanel {
+public class EditarMateria extends javax.swing.JPanel {
 
     private EventoCerrarForm eventoCerrar;
     private Imagen imagen;
     private OpCarreras opCarrera;
-    private final OpGrupo opGrupo;
-    private final GrupoModelo grupoModelo;
     private OpMaterias opMateria;
-    private ArrayList<MateriaModelo> listaDeMaterias;
-    private ArrayList<MateriaModelo> listaDeMateriasAnt;
+    private MateriaModelo materiaModelo;
 
-    public EditarGrupo(GrupoModelo grupoModelo) {
+    public EditarMateria(MateriaModelo materiaModelo) {
         initComponents();
-        this.grupoModelo = grupoModelo;
-        System.out.println(Integer.parseInt(grupoModelo.getId()));
-        opGrupo = new OpGrupo();
+        this.materiaModelo = materiaModelo;
+        opCarrera = new OpCarreras();
+        opMateria = new OpMaterias();
         init();
-
     }
 
     private void init() {
 
         imagen = new Imagen();
-
         InputStream input = this.getClass().getResourceAsStream("/icon/guardar.png");
         Image icono = imagen.toImageResizable(input, 20, 20);
         btnGuardar.setIcon(new ImageIcon(icono));
-
         input = this.getClass().getResourceAsStream("/icon/back.png");
         Image iconoBack = imagen.toImageResizable(input, 40, 40);
-        btnCerrar.setIcon(new ImageIcon(iconoBack));
+        btnBack.setIcon(new ImageIcon(iconoBack));
 
-        txtGrupo.setText(grupoModelo.getNombre());
-        txtSemestre.setText(grupoModelo.getSemestre());
-        iniciarTabla();
+        txtNombre.setText(materiaModelo.getNombre());
+        txtHbca.setText(materiaModelo.getHcba());
+        txtHti.setText(materiaModelo.getHti());
+        txtSemestre.setText(materiaModelo.getSemestre());
+        txtCreditos.setText(materiaModelo.getCreditos());
+        CarrerasModelo carrera = opCarrera.getMateriaById(materiaModelo.getCarrera());
+
+        ArrayList<CarrerasModelo> carreras = opCarrera.getAllCarreras();
+        comboCarrera.addItem("----------");
+        carreras.forEach(comboCarrera::addItem);
+
+        comboCarrera.setSelectedItem(carrera);
     }
 
     public void addEventoCerrar(EventoCerrarForm eventoCerrar) {
@@ -60,50 +61,39 @@ public class EditarGrupo extends javax.swing.JPanel {
 
     private boolean esValido() {
 
-        if (txtGrupo.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Ingrese el nombre del grupo");
+        if (txtNombre.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese el nombre de la materia");
             return false;
         }
-        if (txtSemestre.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Ingrese el semestre");
+        if (txtHbca.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese las HBCA");
             return false;
         }
-        if (listaDeMaterias == null || listaDeMaterias.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Ingrese materias al grupo");
+
+        if (txtHti.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese las HTI");
+            return false;
+        }
+        if (!esValidoNumero(txtSemestre.getText().trim())) {
+            JOptionPane.showMessageDialog(null, "Ingrese el semestre del 1 al 10");
+            return false;
+        }
+        if (!esValidoNumero(txtCreditos.getText().trim())) {
+            JOptionPane.showMessageDialog(null, "Ingrese los creditos con numeros del 1 al 10");
+            return false;
+        }
+        if (comboCarrera.getSelectedIndex() <= 0) {
+            JOptionPane.showMessageDialog(null, "Ingrese la carrera de la materia");
             return false;
         }
         return true;
     }
 
-    public void iniciarTabla() {
-        listaDeMaterias = opGrupo.getMateriasByGrupo(grupoModelo.getId());
-        listaDeMateriasAnt = listaDeMaterias;
-        for (int i = 0; i < listaDeMaterias.size(); i++) {
-            MateriaModelo materia = listaDeMaterias.get(i);
-            tabla1.addRow(new Object[]{
-                materia.getIdMateria(), materia.getNombre(), materia.getHcba(), materia.getHti(), materia.getCreditos()
-            });
-        }
-    }
-
-    private void actualizarTabla() {
-        if (tabla1.isEditing()) {
-            tabla1.getCellEditor().stopCellEditing();
-        }
-        DefaultTableModel model = (DefaultTableModel) tabla1.getModel();
-        int rows = model.getRowCount();
-        for (int i = rows - 1; i >= 0; i--) {
-            model.removeRow(i);
-        }
-
-        for (int i = 0; i < listaDeMaterias.size(); i++) {
-            //ystem.out.println("AÑADIENDO ROWS");
-            MateriaModelo materia = listaDeMaterias.get(i);
-            tabla1.addRow(new Object[]{
-                materia.getClave(), materia.getNombre(), materia.getHcba(), materia.getHti(), materia.getCreditos()
-            });
-        }
-
+    private boolean esValidoNumero(String numero) {
+        String numeroRegex = "^[0-9]+$";
+        Pattern pattern = Pattern.compile(numeroRegex);
+        Matcher matcher = pattern.matcher(numero);
+        return matcher.matches();
     }
 
     @SuppressWarnings("unchecked")
@@ -111,76 +101,39 @@ public class EditarGrupo extends javax.swing.JPanel {
     private void initComponents() {
 
         myPanel1 = new swim.panel.MyPanel();
-        jLabel1 = new javax.swing.JLabel();
-        txtGrupo = new javax.swing.JTextField();
-        txtSemestre = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tabla1 = new swim.tabla.Tabla();
-        buttonRounded1 = new swim.botones.ButtonRounded();
-        jLabel3 = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
         btnGuardar = new swim.botones.ButtonRounded();
-        btnCerrar = new javax.swing.JButton();
-        buttonRounded3 = new swim.botones.ButtonRounded();
+        jLabel1 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel2 = new javax.swing.JLabel();
+        txtHbca = new javax.swing.JTextField();
+        jSeparator2 = new javax.swing.JSeparator();
+        jLabel3 = new javax.swing.JLabel();
+        txtHti = new javax.swing.JTextField();
+        jSeparator3 = new javax.swing.JSeparator();
+        jLabel4 = new javax.swing.JLabel();
+        txtSemestre = new javax.swing.JTextField();
+        jSeparator4 = new javax.swing.JSeparator();
+        jLabel5 = new javax.swing.JLabel();
+        txtCreditos = new javax.swing.JTextField();
+        jSeparator5 = new javax.swing.JSeparator();
+        jLabel6 = new javax.swing.JLabel();
+        comboCarrera = new javax.swing.JComboBox();
 
         myPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setBackground(new java.awt.Color(51, 51, 51));
-        jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Grupo:");
-
-        jLabel2.setBackground(new java.awt.Color(51, 51, 51));
-        jLabel2.setFont(new java.awt.Font("Malgun Gothic", 1, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel2.setText("Semestre: ");
-
-        jScrollPane2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jScrollPane2.setOpaque(false);
-
-        tabla1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        tabla1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Clave", "Nombre", "HCBA", "HTI", "Creditos"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tabla1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabla1MouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(tabla1);
-
-        buttonRounded1.setBackground(new java.awt.Color(51, 153, 255));
-        buttonRounded1.setForeground(new java.awt.Color(255, 255, 255));
-        buttonRounded1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/anadir.png"))); // NOI18N
-        buttonRounded1.setText("Añadir Materia");
-        buttonRounded1.setFont(new java.awt.Font("Malgun Gothic", 1, 12)); // NOI18N
-        buttonRounded1.addActionListener(new java.awt.event.ActionListener() {
+        btnBack.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnBack.setContentAreaFilled(false);
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonRounded1ActionPerformed(evt);
+                btnBackActionPerformed(evt);
             }
         });
-
-        jLabel3.setBackground(new java.awt.Color(51, 51, 51));
-        jLabel3.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel3.setText("Materias:");
 
         btnGuardar.setBackground(new java.awt.Color(20, 90, 95));
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
-        btnGuardar.setText("Actualizar Grupo");
+        btnGuardar.setText("Actualizar Materia");
         btnGuardar.setFont(new java.awt.Font("Malgun Gothic", 1, 12)); // NOI18N
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -188,22 +141,84 @@ public class EditarGrupo extends javax.swing.JPanel {
             }
         });
 
-        btnCerrar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        btnCerrar.setContentAreaFilled(false);
-        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
+        jLabel1.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel1.setText("Nombre:");
+
+        txtNombre.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCerrarActionPerformed(evt);
+                txtNombreActionPerformed(evt);
             }
         });
 
-        buttonRounded3.setBackground(new java.awt.Color(0, 153, 153));
-        buttonRounded3.setForeground(new java.awt.Color(255, 255, 255));
-        buttonRounded3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/delete.png"))); // NOI18N
-        buttonRounded3.setText("Eliminar Materias");
-        buttonRounded3.setFont(new java.awt.Font("Malgun Gothic", 1, 12)); // NOI18N
-        buttonRounded3.addActionListener(new java.awt.event.ActionListener() {
+        jSeparator1.setVerifyInputWhenFocusTarget(false);
+
+        jLabel2.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel2.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel2.setText("HBCA:");
+
+        txtHbca.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtHbca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonRounded3ActionPerformed(evt);
+                txtHbcaActionPerformed(evt);
+            }
+        });
+
+        jSeparator2.setVerifyInputWhenFocusTarget(false);
+
+        jLabel3.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel3.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel3.setText("HTI:");
+
+        txtHti.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtHti.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHtiActionPerformed(evt);
+            }
+        });
+
+        jSeparator3.setVerifyInputWhenFocusTarget(false);
+
+        jLabel4.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel4.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel4.setText("Semestre:");
+
+        txtSemestre.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtSemestre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSemestreActionPerformed(evt);
+            }
+        });
+
+        jSeparator4.setVerifyInputWhenFocusTarget(false);
+
+        jLabel5.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel5.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel5.setText("Creditos:");
+
+        txtCreditos.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtCreditos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCreditosActionPerformed(evt);
+            }
+        });
+
+        jSeparator5.setVerifyInputWhenFocusTarget(false);
+
+        jLabel6.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel6.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel6.setText("Carrera:");
+
+        comboCarrera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboCarreraActionPerformed(evt);
             }
         });
 
@@ -212,53 +227,77 @@ public class EditarGrupo extends javax.swing.JPanel {
         myPanel1Layout.setHorizontalGroup(
             myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(myPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(105, 105, 105)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))
                     .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(myPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(31, 31, 31)
+                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel6)
+                                .addComponent(txtCreditos)
+                                .addComponent(jLabel5)
+                                .addComponent(txtHti)
+                                .addComponent(jLabel3)
+                                .addComponent(txtHbca)
                                 .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnCerrar)
-                            .addComponent(jLabel3)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 845, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel1Layout.createSequentialGroup()
-                                .addComponent(buttonRounded3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buttonRounded1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 6, Short.MAX_VALUE)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                                .addComponent(txtNombre)
+                                .addComponent(jLabel1)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4)
+                                .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(398, Short.MAX_VALUE))))
         );
         myPanel1Layout.setVerticalGroup(
             myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(myPanel1Layout.createSequentialGroup()
-                .addComponent(btnCerrar)
+                .addGap(19, 19, 19)
+                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtHbca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtHti, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(buttonRounded3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addComponent(buttonRounded1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(2, 2, 2)))
-                .addGap(16, 16, 16))
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(jLabel6)
+                .addGap(18, 18, 18)
+                .addComponent(comboCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -271,129 +310,88 @@ public class EditarGrupo extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 5, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tabla1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla1MouseClicked
-
-    }//GEN-LAST:event_tabla1MouseClicked
-
-    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         this.eventoCerrar.cerrarForm();
-    }//GEN-LAST:event_btnCerrarActionPerformed
-
-    private void buttonRounded3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRounded3ActionPerformed
-        listaDeMaterias.removeAll(listaDeMaterias);
-        this.actualizarTabla();
-
-    }//GEN-LAST:event_buttonRounded3ActionPerformed
+    }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         if (esValido()) {
-            int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de actualizar el grupo : " + txtGrupo.getText() + " ?");
+            int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de actualizar el grupo : " + txtNombre.getText() + " ?");
 
             if (option == JOptionPane.OK_OPTION) {
-                
-                grupoModelo.setNombre(txtGrupo.getText().trim());
-                grupoModelo.setSemestre(txtSemestre.getText().trim());
-                grupoModelo.setMaterias(listaDeMaterias);
+                //   MateriaModelo grupo = new MateriaModelo();
+                materiaModelo.setNombre(txtNombre.getText().trim());
+                materiaModelo.setHti(txtHti.getText().trim());
+                materiaModelo.setHcba(txtHbca.getText().trim());
+                materiaModelo.setSemestre(txtSemestre.getText().trim());
+                materiaModelo.setCreditos(txtCreditos.getText().trim());
 
-                boolean materiasActualizadas = true;
+                CarrerasModelo carrera = (CarrerasModelo) comboCarrera.getSelectedItem();
+                System.out.println(carrera);
+                materiaModelo.setCarrera(carrera.getIdCarrera());
 
-                boolean mismasMaterias = listaDeMateriasAnt.equals(listaDeMaterias);
-                System.out.println(Boolean.toString(mismasMaterias));
-                boolean seActualizo = opGrupo.actualizarGrupo(grupoModelo , mismasMaterias);
+                boolean estaAgregado = opMateria.updateMateria(materiaModelo);
 
-                if (seActualizo) {
-                    JOptionPane.showMessageDialog(null, "Grupo Actualizado Correctamente");
+                if (estaAgregado) {
+                    JOptionPane.showMessageDialog(null, "Materia Actualizada Correctamente");
+
                     this.eventoCerrar.cerrarForm();
                     return;
                 }
-                JOptionPane.showMessageDialog(null, "No se pudo actualizar");
+                JOptionPane.showMessageDialog(null, "No se pudo Actualizar");
             }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void buttonRounded1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRounded1ActionPerformed
-        JComboBox comboCarreras = new JComboBox();
-        JComboBox comboSemestre = new JComboBox();
-        //JComboBox materias = new JComboBox();
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
 
-        comboSemestre.addItem("--------");
-        comboCarreras.addItem("--------");
-        comboSemestre.addItem("I");
-        comboSemestre.addItem("II");
-        comboSemestre.addItem("III");
-        comboSemestre.addItem("IIII");
-        comboSemestre.setEnabled(false);
-        //materias.setEnabled(false);
+    private void txtHbcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHbcaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHbcaActionPerformed
 
-        comboCarreras.addItemListener((ItemEvent e) -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                int itemIndex = comboCarreras.getSelectedIndex();
-                if (itemIndex > 0) {
-                    comboSemestre.setEnabled(true);
-                    comboSemestre.setSelectedIndex(0);
-                    //materias.removeAll();
-                    //materias.setEnabled(false);
-                    return;
-                }
-                comboSemestre.setEnabled(false);
-                //materias.setEnabled(false);
-                comboSemestre.setSelectedIndex(0);
+    private void txtHtiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHtiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHtiActionPerformed
 
-            }
-        });
-        comboSemestre.addItemListener((ItemEvent e) -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                int itemIndex = comboSemestre.getSelectedIndex();
-                if (itemIndex > 0) {
-                    //materias.removeAllItems();
-                    CarrerasModelo carrera = (CarrerasModelo) comboCarreras.getItemAt(comboCarreras.getSelectedIndex());
-                    String semestre = (String) comboSemestre.getItemAt(comboSemestre.getSelectedIndex());
-                    opMateria = new OpMaterias();
-                    listaDeMaterias = opMateria.getMateriasByCarreraAndSemestre(carrera.getIdCarrera(), semestre);
+    private void txtSemestreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSemestreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSemestreActionPerformed
 
-                    //materias.setEnabled(true);
-                    return;
-                }
-                //materias.setEnabled(false);
-            }
-        });
-        opCarrera = new OpCarreras();
-        ArrayList<CarrerasModelo> allCarreras = opCarrera.getAllCarreras();
-        allCarreras.forEach((carrera) -> {
-            comboCarreras.addItem(carrera);
-        });
-        Object[] message = {
-            "Ingrese la carrera:", comboCarreras,
-            "Ingrese el semestre:", comboSemestre, //  "Seleccione la Materia:", materias
-        };
-        int option = JOptionPane.showConfirmDialog(null, message, "Ingresa los datos", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            System.out.println("SE LE PUSO QUE OK");
-            if (comboCarreras.getSelectedIndex() > 0 && comboSemestre.getSelectedIndex() > 0) {
-                System.out.println("Si se va a añadir materia ");
+    private void txtCreditosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCreditosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCreditosActionPerformed
 
-                actualizarTabla();
-            }
-        }
-    }//GEN-LAST:event_buttonRounded1ActionPerformed
+    private void comboCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCarreraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboCarreraActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCerrar;
+    private javax.swing.JButton btnBack;
     private swim.botones.ButtonRounded btnGuardar;
-    private swim.botones.ButtonRounded buttonRounded1;
-    private swim.botones.ButtonRounded buttonRounded3;
+    private javax.swing.JComboBox comboCarrera;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
     private swim.panel.MyPanel myPanel1;
-    private swim.tabla.Tabla tabla1;
-    private javax.swing.JTextField txtGrupo;
+    private javax.swing.JTextField txtCreditos;
+    private javax.swing.JTextField txtHbca;
+    private javax.swing.JTextField txtHti;
+    private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtSemestre;
     // End of variables declaration//GEN-END:variables
 }

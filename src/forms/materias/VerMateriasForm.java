@@ -1,47 +1,48 @@
-package forms.grupos;
+package forms.materias;
 
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import modelos.GrupoModelo;
-import operaciones.OpGrupo;
+import modelos.MateriaModelo;
+import operaciones.OpCarreras;
+import operaciones.OpMaterias;
 
-public class VerGruposForm extends javax.swing.JPanel {
+public class VerMateriasForm extends javax.swing.JPanel {
 
     private EventoAbrirForm eventoForm;
-
-    private OpGrupo opGrupo;
+    private OpMaterias opMaterias;
+    private OpCarreras opCarreras;
     private EventoAccion accion;
 
-    public VerGruposForm() {
+    public VerMateriasForm() {
         initComponents();
-        tabla1.setColumnEditor(3);
+        tabla1.setColumnEditor(4);
         tabla1.fixTable(jScrollPane1);
-        opGrupo = new OpGrupo();
+        opMaterias = new OpMaterias();
+        opCarreras=  new OpCarreras();
         iniciarTabla();
     }
 
     private void iniciarTabla() {
-        opGrupo = new OpGrupo();
+        
         accion = new EventoAccion() {
             @Override
             public void ver(Object modelo) {
-                GrupoModelo grupo = (GrupoModelo) modelo;
-                System.out.println("Se selecciono " + grupo.getId() + " para ver ");
-                eventoForm.abrirForm((GrupoModelo) modelo, 0);
+                MateriaModelo materia = (MateriaModelo) modelo;
+                eventoForm.abrirForm(materia, 0);
             }
 
             @Override
             public void borrar(Object modelo) {
-                GrupoModelo grupo = (GrupoModelo) modelo;
-                int response = JOptionPane.showConfirmDialog(null, "Estas Seguro en Elimnar a " + grupo.getNombre() + " del semestre : " + grupo.getSemestre());
+                MateriaModelo materia = (MateriaModelo) modelo;
+                int response = JOptionPane.showConfirmDialog(null, "Estas Seguro en Elimnar a " + materia.getNombre());
                 if (response == JOptionPane.OK_OPTION) {
-
-                    boolean seElimino = opGrupo.eliminarGrupo(Integer.parseInt(grupo.getId()));
+               
+                    boolean seElimino = opMaterias.eliminarMateria(materia.getIdMateria());
 
                     if (seElimino) {
-                        JOptionPane.showMessageDialog(null, "El grupo se elimino con exito");
+                        JOptionPane.showMessageDialog(null, "La materia se elimino con exito");
                         actualizarTabla();
                         return;
 
@@ -52,8 +53,8 @@ public class VerGruposForm extends javax.swing.JPanel {
 
             @Override
             public void editar(Object modelo) {
-                GrupoModelo grupo = (GrupoModelo) modelo;
-                eventoForm.abrirForm(grupo, 1);
+                MateriaModelo materia = (MateriaModelo) modelo;
+                eventoForm.abrirForm(materia, 1);
             }
         };
         actualizarTabla();
@@ -62,9 +63,12 @@ public class VerGruposForm extends javax.swing.JPanel {
 
     public void actualizarTabla() {
         tabla1.clear();
-        ArrayList<GrupoModelo> lista = opGrupo.getGrupos();
+        ArrayList<MateriaModelo> lista = opMaterias.getMaterias();
+        
         for (int i = 0; i < lista.size(); i++) {
-            tabla1.addRow(lista.get(i).toRowTable(accion));
+            MateriaModelo materia= lista.get(i);
+            materia.setCarreraModelo(opCarreras.getMateriaById(materia.getCarrera()));
+            tabla1.addRow(materia.toRowTable(accion));
         }
     }
 
@@ -91,7 +95,7 @@ public class VerGruposForm extends javax.swing.JPanel {
         jLabel1.setBackground(new java.awt.Color(51, 51, 51));
         jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Grupos:");
+        jLabel1.setText("Materias:");
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -103,18 +107,24 @@ public class VerGruposForm extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Identificador", "Nombre", "Semestre ", "Acciones"
+                "Nombre", "Creditos", "Semestre ", "Carrera", "Acciones"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tabla1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jScrollPane1.setViewportView(tabla1);
+        if (tabla1.getColumnModel().getColumnCount() > 0) {
+            tabla1.getColumnModel().getColumn(0).setMinWidth(250);
+            tabla1.getColumnModel().getColumn(3).setMinWidth(300);
+            tabla1.getColumnModel().getColumn(4).setMinWidth(200);
+        }
 
         javax.swing.GroupLayout myPanel1Layout = new javax.swing.GroupLayout(myPanel1);
         myPanel1.setLayout(myPanel1Layout);
@@ -124,7 +134,7 @@ public class VerGruposForm extends javax.swing.JPanel {
                 .addGap(19, 19, 19)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 854, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 854, Short.MAX_VALUE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         myPanel1Layout.setVerticalGroup(
@@ -193,7 +203,7 @@ public class VerGruposForm extends javax.swing.JPanel {
                 .addGap(34, 34, 34)
                 .addComponent(myPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(myPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(76, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents

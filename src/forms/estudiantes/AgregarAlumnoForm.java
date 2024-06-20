@@ -3,12 +3,20 @@ package forms.estudiantes;
 import dialogs.CamaraDialog;
 import event.EventoCerrarForm;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import modelos.EstudianteModelo;
 import operaciones.OpAlumno;
 import swim.Imagen;
@@ -18,6 +26,7 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
     private EventoCerrarForm evento;
     private OpAlumno opAlumno;
     private Imagen imagen;
+    private BufferedImage img;
     private String path;
 
     public AgregarAlumnoForm(EventoCerrarForm evento) {
@@ -532,9 +541,9 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(myPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(123, 123, 123)
-                        .addComponent(txtFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(111, 111, 111)
+                        .addComponent(txtFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnArchivos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnCamara, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -598,12 +607,18 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
                 estudiante.setStatus("Activo");
                 estudiante.setPassword("-----");
                 estudiante.setPasswordTemporal(txtMatricula.getText().trim());
-                if(path != null){
-                    estudiante.setFoto(path);
+                if (img != null) {
+                    try {
+                        File outputFile = new File("D:\\Alan Lopez\\Imagenes\\probando\\" + txtMatricula.getText() + ".jpg");
+                        ImageIO.write(img, "jpg", outputFile);
+                        estudiante.setFoto(outputFile.getPath());
+                    } catch (IOException ex) {
+                        Logger.getLogger(AgregarAlumnoForm.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
 
                 opAlumno = new OpAlumno();
-                boolean agregar = opAlumno.crearAlumno(estudiante, path);
+                boolean agregar = opAlumno.crearAlumno(estudiante);
 
                 if (agregar) {
                     JOptionPane.showMessageDialog(null, "Alumno Correctamente Agregado");
@@ -626,7 +641,52 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
     }//GEN-LAST:event_txtGradoActionPerformed
 
     private void btnArchivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArchivosActionPerformed
-        // TODO add your handling code here:
+        if (!txtMatricula.getText().isEmpty()) {
+            JFileChooser fotoChooser = new JFileChooser();
+
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter(
+                    "Imagen png, jpg", "png", "jpg");
+            fotoChooser.setFileFilter(filtro);
+
+            int returnVal = fotoChooser.showOpenDialog(null);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fotoChooser.getSelectedFile();
+
+                txtFoto.setIcon(null);
+                txtFoto.setText("Cargando foto espere porfavor....");
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        ImageIcon foto = new ImageIcon(file.getPath());
+                        Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(txtFoto.getWidth(), txtFoto.getHeight(), Image.SCALE_SMOOTH));
+                        txtFoto.setIcon(iconoBack);
+
+                        try {
+                            //       BufferedImage bufferedImage = null;
+                            img = ImageIO.read(file);
+                            
+                            //       ImageIO.write(bufferedImage, "jpg", outputFile);
+                            //       path = outputFile.getAbsolutePath();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                };
+                t.setDaemon(true);
+                t.start();
+                t.setUncaughtExceptionHandler((Thread t1, Throwable e) -> {
+                    JOptionPane.showMessageDialog(null, "Hubo un error al insertar la foto intente de nuevo porfavor " + e.getMessage());
+                });
+
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes de Ingresar la matricula del alumno para tomarle la foto");
+        }
+
     }//GEN-LAST:event_btnArchivosActionPerformed
 
     private void btnCamaraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCamaraActionPerformed
@@ -635,11 +695,17 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
             CamaraDialog dialogo = new CamaraDialog(null, true, txtMatricula.getText().trim());
             dialogo.setVisible(true);
 
-            if (dialogo.getPath() != null) {
-                path = dialogo.getPath();
-                ImageIcon foto = new ImageIcon(dialogo.getPath());
+            if (dialogo.getImg() != null) {
+
+                //       BufferedImage bufferedImage = null;
+                img = dialogo.getImg();
+                //       ImageIO.write(bufferedImage, "jpg", outputFile);
+                //       path = outputFile.getAbsolutePath();
+
+                ImageIcon foto = new ImageIcon(img);
                 Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(txtFoto.getWidth(), txtFoto.getHeight(), Image.SCALE_SMOOTH));
                 txtFoto.setIcon(iconoBack);
+
             }
         } else {
             JOptionPane.showMessageDialog(null, "Debes de Ingresar la matricula del alumno para tomarle la foto");

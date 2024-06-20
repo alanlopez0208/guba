@@ -9,9 +9,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -20,7 +17,7 @@ public class CamaraDialog extends javax.swing.JDialog {
 
     private Webcam webcam = null;
     private WebcamPanel panel = null;
-    private BufferedImage ruta;
+    private BufferedImage img;
     private String path;
     private String matricula;
 
@@ -109,6 +106,14 @@ public class CamaraDialog extends javax.swing.JDialog {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public BufferedImage getImg() {
+        return img;
+    }
+
+    public void setImg(BufferedImage img) {
+        this.img = img;
     }
 
     @SuppressWarnings("unchecked")
@@ -270,24 +275,26 @@ public class CamaraDialog extends javax.swing.JDialog {
         Icon iconFoto = new ImageIcon(foto.getImage().getScaledInstance(txtFotoTomada.getWidth(), txtFotoTomada.getHeight(), Image.SCALE_SMOOTH));
 
         txtFotoTomada.setIcon(iconFoto);
-        ruta = webcam.getImage();
+        img = webcam.getImage();
     }//GEN-LAST:event_btnCapturarActionPerformed
 
     private void btnElegirFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnElegirFotoActionPerformed
         int pregunta = JOptionPane.showConfirmDialog(null, "¿Deseas Guardar Fotografia?", "Pregunta", JOptionPane.YES_NO_OPTION);
 
         if (pregunta == JOptionPane.OK_OPTION) {
-            File outputFile = new File("D:\\Alan Lopez\\Imagenes\\probando\\"+matricula+".jpg");
 
-            try {
-                ImageIO.write(ruta, "jpg", outputFile);
-                path = outputFile.getAbsolutePath();
-                JOptionPane.showMessageDialog(null, "Imagen Guardada en : " + path);
+            img = webcam.getImage();
                 dispose();
+            // File outputFile = new File("D:\\Alan Lopez\\Imagenes\\probando\\"+matricula+".jpg");
 
-            } catch (IOException ex) {
-                System.out.println(ex);
-            }
+            // try {
+            // ImageIO.write(img, "jpg", outputFile);
+            //   path = outputFile.getAbsolutePath();
+            //   JOptionPane.showMessageDialog(null, "Imagen Guardada en : " + path);
+          
+            // } catch (IOException ex) {
+            //   System.out.println(ex);
+            // }
         }
         txtFotoTomada.setIcon(null);
 

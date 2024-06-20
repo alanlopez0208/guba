@@ -13,6 +13,7 @@ import modelos.EstudianteModelo;
 import net.miginfocom.swing.MigLayout;
 import event.EventoAbrirForm;
 import event.EventoCerrarForm;
+import forms.carreras.*;
 import forms.grupos.AgregarGrupo;
 import forms.grupos.EditarGrupo;
 import forms.grupos.VerGrupo;
@@ -21,6 +22,11 @@ import forms.maestros.AgregarMaestroForm;
 import forms.maestros.EditarMaestroForm;
 import forms.maestros.MaestroForm;
 import forms.maestros.VerMaestrosForm;
+import forms.materias.AgregarMateria;
+import forms.materias.EditarMateria;
+import forms.materias.VerMateria;
+import forms.materias.VerMateriasForm;
+
 import modelos.*;
 
 public class Main extends javax.swing.JFrame {
@@ -31,6 +37,8 @@ public class Main extends javax.swing.JFrame {
     private VerEstudiantesForm verEstudiantesForm;
     private VerMaestrosForm verMaestrosForm;
     private VerGruposForm verGrupos;
+    private VerMateriasForm verMaterias;
+    private VerCarrerasForm verCarreras;
 
     public Main() {
         initComponents();
@@ -99,6 +107,7 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         });
+
         verGrupos = new VerGruposForm();
         verGrupos.addEventoForm(new EventoAbrirForm() {
             @Override
@@ -129,6 +138,67 @@ public class Main extends javax.swing.JFrame {
                     });
 
                     main.showForm(editarGrupo);
+                }
+            }
+
+        });
+
+        verMaterias = new VerMateriasForm();
+        verMaterias.addEventoForm(new EventoAbrirForm() {
+            @Override
+            public void abrirForm(Object modelo, int index) {
+                MateriaModelo materia = (MateriaModelo) modelo;
+                if (index == 0) {
+                    VerMateria verMateria = new VerMateria(materia);
+                    verMateria.addEventoCerrar(new EventoCerrarForm() {
+                        @Override
+                        public void cerrarForm() {
+                          
+                            main.showForm(verMaterias);
+                        }
+
+                    });
+
+                    main.showForm(verMateria);
+                } else if (index == 1) {
+                    EditarMateria editarMateria = new EditarMateria(materia);
+                    editarMateria.addEventoCerrar(new EventoCerrarForm() {
+                        @Override
+                        public void cerrarForm() {
+                            verMaterias.actualizarTabla();
+                            main.showForm(verMaterias);
+                        }
+                    });
+                    main.showForm(editarMateria);
+                }
+            }
+        });
+        
+        verCarreras = new VerCarrerasForm();
+        verCarreras.addEventoForm(new EventoAbrirForm() {
+            @Override
+            public void abrirForm(Object modelo, int index) {
+                CarrerasModelo carrera = (CarrerasModelo) modelo;
+                if (index == 0) {
+                    VerCarrera verCarrera = new VerCarrera(carrera);
+                    verCarrera.addEventoCerrar(new EventoCerrarForm() {
+                        @Override
+                        public void cerrarForm() {
+                            main.showForm(verCarreras);
+                        }
+                    });
+                    main.showForm(verCarrera);
+                    
+                } else if (index == 1) {
+                    EditarCarrera editarCarrer = new EditarCarrera(carrera);
+                    editarCarrer.addEventoCerrar(new EventoCerrarForm() {
+                        @Override
+                        public void cerrarForm() {
+                            verCarreras.actualizarTabla();
+                            main.showForm(verCarreras);
+                        }
+                    });
+                    main.showForm(editarCarrer);
                 }
             }
 
@@ -174,9 +244,7 @@ public class Main extends javax.swing.JFrame {
                     case 3 -> {
                         if (subMenuIndex == 2) {
                             main.showForm(verGrupos);
-                        }
-
-                        if (subMenuIndex == 3) {
+                        } else if (subMenuIndex == 3) {
 
                             AgregarGrupo agregarGrupo = new AgregarGrupo();
 
@@ -191,12 +259,45 @@ public class Main extends javax.swing.JFrame {
                             main.showForm(agregarGrupo);
                         }
                     }
+                    
+                    case 4->{
+                        if(subMenuIndex ==2){
+                            main.showForm(verMaterias);
+                        }else if(subMenuIndex == 3){
+                            AgregarMateria agregarMateria = new AgregarMateria();
+                            agregarMateria.addEventoCerrar(new EventoCerrarForm() {
+                                @Override
+                                public void cerrarForm() {
+                                    verMaterias.actualizarTabla();
+                                    main.showForm(verMaterias);
+                                }
+                            });
+                            
+                            main.showForm(agregarMateria);
+                        }
+                    }
+                    case 5->{
+                        if(subMenuIndex ==2){
+                            main.showForm(verCarreras);
+                        }else if(subMenuIndex == 3){
+                            AgregarCarrera agregarCarrera = new AgregarCarrera();
+                            agregarCarrera.addEventoCerrar(new EventoCerrarForm() {
+                                @Override
+                                public void cerrarForm() {
+                                    verCarreras.actualizarTabla();
+                                    main.showForm(verCarreras);
+                                }
+                            });
+                            
+                            main.showForm(agregarCarrera);
+                        }
+                    }
                     default -> {
                     }
                 }
             }
-
         });
+
         menu.initMenuItem();
         bg.add(menu, "w 240!, spany 2");
         bg.add(main, "w 100%, h 100%");

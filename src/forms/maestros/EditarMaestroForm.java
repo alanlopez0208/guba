@@ -1,20 +1,31 @@
 package forms.maestros;
 
+import dialogs.CamaraDialog;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import event.EventoCerrarForm;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelos.MaestroModelo;
 import operaciones.OpMaestro;
+import swim.Imagen;
 
 public class EditarMaestroForm extends javax.swing.JPanel {
 
     private MaestroModelo modelo;
     private EventoCerrarForm evento;
     private OpMaestro opMaestro;
+    private BufferedImage img;
+    private Imagen imagen;
 
     public EditarMaestroForm(MaestroModelo modelo) {
         initComponents();
@@ -38,6 +49,26 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         this.txtCelular.setText(modelo.getCelular());
         this.txtEstado.setText(modelo.getEstado());
         this.txtMunicipio.setText(modelo.getMunicipio());
+
+        if (modelo.getFoto() != null) {
+
+            String path = modelo.getFoto();
+
+            ImageIcon foto = new ImageIcon(path);
+
+            Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(200, 200, Image.SCALE_REPLICATE));
+            txtFoto.setIcon(iconoBack);
+        }
+
+        imagen = new Imagen();
+        InputStream input = this.getClass().getResourceAsStream("/icon/fotografia.png");
+        Image iconoBack = imagen.toImageResizable(input, 40, 40);
+        btnCamara.setIcon(new ImageIcon(iconoBack));
+
+        input = this.getClass().getResourceAsStream("/icon/carpeta.png");
+        iconoBack = imagen.toImageResizable(input, 40, 40);
+        btnArchivos.setIcon(new ImageIcon(iconoBack));
+
     }
 
     public boolean esValido() {
@@ -157,7 +188,9 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         jSeparator7 = new javax.swing.JSeparator();
         buttonRounded1 = new swim.botones.ButtonRounded();
         Editar = new swim.botones.ButtonRounded();
-        jLabel1 = new javax.swing.JLabel();
+        txtFoto = new javax.swing.JLabel();
+        btnCamara = new swim.botones.ButtonRounded();
+        btnArchivos = new swim.botones.ButtonRounded();
 
         myPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -494,14 +527,35 @@ public class EditarMaestroForm extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/profile.png"))); // NOI18N
+        txtFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/profile.png"))); // NOI18N
+
+        btnCamara.setBackground(new java.awt.Color(20, 90, 95));
+        btnCamara.setForeground(new java.awt.Color(255, 255, 255));
+        btnCamara.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/agregar alumno.png"))); // NOI18N
+        btnCamara.setToolTipText("");
+        btnCamara.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCamaraActionPerformed(evt);
+            }
+        });
+
+        btnArchivos.setBackground(new java.awt.Color(20, 90, 95));
+        btnArchivos.setForeground(new java.awt.Color(255, 255, 255));
+        btnArchivos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/agregar alumno.png"))); // NOI18N
+        btnArchivos.setToolTipText("");
+        btnArchivos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnArchivosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Editar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -509,8 +563,13 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                         .addComponent(buttonRounded1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(21, 21, 21))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(44, 44, 44)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCamara, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnArchivos, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
@@ -522,11 +581,15 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                     .addComponent(Editar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(txtFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnArchivos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCamara, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -554,13 +617,22 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                 modelo.setDomicilio(txtDomicilio.getText().trim());
                 modelo.setCurp(txtCurp.getText().trim());
                 modelo.setGrado(txtGrado.getText().trim());
-
                 modelo.setPasswordTemp(txtRfc.getText().trim());
 
+                if (img != null) {
+                    try {
+                        File outputFile = new File("D:\\Alan Lopez\\Imagenes\\probando\\" + txtRfc.getText() + ".jpg");
+                        ImageIO.write(img, "jpg", outputFile);
+                        modelo.setFoto(outputFile.getPath());
+
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "Error al querer insertar Imagen: " + ex.getMessage());
+                    }
+                }
                 boolean agregar = opMaestro.updateDocente(modelo);
 
                 if (agregar) {
-                    JOptionPane.showMessageDialog(null, "Docemte Correctamente Actualizado");
+                    JOptionPane.showMessageDialog(null, "Docente Correctamente Actualizado");
                     evento.cerrarForm();
                 } else {
                     JOptionPane.showMessageDialog(null, "No se pudo agregar");
@@ -625,6 +697,74 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDomicilioActionPerformed
 
+    private void btnCamaraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCamaraActionPerformed
+        if (!txtRfc.getText().isEmpty()) {
+
+            CamaraDialog dialogo = new CamaraDialog(null, true, txtRfc.getText().trim());
+            dialogo.setVisible(true);
+
+            if (dialogo.getImg() != null) {
+
+                //       BufferedImage bufferedImage = null;
+                img = dialogo.getImg();
+                //       ImageIO.write(bufferedImage, "jpg", outputFile);
+                //       path = outputFile.getAbsolutePath();
+
+                ImageIcon foto = new ImageIcon(img);
+                Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(txtFoto.getWidth(), txtFoto.getHeight(), Image.SCALE_SMOOTH));
+                txtFoto.setIcon(iconoBack);
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes de Ingresar el RFC del docente para tomarle la foto");
+        }
+    }//GEN-LAST:event_btnCamaraActionPerformed
+
+    private void btnArchivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArchivosActionPerformed
+        if (!txtRfc.getText().isEmpty()) {
+            JFileChooser fotoChooser = new JFileChooser();
+
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter(
+                    "Imagen png, jpg", "png", "jpg");
+            fotoChooser.setFileFilter(filtro);
+
+            int returnVal = fotoChooser.showOpenDialog(null);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fotoChooser.getSelectedFile();
+
+                txtFoto.setIcon(null);
+                txtFoto.setText("Cargando foto espere porfavor....");
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        ImageIcon foto = new ImageIcon(file.getPath());
+                        Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(txtFoto.getWidth(), txtFoto.getHeight(), Image.SCALE_SMOOTH));
+                        txtFoto.setIcon(iconoBack);
+
+                        try {
+                            //       BufferedImage bufferedImage = null;
+                            img = ImageIO.read(file);
+                            //       ImageIO.write(bufferedImage, "jpg", outputFile);
+                            //       path = outputFile.getAbsolutePath();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                };
+                t.setDaemon(true);
+                t.start();
+                t.setUncaughtExceptionHandler((Thread t1, Throwable e) -> {
+                    JOptionPane.showMessageDialog(null, "Hubo un error al insertar la foto intente de nuevo porfavor " + e.getMessage());
+                });
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debes de Ingresar la matricula del alumno para tomarle la foto");
+        }
+    }//GEN-LAST:event_btnArchivosActionPerformed
+
     public void addEvento(EventoCerrarForm evento) {
         this.evento = evento;
     }
@@ -632,10 +772,11 @@ public class EditarMaestroForm extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private swim.botones.ButtonRounded Editar;
+    private swim.botones.ButtonRounded btnArchivos;
+    private swim.botones.ButtonRounded btnCamara;
     private swim.botones.ButtonRounded buscarCv;
     private swim.botones.ButtonRounded buttonRounded1;
     private javax.swing.JComboBox<String> comboSexo;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -672,6 +813,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
     private javax.swing.JTextField txtCv;
     private javax.swing.JTextField txtDomicilio;
     private javax.swing.JTextField txtEstado;
+    private javax.swing.JLabel txtFoto;
     private javax.swing.JTextField txtGrado;
     private javax.swing.JTextField txtMunicipio;
     private javax.swing.JTextField txtNombre;

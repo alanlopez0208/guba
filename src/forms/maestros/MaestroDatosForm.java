@@ -1,8 +1,10 @@
 package forms.maestros;
 
-
+import java.awt.Image;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelos.MaestroModelo;
@@ -24,14 +26,25 @@ public class MaestroDatosForm extends javax.swing.JPanel {
         this.txtApMat.setText(modelo.getApMat());
 
         this.txtGrado.setText(modelo.getGrado());
-          this.txtCurp.setText(modelo.getCurp());
+        this.txtCurp.setText(modelo.getCurp());
         this.txtDomicilio.setText(modelo.getDomicilio());
         this.txtCorreoIns.setText(modelo.getCorreoIns());
         this.txtCorreoPer.setText(modelo.getCorreoPer());
-        
+
         this.txtCelular.setText(modelo.getCelular());
         this.txtEstado.setText(modelo.getEstado());
         this.txtMunicipio.setText(modelo.getMunicipio());
+
+        if (modelo.getFoto() != null) {
+
+            String path = modelo.getFoto();
+
+            ImageIcon foto = new ImageIcon(path);
+
+            Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(200, 240, Image.SCALE_REPLICATE));
+            txtFoto.setIcon(iconoBack);
+        }
+
     }
 
     public boolean esCorrecto() {
@@ -59,16 +72,16 @@ public class MaestroDatosForm extends javax.swing.JPanel {
         if (esValidoCorreo(txtCorreoIns.getText().trim())) {
             return false;
         }
-        if(esValidoNumero(txtCelular.getText().trim())){
+        if (esValidoNumero(txtCelular.getText().trim())) {
             return false;
         }
-        if(txtEstado.getText().trim().isEmpty()){
+        if (txtEstado.getText().trim().isEmpty()) {
             return false;
         }
-        if(txtEstado.getText().trim().isEmpty()){
+        if (txtEstado.getText().trim().isEmpty()) {
             return false;
         }
-        if(txtMunicipio.getText().trim().isEmpty()){
+        if (txtMunicipio.getText().trim().isEmpty()) {
             return false;
         }
         return true;
@@ -135,7 +148,7 @@ public class MaestroDatosForm extends javax.swing.JPanel {
         jSeparator13 = new javax.swing.JSeparator();
         txtCurp = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        txtFoto = new javax.swing.JLabel();
 
         myPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -473,28 +486,29 @@ public class MaestroDatosForm extends javax.swing.JPanel {
                         .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/profile.png"))); // NOI18N
+        txtFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/profile.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addContainerGap()
+                .addComponent(txtFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(119, 119, 119)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(txtFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -540,12 +554,12 @@ public class MaestroDatosForm extends javax.swing.JPanel {
         JFileChooser cvChooser = new JFileChooser();
 
         FileNameExtensionFilter filtro = new FileNameExtensionFilter(
-            "PDF", "pdf");
+                "PDF", "pdf");
         cvChooser.setFileFilter(filtro);
 
         int returnVal = cvChooser.showOpenDialog(null);
 
-        if(returnVal == JFileChooser.APPROVE_OPTION){
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
             txtCv.setText(cvChooser.getSelectedFile().getName());
         }
     }//GEN-LAST:event_buscarCvActionPerformed
@@ -558,7 +572,6 @@ public class MaestroDatosForm extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private swim.botones.ButtonRounded buscarCv;
     private javax.swing.JComboBox<String> comboSexo;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -595,6 +608,7 @@ public class MaestroDatosForm extends javax.swing.JPanel {
     private javax.swing.JTextField txtCv;
     private javax.swing.JTextField txtDomicilio;
     private javax.swing.JTextField txtEstado;
+    private javax.swing.JLabel txtFoto;
     private javax.swing.JTextField txtGrado;
     private javax.swing.JTextField txtMunicipio;
     private javax.swing.JTextField txtNombre;

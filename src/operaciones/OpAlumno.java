@@ -32,29 +32,30 @@ public class OpAlumno {
         }
         return lista;
     }
-public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
-    ArrayList<EstudianteModelo> resultados = new ArrayList<>();
-    String sql = "SELECT IdAlumno, Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, CorreoInstitucional, "
-               + "Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status "
-               + "FROM Alumnos WHERE Matricula LIKE ? OR Nombre LIKE ? OR ApellidoPaterno LIKE ? OR ApellidoMaterno LIKE ?";
 
-    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-        String likeParam = "%" + filtro + "%";
-        for (int i = 1; i <= 4; i++) {
-            pstmt.setString(i, likeParam);
-        }
+    public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
+        ArrayList<EstudianteModelo> resultados = new ArrayList<>();
+        String sql = "SELECT IdAlumno, Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, CorreoInstitucional, "
+                + "Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status "
+                + "FROM Alumnos WHERE Matricula LIKE ? OR Nombre LIKE ? OR ApellidoPaterno LIKE ? OR ApellidoMaterno LIKE ?";
 
-        try (ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                EstudianteModelo estudiante = mapResultSetToEstudiante(rs);
-                resultados.add(estudiante);
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            String likeParam = "%" + filtro + "%";
+            for (int i = 1; i <= 4; i++) {
+                pstmt.setString(i, likeParam);
             }
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    EstudianteModelo estudiante = mapResultSetToEstudiante(rs);
+                    resultados.add(estudiante);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al buscar estudiantes", e);
         }
-    } catch (SQLException e) {
-        throw new RuntimeException("Error al buscar estudiantes", e);
+        return resultados;
     }
-    return resultados;
-}
 
     private EstudianteModelo mapResultSetToEstudiante(ResultSet rs) throws SQLException {
         EstudianteModelo estudiante = new EstudianteModelo();
@@ -82,7 +83,9 @@ public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
     public boolean updateAlumno(EstudianteModelo estudianteModelo) {
         String sql = "UPDATE Alumnos SET Nombre = ?, ApellidoPaterno = ?, ApellidoMaterno = ?, CorreoPersonal = ?, "
                 + "CorreoInstitucional = ?, Generacion = ?, Celular = ?, Estado = ?, Municipio = ?, "
-                + "EscuelaProcedencia = ?, GradoEstudios = ?, IdGrupo = ?, Status = ? WHERE Matricula = ?";
+                + "EscuelaProcedencia = ?, GradoEstudios = ?, IdGrupo = ?, Status = ?"
+                + (estudianteModelo.getFoto() != null ? ", Foto = ?" : "")
+                + "WHERE Matricula = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, estudianteModelo.getNombre());
@@ -98,7 +101,12 @@ public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
             pstmt.setString(11, estudianteModelo.getGrado());
             pstmt.setString(12, estudianteModelo.getGrupo());
             pstmt.setString(13, estudianteModelo.getStatus());
-            pstmt.setString(14, estudianteModelo.getMatricula());
+            if (estudianteModelo.getFoto() != null) {
+                pstmt.setString(14, estudianteModelo.getFoto());
+                pstmt.setString(15, estudianteModelo.getMatricula());
+            } else {
+                pstmt.setString(14, estudianteModelo.getMatricula());
+            }
 
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
@@ -139,10 +147,10 @@ public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
     }
 
     // Método para agregar un nuevo alumno11
-    public boolean crearAlumno(EstudianteModelo estudianteModelo, String foto ) {
+    public boolean crearAlumno(EstudianteModelo estudianteModelo) {
         String sql = "INSERT INTO Alumnos (Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, "
-                + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, PasswordTemporal"+(foto != null ? ",Foto ":"") + " )"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? "+(foto != null ? ",?":"") + ")";
+                + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, PasswordTemporal" + (estudianteModelo.getFoto() != null ? ",Foto " : "") + " )"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? " + (estudianteModelo.getFoto() != null ? ",?" : "") + ")";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -161,8 +169,8 @@ public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
             pstmt.setString(13, estudianteModelo.getGrupo());
             pstmt.setString(14, estudianteModelo.getStatus());
             pstmt.setString(15, estudianteModelo.getMatricula());
-            if(foto != null){
-                  pstmt.setString(16, foto);
+            if (estudianteModelo.getFoto() != null) {
+                pstmt.setString(16, estudianteModelo.getFoto());
             }
 
             int affectedRows = pstmt.executeUpdate();
@@ -170,5 +178,5 @@ public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
         } catch (SQLException e) {
             throw new RuntimeException("Error al crear estudiante", e);
         }
-    }    
+    }
 }

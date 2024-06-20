@@ -62,7 +62,7 @@ public class OpMaestro {
 
     // Mapear ResultSet a DocenteModelo
     private MaestroModelo mapResultSetToDocente(ResultSet rs) throws SQLException {
-        
+
         MaestroModelo maestro = new MaestroModelo();
         maestro.setRfc(rs.getString("RFC"));
         maestro.setCurp(rs.getString("CURP"));
@@ -79,8 +79,8 @@ public class OpMaestro {
         maestro.setCv(rs.getString("CV"));
         maestro.setGrado(rs.getString("GradoEstudios"));
         maestro.setPasswordTemp(rs.getString("PasswordTemporal"));
-        //maestro.setFoto(rs.getBytes("Foto"));
-        
+        maestro.setFoto(rs.getString("Foto"));
+
         return maestro;
 
     }
@@ -88,8 +88,11 @@ public class OpMaestro {
     // Actualizar un docente
     public boolean updateDocente(MaestroModelo docenteModelo) {
         String sql = "UPDATE Docentes SET CURP = ?, Nombre = ?, ApellidoPaterno = ?, ApellidoMaterno = ?, Genero = ?, "
-                + "CorreoPersonal = ?, CorreoInstitucional = ?, Domicilio = ?, Celular = ?, Estado = ?, Municipio = ?, "
-                + "CV = ?, GradoEstudios = ? WHERE RFC = ?";
+                + "CorreoPersonal = ?, CorreoInstitucional = ?, Domicilio = ?, Celular = ?, Estado = ?, Municipio = ?, CV = ?, GradoEstudios = ?"
+                + (docenteModelo.getFoto() != null ? ", Foto = ? " : "")
+                + " WHERE RFC = ?";
+        
+    
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, docenteModelo.getCurp());
@@ -105,7 +108,12 @@ public class OpMaestro {
             pstmt.setString(11, docenteModelo.getMunicipio());
             pstmt.setString(12, docenteModelo.getCv());
             pstmt.setString(13, docenteModelo.getGrado());
-            pstmt.setString(14, docenteModelo.getRfc());
+            if (docenteModelo.getFoto() != null) {
+                pstmt.setString(14, docenteModelo.getFoto());
+                pstmt.setString(15, docenteModelo.getRfc());
+            } else {
+                pstmt.setString(14, docenteModelo.getRfc());
+            }
 
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
@@ -150,8 +158,14 @@ public class OpMaestro {
     // Método para agregar un nuevo docente
     public boolean crearDocente(MaestroModelo docenteModelo) {
         String sql = "INSERT INTO Docentes (RFC, CURP, Nombre, ApellidoPaterno, ApellidoMaterno, Genero, CorreoPersonal, "
-                + "CorreoInstitucional, Domicilio, Celular, Estado, Municipio, CV, GradoEstudios, PasswordTemporal) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "CorreoInstitucional, Domicilio, Celular, Estado, Municipio, CV, GradoEstudios, PasswordTemporal"
+                + (docenteModelo.getFoto() != null ? ", Foto" : "")
+                + " ) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?"
+                + (docenteModelo.getFoto() != null ? ", ?" : "")
+                + " )";
+
+        System.out.println(sql);
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, docenteModelo.getRfc());
@@ -169,6 +183,9 @@ public class OpMaestro {
             pstmt.setString(13, docenteModelo.getCv());
             pstmt.setString(14, docenteModelo.getGrado());
             pstmt.setString(15, docenteModelo.getRfc());
+            if (docenteModelo.getFoto() != null) {
+                pstmt.setString(16, docenteModelo.getFoto());
+            }
 
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
