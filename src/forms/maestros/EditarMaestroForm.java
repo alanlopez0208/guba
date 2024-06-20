@@ -621,7 +621,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
 
                 if (img != null) {
                     try {
-                        File outputFile = new File("D:\\Alan Lopez\\Imagenes\\probando\\" + txtRfc.getText() + ".jpg");
+                        File outputFile = new File("C:\\Guba\\" + txtRfc.getText() + ".jpg");
                         ImageIO.write(img, "jpg", outputFile);
                         modelo.setFoto(outputFile.getPath());
 
