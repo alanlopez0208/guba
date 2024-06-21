@@ -7,6 +7,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -26,6 +32,7 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
     private Imagen imagen;
     private BufferedImage img;
     private String path;
+    private File pdf;
 
     public AgregarMaestroForm(EventoCerrarForm evento) {
         initComponents();
@@ -97,6 +104,10 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
         }
         if (txtMunicipio.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ingrese el Municipio");
+            return false;
+        }
+        if (comboSexo.getSelectedIndex() <= 0) {
+            JOptionPane.showMessageDialog(null, "Selecciona el sexo del maestro");
             return false;
         }
         return true;
@@ -261,7 +272,7 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
             }
         });
 
-        comboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hombre", "Mujer" }));
+        comboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---------", "Hombre", "Mujer" }));
         comboSexo.setToolTipText("");
 
         txtRfc.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -302,7 +313,6 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
 
         buscarCv.setBackground(new java.awt.Color(0, 51, 51));
         buscarCv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/14.png"))); // NOI18N
-        buscarCv.setEnabled(false);
         buscarCv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscarCvActionPerformed(evt);
@@ -633,7 +643,7 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
                 modelo.setCurp(txtCurp.getText().trim());
                 modelo.setGrado(txtGrado.getText().trim());
                 modelo.setPasswordTemp(txtRfc.getText().trim());
-
+                modelo.setGenero(comboSexo.getSelectedItem().toString());
                 if (img != null) {
                     try {
                         File outputFile = new File("C:\\Guba\\" + txtRfc.getText() + ".jpg");
@@ -642,6 +652,22 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(null, "Error al querer insertar Imagen: " + ex.getMessage());
                     }
+                }
+                if (pdf != null) {
+                    String destino = "C:\\Guba\\CV\\" + pdf.getName();
+                    Path pathDestino = Paths.get(destino);
+
+                    String origen = pdf.getPath();
+                    Path pathOrigen = Paths.get(origen);
+
+                    modelo.setCv(destino);
+
+                    try {
+                        Files.copy(pathOrigen, pathDestino);
+                    } catch (IOException ex) {
+                        Logger.getLogger(AgregarMaestroForm.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
                 }
 
                 boolean agregar = opMaestro.crearDocente(modelo);
@@ -677,6 +703,7 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             txtCv.setText(cvChooser.getSelectedFile().getName());
+            pdf = cvChooser.getSelectedFile();
         }
     }//GEN-LAST:event_buscarCvActionPerformed
 
@@ -712,7 +739,7 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
             JFileChooser fotoChooser = new JFileChooser();
 
             FileNameExtensionFilter filtro = new FileNameExtensionFilter(
-                    "Imagen png, jpg", "png", "jpg");
+                    "Imagen jpg", "jpg");
             fotoChooser.setFileFilter(filtro);
 
             int returnVal = fotoChooser.showOpenDialog(null);

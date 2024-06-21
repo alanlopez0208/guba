@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,7 +55,10 @@ public class EditarEstudiante extends javax.swing.JPanel {
 
         this.txtCelular.setText(modelo.getNumCelular());
         this.txtEstado.setText(modelo.getEstado());
-        this.txtMunicipio.setText(modelo.getMunicipio());
+        this.txtMunicipio.setText(modelo.getMunicipio());   
+        this.txtGeneracion.setText(modelo.getGeneracion());
+
+        
 
         if (modelo.getFoto() != null) {
 
@@ -75,7 +79,6 @@ public class EditarEstudiante extends javax.swing.JPanel {
         iconoBack = imagen.toImageResizable(input, 40, 40);
         btnArchivos.setIcon(new ImageIcon(iconoBack));
 
-      
         ArrayList<GrupoModelo> allGrupos = opGrupo.getGrupos();
         allGrupos.forEach((grupe) -> {
             comboGrupo.addItem(grupe);
@@ -129,6 +132,10 @@ public class EditarEstudiante extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Ingrese  el Municipo de Procedencia");
             return false;
         }
+         if(comboSexo.getSelectedIndex() <= 0){
+                JOptionPane.showMessageDialog(null, "Selecciona el sexo del alumno");
+            return false;
+        }
         return true;
     }
 
@@ -162,7 +169,6 @@ public class EditarEstudiante extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        comboGeneracion = new javax.swing.JComboBox<>();
         jSeparator7 = new javax.swing.JSeparator();
         txtEscuelaProc = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -194,6 +200,8 @@ public class EditarEstudiante extends javax.swing.JPanel {
         comboStatus = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         comboSexo = new javax.swing.JComboBox<>();
+        txtGeneracion = new javax.swing.JTextField();
+        jSeparator6 = new javax.swing.JSeparator();
         buttonRounded1 = new swim.botones.ButtonRounded();
         Editar = new swim.botones.ButtonRounded();
         txtFoto = new javax.swing.JLabel();
@@ -230,10 +238,6 @@ public class EditarEstudiante extends javax.swing.JPanel {
         jLabel6.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("Generacion:");
-
-        comboGeneracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--------------------" }));
-        comboGeneracion.setToolTipText("");
-        comboGeneracion.setFocusCycleRoot(true);
 
         txtEscuelaProc.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         txtEscuelaProc.addActionListener(new java.awt.event.ActionListener() {
@@ -343,6 +347,14 @@ public class EditarEstudiante extends javax.swing.JPanel {
         comboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-----------------", "Hombre", "Mujer" }));
         comboSexo.setToolTipText("");
 
+        txtGeneracion.setEditable(false);
+        txtGeneracion.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtGeneracion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtGeneracionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout myPanel1Layout = new javax.swing.GroupLayout(myPanel1);
         myPanel1.setLayout(myPanel1Layout);
         myPanel1Layout.setHorizontalGroup(
@@ -376,44 +388,50 @@ public class EditarEstudiante extends javax.swing.JPanel {
                                     .addComponent(jLabel16)
                                     .addComponent(txtApMat, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
+                            .addGroup(myPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
                                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtEscuelaProc, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(comboGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(96, 96, 96)
-                                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(myPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel11)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(myPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel5)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(myPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel17)
-                                            .addGap(27, 27, 27)
-                                            .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addGroup(myPanel1Layout.createSequentialGroup()
-                                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addGroup(myPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(18, 18, 18)
-                                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jSeparator5)
-                                            .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jSeparator5)
+                                    .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(184, 184, 184)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(comboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(2, 2, 2)))
+                                .addGap(2, 2, 2))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel1Layout.createSequentialGroup()
+                                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addGap(18, 18, 18))
+                                    .addGroup(myPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(82, 82, 82)))
+                                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtGeneracion)
+                                        .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(myPanel1Layout.createSequentialGroup()
+                                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtEscuelaProc, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(96, 96, 96)
+                                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(myPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel11)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(txtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addGroup(myPanel1Layout.createSequentialGroup()
+                                                    .addComponent(jLabel5)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                    .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(myPanel1Layout.createSequentialGroup()
+                                                    .addComponent(jLabel17)
+                                                    .addGap(27, 27, 27)
+                                                    .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
                         .addGap(35, 35, 35))
                     .addGroup(myPanel1Layout.createSequentialGroup()
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -474,12 +492,16 @@ public class EditarEstudiante extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(comboGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)
-                            .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20)
+                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel5)
+                                .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(myPanel1Layout.createSequentialGroup()
+                                .addComponent(txtGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(8, 8, 8)
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
                             .addComponent(txtEscuelaProc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -654,7 +676,7 @@ public class EditarEstudiante extends javax.swing.JPanel {
                 modelo.setApMaterno(txtApMat.getText().trim());
                 modelo.setEmailPersonal(txtCorreoPer.getText().trim());
                 modelo.setEmailInstitucional(txtCorreoIns.getText().trim());
-                modelo.setGeneracion("------");
+                modelo.setGeneracion(txtGeneracion.getText().trim());
                 modelo.setNumCelular(txtCelular.getText().trim());
                 modelo.setEstado(txtEstado.getText().trim());
                 modelo.setMunicipio(txtMunicipio.getText().trim());
@@ -669,12 +691,12 @@ public class EditarEstudiante extends javax.swing.JPanel {
                 GrupoModelo grupo = (GrupoModelo) comboGrupo.getSelectedItem();
                 modelo.setGrupo(grupo.getId());
                 modelo.setSexo(comboSexo.getSelectedItem().toString());
+                System.out.println(img);
                 if (img != null) {
                     try {
-                        File outputFile = new File("C:\\Guba\\" + txtMatricula.getText() + ".jpg");
+                         File outputFile = new File("C:\\Guba\\" + txtMatricula.getText() + ".jpg");
                         ImageIO.write(img, "jpg", outputFile);
                         modelo.setFoto(outputFile.getPath());
-
                     } catch (IOException ex) {
                         Logger.getLogger(AgregarAlumnoForm.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -729,7 +751,7 @@ public class EditarEstudiante extends javax.swing.JPanel {
             JFileChooser fotoChooser = new JFileChooser();
 
             FileNameExtensionFilter filtro = new FileNameExtensionFilter(
-                    "Imagen png, jpg", "png", "jpg");
+                    "Imagen jpg", "jpg");
             fotoChooser.setFileFilter(filtro);
 
             int returnVal = fotoChooser.showOpenDialog(null);
@@ -747,14 +769,12 @@ public class EditarEstudiante extends javax.swing.JPanel {
                         txtFoto.setIcon(iconoBack);
 
                         try {
-                            //       BufferedImage bufferedImage = null;
                             img = ImageIO.read(file);
-                            //       ImageIO.write(bufferedImage, "jpg", outputFile);
-                            //       path = outputFile.getAbsolutePath();
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            System.out.println("La imagen si se leyo" + img);
+                        } catch (IOException ex) {
+                            System.out.println(ex.getMessage());
                         }
+
                     }
 
                 };
@@ -769,6 +789,10 @@ public class EditarEstudiante extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnArchivosActionPerformed
 
+    private void txtGeneracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGeneracionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtGeneracionActionPerformed
+
     public void addEvento(EventoCerrarForm evento) {
         this.evento = evento;
     }
@@ -779,7 +803,6 @@ public class EditarEstudiante extends javax.swing.JPanel {
     private swim.botones.ButtonRounded btnArchivos;
     private swim.botones.ButtonRounded btnCamara;
     private swim.botones.ButtonRounded buttonRounded1;
-    private javax.swing.JComboBox<String> comboGeneracion;
     private javax.swing.JComboBox comboGrupo;
     private javax.swing.JComboBox<String> comboSexo;
     private javax.swing.JComboBox<String> comboStatus;
@@ -806,6 +829,7 @@ public class EditarEstudiante extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
@@ -818,6 +842,7 @@ public class EditarEstudiante extends javax.swing.JPanel {
     private javax.swing.JTextField txtEscuelaProc;
     private javax.swing.JTextField txtEstado;
     private javax.swing.JLabel txtFoto;
+    private javax.swing.JTextField txtGeneracion;
     private javax.swing.JTextField txtGrado;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtMunicipio;

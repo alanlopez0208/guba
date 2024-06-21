@@ -46,8 +46,7 @@ public class MaestroForm extends javax.swing.JPanel {
                         showForm(maestroDatos);
                         break;
                     case 1:
-
-                        showForm(new MateriasForm());
+                      //  showForm(new MateriasForm());
                         break;
                     case 2:
                         showForm(new AdicionalesForm(modelo));

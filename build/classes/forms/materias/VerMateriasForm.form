@@ -118,7 +118,7 @@
                     <Column editable="false" title="Nombre" type="java.lang.Object"/>
                     <Column editable="false" title="Creditos" type="java.lang.Object"/>
                     <Column editable="false" title="Semestre " type="java.lang.Object"/>
-                    <Column editable="true" title="Carrera" type="java.lang.Object"/>
+                    <Column editable="false" title="Carrera" type="java.lang.Object"/>
                     <Column editable="true" title="Acciones" type="java.lang.Object"/>
                   </Table>
                 </Property>

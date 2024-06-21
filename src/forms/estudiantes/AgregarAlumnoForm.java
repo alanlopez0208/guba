@@ -143,7 +143,6 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        comboGeneracion = new javax.swing.JComboBox<>();
         jSeparator7 = new javax.swing.JSeparator();
         txtEscuelaProc = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -173,6 +172,8 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         jSeparator5 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
         comboSexo = new javax.swing.JComboBox<>();
+        jSeparator6 = new javax.swing.JSeparator();
+        txtGeneracion = new javax.swing.JTextField();
         buttonRounded1 = new swim.botones.ButtonRounded();
         txtFoto = new javax.swing.JLabel();
         btnArchivos = new swim.botones.ButtonRounded();
@@ -207,9 +208,6 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         jLabel6.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("Generacion:");
-
-        comboGeneracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-------------------" }));
-        comboGeneracion.setToolTipText("");
 
         txtEscuelaProc.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         txtEscuelaProc.addActionListener(new java.awt.event.ActionListener() {
@@ -317,6 +315,14 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         comboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-----------------", "Hombre", "Mujer" }));
         comboSexo.setToolTipText("");
 
+        txtGeneracion.setEditable(false);
+        txtGeneracion.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtGeneracion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtGeneracionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);
         myPanel2.setLayout(myPanel2Layout);
         myPanel2Layout.setHorizontalGroup(
@@ -336,7 +342,6 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
                                 .addComponent(jLabel9)
                                 .addGap(18, 18, 18)
                                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(comboGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -395,12 +400,16 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
                                         .addGap(25, 25, 25)))
                                 .addGap(24, 24, 24))
                             .addGroup(myPanel2Layout.createSequentialGroup()
-                                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8)
-                                    .addGroup(myPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtEscuelaProc, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtGeneracion)
+                                        .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel8)
+                                        .addGroup(myPanel2Layout.createSequentialGroup()
+                                            .addComponent(jLabel7)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(txtEscuelaProc, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(10, 10, 10))))
                     .addGroup(myPanel2Layout.createSequentialGroup()
                         .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -459,10 +468,12 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
                     .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
                         .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6)
-                        .addComponent(comboGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel6)
+                    .addGroup(myPanel2Layout.createSequentialGroup()
+                        .addComponent(txtGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtEscuelaProc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -617,7 +628,7 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
                 estudiante.setApMaterno(txtApMat.getText().trim());
                 estudiante.setEmailPersonal(txtCorreoPer.getText().trim());
                 estudiante.setEmailInstitucional(txtCorreoIns.getText().trim());
-                estudiante.setGeneracion("------");
+                estudiante.setGeneracion(txtGeneracion.getText().trim());
                 estudiante.setNumCelular(txtCelular.getText().trim());
                 estudiante.setEstado(txtEstado.getText().trim());
                 estudiante.setMunicipio(txtMunicipio.getText().trim());
@@ -631,6 +642,8 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
                 GrupoModelo grupo = (GrupoModelo) comboGrupo.getSelectedItem();
                 estudiante.setGrupo(grupo.getId());
                 estudiante.setSexo(comboSexo.getSelectedItem().toString());
+                
+             
                 if (img != null) {
                     try {
                         File outputFile = new File("C:\\Guba\\" + txtMatricula.getText() + ".jpg");
@@ -669,7 +682,7 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
             JFileChooser fotoChooser = new JFileChooser();
 
             FileNameExtensionFilter filtro = new FileNameExtensionFilter(
-                    "Imagen png, jpg", "png", "jpg");
+                    "Imagen jpg",  "jpg");
             fotoChooser.setFileFilter(filtro);
 
             int returnVal = fotoChooser.showOpenDialog(null);
@@ -736,12 +749,15 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnCamaraActionPerformed
 
+    private void txtGeneracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGeneracionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtGeneracionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private swim.botones.ButtonRounded btnArchivos;
     private swim.botones.ButtonRounded btnCamara;
     private swim.botones.ButtonRounded buttonRounded1;
-    private javax.swing.JComboBox<String> comboGeneracion;
     private javax.swing.JComboBox comboGrupo;
     private javax.swing.JComboBox<String> comboSexo;
     private javax.swing.JLabel jLabel10;
@@ -766,6 +782,7 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
@@ -778,6 +795,7 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
     private javax.swing.JTextField txtEscuelaProc;
     private javax.swing.JTextField txtEstado;
     private javax.swing.JLabel txtFoto;
+    private javax.swing.JTextField txtGeneracion;
     private javax.swing.JTextField txtGrado;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtMunicipio;

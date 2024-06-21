@@ -34,6 +34,7 @@ public class MaestroDatosForm extends javax.swing.JPanel {
         this.txtCelular.setText(modelo.getCelular());
         this.txtEstado.setText(modelo.getEstado());
         this.txtMunicipio.setText(modelo.getMunicipio());
+            comboSexo.setSelectedItem(modelo.getGenero());
 
         if (modelo.getFoto() != null) {
 
@@ -44,6 +45,7 @@ public class MaestroDatosForm extends javax.swing.JPanel {
             Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(200, 240, Image.SCALE_REPLICATE));
             txtFoto.setIcon(iconoBack);
         }
+        txtCv.setText(modelo.getCv());
 
     }
 
@@ -277,7 +279,7 @@ public class MaestroDatosForm extends javax.swing.JPanel {
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("Sexo:");
 
-        comboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hombre", "Mujer" }));
+        comboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--------", "Hombre", "Mujer" }));
         comboSexo.setToolTipText("");
 
         jLabel18.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
@@ -285,7 +287,6 @@ public class MaestroDatosForm extends javax.swing.JPanel {
         jLabel18.setText("C.V:");
 
         txtCv.setEditable(false);
-        txtCv.setEnabled(false);
 
         buscarCv.setBackground(new java.awt.Color(0, 51, 51));
         buscarCv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/14.png"))); // NOI18N

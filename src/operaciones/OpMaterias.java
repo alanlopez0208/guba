@@ -71,7 +71,7 @@ public class OpMaterias {
     }
 
     public boolean insertMateria(MateriaModelo materia) {
-        String sentencia = "INSERT INTO MATERIAS (Nombre, HBCA, HTI, Semestre, Creditos, IdCarrera) VALUES (?,?,?,?,?,?)";
+        String sentencia = "INSERT INTO MATERIAS (Nombre, HBCA, HTI, Semestre, Creditos, IdCarrera, Clave) VALUES (?,?,?,?,?,?,?)";
         //  String sentencia = "UPDATE Materias set Nombre = ?, HBCA = ?, HTI = ? , Semestre = ? , Creditos = ? , IdCarrera = ? WHERE IdMateria = ?";
         try {
             conn = new Conexion().connect();
@@ -82,7 +82,7 @@ public class OpMaterias {
             pstmt.setString(4, materia.getSemestre());
             pstmt.setString(5, materia.getCreditos());
             pstmt.setString(6, materia.getCarrera());
-
+            pstmt.setString(7, materia.getClave());
             int rowAfecteds = pstmt.executeUpdate();
             conn.close();
             return rowAfecteds > 0;
@@ -95,7 +95,7 @@ public class OpMaterias {
     //Actualizar Mateira 
     public boolean updateMateria(MateriaModelo materia) {
         //  String sentencia = "INSERT INTO MATERIAS (Nombre, HBCA, HTI, Semestre, Creditos, IdCarrera) VALUES (?,?,?,?,?,?)";
-        String sentencia = "UPDATE Materias set Nombre = ?, HBCA = ?, HTI = ? , Semestre = ? , Creditos = ? , IdCarrera = ? WHERE IdMateria = ?";
+        String sentencia = "UPDATE Materias set Nombre = ?, HBCA = ?, HTI = ? , Semestre = ? , Creditos = ? , IdCarrera = ?, Clave = ? WHERE IdMateria = ?";
         try {
             conn = new Conexion().connect();
             PreparedStatement pstmt = conn.prepareStatement(sentencia);
@@ -105,7 +105,8 @@ public class OpMaterias {
             pstmt.setString(4, materia.getSemestre());
             pstmt.setString(5, materia.getCreditos());
             pstmt.setString(6, materia.getCarrera());
-            pstmt.setString(7, materia.getIdMateria());
+            pstmt.setString(7, materia.getClave());
+            pstmt.setString(8, materia.getIdMateria());
 
             int rowAfecteds = pstmt.executeUpdate();
             conn.close();
@@ -127,7 +128,7 @@ public class OpMaterias {
         materia.setSemestre(rs.getString("Semestre"));
         materia.setCreditos(rs.getString("Creditos"));
         materia.setCarrera(rs.getString("IdCarrera"));
-
+        materia.setClave(rs.getString("Clave"));
         return materia;
     }
 

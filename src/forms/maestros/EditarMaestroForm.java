@@ -9,6 +9,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -26,6 +31,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
     private OpMaestro opMaestro;
     private BufferedImage img;
     private Imagen imagen;
+    private File pdf;
 
     public EditarMaestroForm(MaestroModelo modelo) {
         initComponents();
@@ -68,7 +74,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         input = this.getClass().getResourceAsStream("/icon/carpeta.png");
         iconoBack = imagen.toImageResizable(input, 40, 40);
         btnArchivos.setIcon(new ImageIcon(iconoBack));
-
+        comboSexo.setSelectedItem(modelo.getGenero());
     }
 
     public boolean esValido() {
@@ -119,6 +125,10 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         }
         if (txtMunicipio.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ingrese el Municipio");
+            return false;
+        }
+        if (comboSexo.getSelectedIndex() <= 0) {
+            JOptionPane.showMessageDialog(null, "Selecciona el sexo del maestro");
             return false;
         }
         return true;
@@ -299,7 +309,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("Sexo:");
 
-        comboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hombre", "Mujer" }));
+        comboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---------", "Hombre", "Mujer" }));
         comboSexo.setToolTipText("");
 
         jLabel17.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
@@ -310,7 +320,6 @@ public class EditarMaestroForm extends javax.swing.JPanel {
 
         buscarCv.setBackground(new java.awt.Color(0, 51, 51));
         buscarCv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/14.png"))); // NOI18N
-        buscarCv.setEnabled(false);
         buscarCv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscarCvActionPerformed(evt);
@@ -618,7 +627,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                 modelo.setCurp(txtCurp.getText().trim());
                 modelo.setGrado(txtGrado.getText().trim());
                 modelo.setPasswordTemp(txtRfc.getText().trim());
-
+                modelo.setGenero(comboSexo.getSelectedItem().toString());
                 if (img != null) {
                     try {
                         File outputFile = new File("C:\\Guba\\" + txtRfc.getText() + ".jpg");
@@ -629,8 +638,26 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(null, "Error al querer insertar Imagen: " + ex.getMessage());
                     }
                 }
-                boolean agregar = opMaestro.updateDocente(modelo);
+                if (pdf != null) {
+                    String destino = "C:\\Guba\\CV\\" + pdf.getName();
+                    Path pathDestino = Paths.get(destino);
 
+                    String origen = pdf.getPath();
+                    Path pathOrigen = Paths.get(origen);
+                    
+                    
+                    
+                    modelo.setCv(destino);
+
+                    try {
+                        Files.copy(pathOrigen, pathDestino);
+                    } catch (IOException ex) {
+                        Logger.getLogger(AgregarMaestroForm.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
+                boolean agregar = opMaestro.updateDocente(modelo);
                 if (agregar) {
                     JOptionPane.showMessageDialog(null, "Docente Correctamente Actualizado");
                     evento.cerrarForm();
@@ -654,6 +681,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             txtCv.setText(cvChooser.getSelectedFile().getName());
+            pdf = cvChooser.getSelectedFile();
         }
     }//GEN-LAST:event_buscarCvActionPerformed
 
@@ -725,7 +753,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
             JFileChooser fotoChooser = new JFileChooser();
 
             FileNameExtensionFilter filtro = new FileNameExtensionFilter(
-                    "Imagen png, jpg", "png", "jpg");
+                    "Imagen jpg", "jpg");
             fotoChooser.setFileFilter(filtro);
 
             int returnVal = fotoChooser.showOpenDialog(null);

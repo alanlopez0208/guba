@@ -63,13 +63,10 @@ public class CamaraDialog extends javax.swing.JDialog {
         panelCamara.setLayout(new FlowLayout());
         panelCamara.add(panel);
         cargandoCamara();
-        cargandoCamara();
         Thread t = new Thread() {
             @Override
             public void run() {
-
                 panel.start();
-
                 cargoCamara();
             }
         };
@@ -302,6 +299,9 @@ public class CamaraDialog extends javax.swing.JDialog {
 
     private void pickerItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_pickerItemStateChanged
         if (evt.getItem() != webcam) {
+          Webcam camara = (Webcam) evt.getItem();
+        
+            System.out.println("Se cambio de camara");
             panel.stop();
 
             panelCamara.remove(panel);
@@ -322,7 +322,7 @@ public class CamaraDialog extends javax.swing.JDialog {
             Thread t = new Thread() {
                 @Override
                 public void run() {
-
+                    cargandoCamara();
                     panel.start();
 
                     cargoCamara();

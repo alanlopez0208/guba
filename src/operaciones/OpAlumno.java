@@ -76,7 +76,7 @@ public class OpAlumno {
         estudiante.setStatus(rs.getString("Status"));
         estudiante.setPassword(rs.getString("Password"));
         estudiante.setPasswordTemporal(rs.getString("PasswordTemporal"));
-          estudiante.setSexo(rs.getString("Genero"));
+        estudiante.setSexo(rs.getString("Genero"));
         estudiante.setFoto(rs.getString("Foto"));
         return estudiante;
     }
@@ -102,7 +102,7 @@ public class OpAlumno {
             pstmt.setString(11, estudianteModelo.getGrado());
             pstmt.setString(12, estudianteModelo.getGrupo());
             pstmt.setString(13, estudianteModelo.getStatus());
-              pstmt.setString(14, estudianteModelo.getSexo());
+            pstmt.setString(14, estudianteModelo.getSexo());
             if (estudianteModelo.getFoto() != null) {
                 pstmt.setString(15, estudianteModelo.getFoto());
                 pstmt.setString(16, estudianteModelo.getMatricula());
@@ -152,7 +152,7 @@ public class OpAlumno {
     public boolean crearAlumno(EstudianteModelo estudianteModelo) {
         String sql = "INSERT INTO Alumnos (Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, "
                 + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, PasswordTemporal, Genero" + (estudianteModelo.getFoto() != null ? ",Foto " : "") + " )"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? " + (estudianteModelo.getFoto() != null ? ",?" : "") + ")";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" + (estudianteModelo.getFoto() != null ? ",?" : "") + ")";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -171,7 +171,7 @@ public class OpAlumno {
             pstmt.setString(13, estudianteModelo.getGrupo());
             pstmt.setString(14, estudianteModelo.getStatus());
             pstmt.setString(15, estudianteModelo.getMatricula());
-             pstmt.setString(16, estudianteModelo.getSexo());
+            pstmt.setString(16, estudianteModelo.getSexo());
             if (estudianteModelo.getFoto() != null) {
                 pstmt.setString(17, estudianteModelo.getFoto());
             }
