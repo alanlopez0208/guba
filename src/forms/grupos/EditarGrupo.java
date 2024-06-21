@@ -294,7 +294,7 @@ public class EditarGrupo extends javax.swing.JPanel {
             int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de actualizar el grupo : " + txtGrupo.getText() + " ?");
 
             if (option == JOptionPane.OK_OPTION) {
-                
+
                 grupoModelo.setNombre(txtGrupo.getText().trim());
                 grupoModelo.setSemestre(txtSemestre.getText().trim());
                 grupoModelo.setMaterias(listaDeMaterias);
@@ -303,7 +303,7 @@ public class EditarGrupo extends javax.swing.JPanel {
 
                 boolean mismasMaterias = listaDeMateriasAnt.equals(listaDeMaterias);
                 System.out.println(Boolean.toString(mismasMaterias));
-                boolean seActualizo = opGrupo.actualizarGrupo(grupoModelo , mismasMaterias);
+                boolean seActualizo = opGrupo.actualizarGrupo(grupoModelo, mismasMaterias);
 
                 if (seActualizo) {
                     JOptionPane.showMessageDialog(null, "Grupo Actualizado Correctamente");
@@ -320,12 +320,17 @@ public class EditarGrupo extends javax.swing.JPanel {
         JComboBox comboSemestre = new JComboBox();
         //JComboBox materias = new JComboBox();
 
-        comboSemestre.addItem("--------");
         comboCarreras.addItem("--------");
-        comboSemestre.addItem("I");
-        comboSemestre.addItem("II");
-        comboSemestre.addItem("III");
-        comboSemestre.addItem("IIII");
+        comboSemestre.addItem("1");
+        comboSemestre.addItem("2");
+        comboSemestre.addItem("3");
+        comboSemestre.addItem("4");
+        comboSemestre.addItem("5");
+        comboSemestre.addItem("6");
+        comboSemestre.addItem("7");
+        comboSemestre.addItem("8");
+        comboSemestre.addItem("9");
+        comboSemestre.addItem("10");
         comboSemestre.setEnabled(false);
         //materias.setEnabled(false);
 

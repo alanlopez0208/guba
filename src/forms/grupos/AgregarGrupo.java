@@ -25,7 +25,7 @@ public class AgregarGrupo extends javax.swing.JPanel {
     private OpGrupo opGrupo;
     private OpMaterias opMateria;
     private ArrayList<MateriaModelo> listaDeMaterias;
-    
+
     public AgregarGrupo() {
         initComponents();
 
@@ -273,12 +273,17 @@ public class AgregarGrupo extends javax.swing.JPanel {
         JComboBox comboSemestre = new JComboBox();
         //JComboBox materias = new JComboBox();
 
-        comboSemestre.addItem("--------");
         comboCarreras.addItem("--------");
         comboSemestre.addItem("1");
         comboSemestre.addItem("2");
         comboSemestre.addItem("3");
         comboSemestre.addItem("4");
+        comboSemestre.addItem("5");
+        comboSemestre.addItem("6");
+        comboSemestre.addItem("7");
+        comboSemestre.addItem("8");
+        comboSemestre.addItem("9");
+        comboSemestre.addItem("10");
         comboSemestre.setEnabled(false);
         //materias.setEnabled(false);
 
@@ -361,6 +366,8 @@ public class AgregarGrupo extends javax.swing.JPanel {
     private void buttonRounded3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRounded3ActionPerformed
 
         listaDeMaterias.removeAll(listaDeMaterias);
+
+        this.actualizarTabla();
     }//GEN-LAST:event_buttonRounded3ActionPerformed
 
 

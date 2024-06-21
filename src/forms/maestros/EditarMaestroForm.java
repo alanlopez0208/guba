@@ -55,6 +55,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         this.txtCelular.setText(modelo.getCelular());
         this.txtEstado.setText(modelo.getEstado());
         this.txtMunicipio.setText(modelo.getMunicipio());
+        this.txtCv.setText(modelo.getCv());
 
         if (modelo.getFoto() != null) {
 
@@ -619,7 +620,6 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                 modelo.setApMat(txtApMat.getText().trim());
                 modelo.setCorreoPer(txtCorreoPer.getText().trim());
                 modelo.setCorreoIns(txtCorreoIns.getText().trim());
-                modelo.setCv("------");
                 modelo.setCelular(txtCelular.getText().trim());
                 modelo.setEstado(txtEstado.getText().trim());
                 modelo.setMunicipio(txtMunicipio.getText().trim());
