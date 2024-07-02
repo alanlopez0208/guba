@@ -315,7 +315,6 @@ public class AgregarAlumnoForm extends javax.swing.JPanel {
         comboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-----------------", "Hombre", "Mujer" }));
         comboSexo.setToolTipText("");
 
-        txtGeneracion.setEditable(false);
         txtGeneracion.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         txtGeneracion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
