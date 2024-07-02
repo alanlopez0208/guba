@@ -2,6 +2,7 @@ package main;
 
 import componentes.Menu;
 import event.EventMenuSelected;
+
 import forms.MainForm;
 import forms.estudiantes.AgregarAlumnoForm;
 import forms.estudiantes.EditarEstudiante;
@@ -26,6 +27,7 @@ import forms.materias.AgregarMateria;
 import forms.materias.EditarMateria;
 import forms.materias.VerMateria;
 import forms.materias.VerMateriasForm;
+import forms.web.WebForm;
 
 import modelos.*;
 
@@ -203,6 +205,8 @@ public class Main extends javax.swing.JFrame {
             }
 
         });
+        
+        WebForm webForm = new WebForm();
 
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
@@ -292,6 +296,11 @@ public class Main extends javax.swing.JFrame {
                             main.showForm(agregarCarrera);
                         }
                     }
+                    
+                    
+                    case 10 ->{
+                        main.showForm(webForm);
+                    }
                     default -> {
                     }
                 }
@@ -311,6 +320,7 @@ public class Main extends javax.swing.JFrame {
         bg = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setExtendedState(7);
         setResizable(false);
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);

@@ -361,6 +361,7 @@ public class AgregarGrupo extends javax.swing.JPanel {
     private void buttonRounded3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRounded3ActionPerformed
 
         listaDeMaterias.removeAll(listaDeMaterias);
+        this.actualizarTabla();
     }//GEN-LAST:event_buttonRounded3ActionPerformed
 
 
