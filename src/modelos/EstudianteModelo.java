@@ -1,5 +1,6 @@
 package modelos;
 
+import java.util.Objects;
 import swim.tabla.AccionModelo;
 import swim.tabla.EventoAccion;
 
@@ -206,7 +207,97 @@ public class EstudianteModelo {
 
     @Override
     public String toString() {
-        return super.toString();
+        return this.getNombre() + " " + this.getApPaterno() + " " + this.getApMaterno();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.matricula);
+        hash = 67 * hash + Objects.hashCode(this.nombre);
+        hash = 67 * hash + Objects.hashCode(this.apPaterno);
+        hash = 67 * hash + Objects.hashCode(this.apMaterno);
+        hash = 67 * hash + Objects.hashCode(this.emailPersonal);
+        hash = 67 * hash + Objects.hashCode(this.emailInstitucional);
+        hash = 67 * hash + Objects.hashCode(this.generacion);
+        hash = 67 * hash + Objects.hashCode(this.numCelular);
+        hash = 67 * hash + Objects.hashCode(this.estado);
+        hash = 67 * hash + Objects.hashCode(this.municipio);
+        hash = 67 * hash + Objects.hashCode(this.escProcedencia);
+        hash = 67 * hash + Objects.hashCode(this.grado);
+        hash = 67 * hash + Objects.hashCode(this.grupo);
+        hash = 67 * hash + Objects.hashCode(this.Status);
+        hash = 67 * hash + Objects.hashCode(this.password);
+        hash = 67 * hash + Objects.hashCode(this.passwordTemporal);
+        hash = 67 * hash + Objects.hashCode(this.foto);
+        hash = 67 * hash + Objects.hashCode(this.sexo);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EstudianteModelo other = (EstudianteModelo) obj;
+        if (!Objects.equals(this.matricula, other.matricula)) {
+            return false;
+        }
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.apPaterno, other.apPaterno)) {
+            return false;
+        }
+        if (!Objects.equals(this.apMaterno, other.apMaterno)) {
+            return false;
+        }
+        if (!Objects.equals(this.emailPersonal, other.emailPersonal)) {
+            return false;
+        }
+        if (!Objects.equals(this.emailInstitucional, other.emailInstitucional)) {
+            return false;
+        }
+        if (!Objects.equals(this.generacion, other.generacion)) {
+            return false;
+        }
+        if (!Objects.equals(this.numCelular, other.numCelular)) {
+            return false;
+        }
+        if (!Objects.equals(this.estado, other.estado)) {
+            return false;
+        }
+        if (!Objects.equals(this.municipio, other.municipio)) {
+            return false;
+        }
+        if (!Objects.equals(this.escProcedencia, other.escProcedencia)) {
+            return false;
+        }
+        if (!Objects.equals(this.grado, other.grado)) {
+            return false;
+        }
+        if (!Objects.equals(this.grupo, other.grupo)) {
+            return false;
+        }
+        if (!Objects.equals(this.Status, other.Status)) {
+            return false;
+        }
+        if (!Objects.equals(this.password, other.password)) {
+            return false;
+        }
+        if (!Objects.equals(this.passwordTemporal, other.passwordTemporal)) {
+            return false;
+        }
+        if (!Objects.equals(this.foto, other.foto)) {
+            return false;
+        }
+        return Objects.equals(this.sexo, other.sexo);
     }
 
 }

@@ -1,5 +1,6 @@
-package forms.carreras;
+package forms.pagosAlumnos;
 
+import forms.carreras.*;
 import forms.materias.*;
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
@@ -8,20 +9,20 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.JOptionPane;
 import modelos.CarrerasModelo;
-import modelos.MateriaModelo;
-import operaciones.OpCarreras;
+import modelos.PagoAlumnosModelo;
+import operaciones.OpPagoAlumnos;
 
-public class VerCarrerasForm extends javax.swing.JPanel {
+public class VerPagosAlumnosForm extends javax.swing.JPanel {
 
     private EventoAbrirForm eventoForm;
-    private OpCarreras opCarreras;
+    private OpPagoAlumnos opPago;
     private EventoAccion accion;
 
-    public VerCarrerasForm() {
+    public VerPagosAlumnosForm() {
         initComponents();
         tabla1.setColumnEditor(4);
         tabla1.fixTable(jScrollPane1);
-        opCarreras = new OpCarreras();
+        opPago = new OpPagoAlumnos();
         iniciarTabla();
         comboFiltro.addItemListener(new ItemListener() {
             @Override
@@ -36,24 +37,23 @@ public class VerCarrerasForm extends javax.swing.JPanel {
     }
 
     private void iniciarTabla() {
-
         accion = new EventoAccion() {
             @Override
             public void ver(Object modelo) {
-                CarrerasModelo carrera = (CarrerasModelo) modelo;
-                eventoForm.abrirForm(carrera, 0);
+                PagoAlumnosModelo pago = (PagoAlumnosModelo) modelo;
+                eventoForm.abrirForm(pago, 0);
             }
 
             @Override
             public void borrar(Object modelo) {
-                CarrerasModelo carrera = (CarrerasModelo) modelo;
-                int response = JOptionPane.showConfirmDialog(null, "Estas Seguro en Elimnar a " + carrera.getNombre());
+                PagoAlumnosModelo pago = (PagoAlumnosModelo) modelo;
+                int response = JOptionPane.showConfirmDialog(null, "Estas Seguro en Elimnar a " + pago.getConcepto());
                 if (response == JOptionPane.OK_OPTION) {
 
-                    boolean seElimino = opCarreras.eliminarCarrera(carrera.getIdCarrera());
+                    boolean seElimino = opPago.deletePago(pago.getIdPago());
 
                     if (seElimino) {
-                        JOptionPane.showMessageDialog(null, "La materia se elimino con exito");
+                        JOptionPane.showMessageDialog(null, "El pago se elimino con exito");
                         actualizarTabla();
                         return;
 
@@ -64,8 +64,8 @@ public class VerCarrerasForm extends javax.swing.JPanel {
 
             @Override
             public void editar(Object modelo) {
-                CarrerasModelo carrera = (CarrerasModelo) modelo;
-                eventoForm.abrirForm(carrera, 1);
+                PagoAlumnosModelo pago = (PagoAlumnosModelo) modelo;
+                eventoForm.abrirForm(pago, 1);
             }
         };
         actualizarTabla();
@@ -74,7 +74,7 @@ public class VerCarrerasForm extends javax.swing.JPanel {
 
     public void actualizarTabla() {
         tabla1.clear();
-        ArrayList<CarrerasModelo> lista = opCarreras.getAllCarreras();
+        ArrayList<PagoAlumnosModelo> lista = opPago.getPagos();
 
         for (int i = 0; i < lista.size(); i++) {
             tabla1.addRow(lista.get(i).toRowTable(accion));
@@ -106,7 +106,7 @@ public class VerCarrerasForm extends javax.swing.JPanel {
         jLabel1.setBackground(new java.awt.Color(51, 51, 51));
         jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Materias:");
+        jLabel1.setText("Pagos:");
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -118,11 +118,11 @@ public class VerCarrerasForm extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Clave", "Nombre", "Creditos", "Modalidad", "Acciones"
+                "Nombre", "Fecha", "Cantidad", "Concepto", "Acciones"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                true, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -131,7 +131,9 @@ public class VerCarrerasForm extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tabla1);
         if (tabla1.getColumnModel().getColumnCount() > 0) {
+            tabla1.getColumnModel().getColumn(0).setResizable(false);
             tabla1.getColumnModel().getColumn(1).setMinWidth(300);
+            tabla1.getColumnModel().getColumn(2).setResizable(false);
             tabla1.getColumnModel().getColumn(4).setMinWidth(200);
         }
 
@@ -172,7 +174,7 @@ public class VerCarrerasForm extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Buscar por: ");
 
-        comboFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clave", "Nombre", "Creditos", "Modalidad" }));
+        comboFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fecha", "Cantidad", "Concepto" }));
 
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);
         myPanel2.setLayout(myPanel2Layout);
@@ -233,19 +235,16 @@ public class VerCarrerasForm extends javax.swing.JPanel {
             String where = "";
             switch (comboFiltro.getSelectedIndex()) {
                 case 0 -> {
-                    where = "Clave";
+                    where = "Fecha";
                 }
                 case 1 -> {
-                    where = "Nombre";
+                    where = "Cantidad";
                 }
                 case 2 -> {
-                    where = "Creditos";
-                }
-                case 3 -> {
-                    where = "Modalidad";
+                    where = "Concepto";
                 }
             }
-            ArrayList<CarrerasModelo> lista = opCarreras.buscarCarreras(where, txtBuscar.getText());
+            ArrayList<PagoAlumnosModelo> lista = opPago.buscarPagos(where, txtBuscar.getText());
             for (int i = 0; i < lista.size(); i++) {
                 tabla1.addRow(lista.get(i).toRowTable(accion));
             }

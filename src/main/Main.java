@@ -27,6 +27,10 @@ import forms.materias.AgregarMateria;
 import forms.materias.EditarMateria;
 import forms.materias.VerMateria;
 import forms.materias.VerMateriasForm;
+import forms.pagosAlumnos.AgregarPagoAlumno;
+import forms.pagosAlumnos.EditarPagoAlumno;
+import forms.pagosAlumnos.VerPagoAlumno;
+import forms.pagosAlumnos.VerPagosAlumnosForm;
 import forms.personal.AgregarPersonalForm;
 import forms.personal.EditarPersonalForm;
 import forms.personal.PersonalDatosForm;
@@ -49,7 +53,9 @@ public class Main extends javax.swing.JFrame {
     private VerMateriasForm verMaterias;
     private VerCarrerasForm verCarreras;
     private VerPersonalForm verPersonal;
-
+    private VerPagosAlumnosForm verPagosAlumnos;
+    
+    
     public Main() {
         initComponents();
         // Obtener el tamaño de la pantalla disponible
@@ -253,6 +259,40 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        
+        
+        verPagosAlumnos = new VerPagosAlumnosForm();
+        verPagosAlumnos.addEventoForm(new EventoAbrirForm() {
+            @Override
+            public void abrirForm(Object modelo, int index) {
+                PagoAlumnosModelo alumnoPago = (PagoAlumnosModelo) modelo;
+                
+                
+                if (index == 0) {
+                    VerPagoAlumno verPago = new VerPagoAlumno(alumnoPago);
+                    verPago.addEventoCerrar(new EventoCerrarForm() {
+                        @Override
+                        public void cerrarForm() {
+                            main.showForm(verPagosAlumnos);
+                        }
+                    });
+                    main.showForm(verPago);
+
+                } else if (index == 1) {
+                    EditarPagoAlumno editarPago = new EditarPagoAlumno(alumnoPago);
+                    editarPago.addEventoCerrar(new EventoCerrarForm() {
+                        @Override
+                        public void cerrarForm() {
+                            verPagosAlumnos.actualizarTabla();
+                            main.showForm(verPagosAlumnos);
+                        }
+                    });
+                    main.showForm(editarPago);
+                }
+            }
+
+        });
+        
         WebForm webForm = new WebForm();
 
         menu.addEventMenuSelected(new EventMenuSelected() {
@@ -356,6 +396,23 @@ public class Main extends javax.swing.JFrame {
                                 }
                             });
                             main.showForm(agregarPersonal);
+                        }
+                    }
+                    
+                     case 8 -> {
+                        if (subMenuIndex == 2) {
+                            main.showForm(verPagosAlumnos);
+                        } else if (subMenuIndex == 3) {
+                            AgregarPagoAlumno agregarPago = new AgregarPagoAlumno();
+                            agregarPago.addEventoCerrar(new EventoCerrarForm() {
+                                @Override
+                                public void cerrarForm() {
+                                    verPagosAlumnos.actualizarTabla();
+                                    main.showForm(verPagosAlumnos);
+                                }
+                            });
+
+                            main.showForm(agregarPago);
                         }
                     }
                     case 10 -> {

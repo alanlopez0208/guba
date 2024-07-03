@@ -10,20 +10,15 @@ import operaciones.conexion.Conexion;
 
 public class OpAlumno {
 
-    private Connection conn;
-
-    public OpAlumno() {
-        conn = new Conexion().connect();
-    }
-
     public ArrayList<EstudianteModelo> getEstudiantes() {
         ArrayList<EstudianteModelo> lista = new ArrayList<>();
         String sql = "SELECT * FROM Alumnos";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-
                 EstudianteModelo estudiante = mapResultSetToEstudiante(rs);
                 lista.add(estudiante);
             }
@@ -35,11 +30,13 @@ public class OpAlumno {
 
     public ArrayList<EstudianteModelo> buscarEstudiantes(String where, String filtro) {
         ArrayList<EstudianteModelo> resultados = new ArrayList<>();
-        String sql = "SELECT * "
-                + "FROM Alumnos WHERE " + where + " LIKE  ? ";
+        String sql = "SELECT * FROM Alumnos WHERE " + where + " LIKE ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, filtro + "%");
+
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     EstudianteModelo estudiante = mapResultSetToEstudiante(rs);
@@ -65,7 +62,6 @@ public class OpAlumno {
         estudiante.setEstado(rs.getString("Estado"));
         estudiante.setMunicipio(rs.getString("Municipio"));
         estudiante.setEscProcedencia(rs.getString("EscuelaProcedencia"));
-        estudiante.setMunicipio(rs.getString("Municipio"));
         estudiante.setGrado(rs.getString("GradoEstudios"));
         estudiante.setGrupo(rs.getString("IdGrupo"));
         estudiante.setStatus(rs.getString("Status"));
@@ -73,17 +69,20 @@ public class OpAlumno {
         estudiante.setPasswordTemporal(rs.getString("PasswordTemporal"));
         estudiante.setSexo(rs.getString("Genero"));
         estudiante.setFoto(rs.getString("Foto"));
+        
         return estudiante;
     }
 
     public boolean updateAlumno(EstudianteModelo estudianteModelo) {
         String sql = "UPDATE Alumnos SET Nombre = ?, ApellidoPaterno = ?, ApellidoMaterno = ?, CorreoPersonal = ?, "
                 + "CorreoInstitucional = ?, Generacion = ?, Celular = ?, Estado = ?, Municipio = ?, "
-                + "EscuelaProcedencia = ?, GradoEstudios = ?, IdGrupo = ?, Status = ?, Genero = ?"
+                + "EscuelaProcedencia = ?, GradoEstudios = ?, IdGrupo = ?, Status = ?, Genero = ? "
                 + (estudianteModelo.getFoto() != null ? ", Foto = ?" : "")
-                + "WHERE Matricula = ?";
+                + " WHERE Matricula = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, estudianteModelo.getNombre());
             pstmt.setString(2, estudianteModelo.getApPaterno());
             pstmt.setString(3, estudianteModelo.getApMaterno());
@@ -98,6 +97,7 @@ public class OpAlumno {
             pstmt.setString(12, estudianteModelo.getGrupo());
             pstmt.setString(13, estudianteModelo.getStatus());
             pstmt.setString(14, estudianteModelo.getSexo());
+
             if (estudianteModelo.getFoto() != null) {
                 pstmt.setString(15, estudianteModelo.getFoto());
                 pstmt.setString(16, estudianteModelo.getMatricula());
@@ -115,7 +115,9 @@ public class OpAlumno {
     public boolean deleteAlumno(String matricula) {
         String sql = "DELETE FROM Alumnos WHERE Matricula = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, matricula);
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
@@ -124,14 +126,15 @@ public class OpAlumno {
         }
     }
 
-    public EstudianteModelo returEstudiante(String matricula) {
-        String sql = "SELECT IdAlumno, Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, CorreoInstitucional, "
-                + "Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status "
-                + "FROM Alumnos WHERE Matricula = ?";
+    public EstudianteModelo getEstudiante(String matricula) {
+        String sql = "SELECT * FROM Alumnos WHERE Matricula = ?";
         EstudianteModelo estudiante = null;
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, matricula);
+
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     estudiante = mapResultSetToEstudiante(rs);
@@ -143,13 +146,14 @@ public class OpAlumno {
         return estudiante;
     }
 
-    // Método para agregar un nuevo alumno11
     public boolean crearAlumno(EstudianteModelo estudianteModelo) {
         String sql = "INSERT INTO Alumnos (Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, "
-                + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, PasswordTemporal, Genero" + (estudianteModelo.getFoto() != null ? ",Foto " : "") + " )"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" + (estudianteModelo.getFoto() != null ? ",?" : "") + ")";
+                + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, Genero"
+                + (estudianteModelo.getFoto() != null ? ", Foto" : "") + ") "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" + (estudianteModelo.getFoto() != null ? ", ?" : "") + ")";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, estudianteModelo.getMatricula());
             pstmt.setString(2, estudianteModelo.getNombre());
@@ -165,10 +169,10 @@ public class OpAlumno {
             pstmt.setString(12, estudianteModelo.getGrado());
             pstmt.setString(13, estudianteModelo.getGrupo());
             pstmt.setString(14, estudianteModelo.getStatus());
-            pstmt.setString(15, estudianteModelo.getMatricula());
-            pstmt.setString(16, estudianteModelo.getSexo());
+            pstmt.setString(15, estudianteModelo.getSexo());
+
             if (estudianteModelo.getFoto() != null) {
-                pstmt.setString(17, estudianteModelo.getFoto());
+                pstmt.setString(16, estudianteModelo.getFoto());
             }
 
             int affectedRows = pstmt.executeUpdate();
