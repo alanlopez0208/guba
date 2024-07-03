@@ -27,6 +27,10 @@ import forms.materias.AgregarMateria;
 import forms.materias.EditarMateria;
 import forms.materias.VerMateria;
 import forms.materias.VerMateriasForm;
+import forms.personal.AgregarPersonalForm;
+import forms.personal.EditarPersonalForm;
+import forms.personal.PersonalDatosForm;
+import forms.personal.VerPersonalForm;
 import forms.web.WebForm;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -44,10 +48,11 @@ public class Main extends javax.swing.JFrame {
     private VerGruposForm verGrupos;
     private VerMateriasForm verMaterias;
     private VerCarrerasForm verCarreras;
+    private VerPersonalForm verPersonal;
 
     public Main() {
         initComponents();
-         // Obtener el tamaño de la pantalla disponible
+        // Obtener el tamaño de la pantalla disponible
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         // Configurar el tamaño del JFrame
@@ -168,7 +173,7 @@ public class Main extends javax.swing.JFrame {
                     verMateria.addEventoCerrar(new EventoCerrarForm() {
                         @Override
                         public void cerrarForm() {
-                          
+
                             main.showForm(verMaterias);
                         }
 
@@ -188,7 +193,7 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         });
-        
+
         verCarreras = new VerCarrerasForm();
         verCarreras.addEventoForm(new EventoAbrirForm() {
             @Override
@@ -203,7 +208,7 @@ public class Main extends javax.swing.JFrame {
                         }
                     });
                     main.showForm(verCarrera);
-                    
+
                 } else if (index == 1) {
                     EditarCarrera editarCarrer = new EditarCarrera(carrera);
                     editarCarrer.addEventoCerrar(new EventoCerrarForm() {
@@ -218,7 +223,36 @@ public class Main extends javax.swing.JFrame {
             }
 
         });
-        
+
+        verPersonal = new VerPersonalForm();
+        verPersonal.addEventoForm(new EventoAbrirForm() {
+            @Override
+            public void abrirForm(Object modelo, int index) {
+                if (index == 0) {
+                    PersonalDatosForm personal = new PersonalDatosForm((PersonalModelo) modelo, new EventoCerrarForm() {
+                        @Override
+                        public void cerrarForm() {
+                            verPersonal.actualizarTabla();
+                            main.showForm(verPersonal);
+                        }
+                    });
+                    main.showForm(personal);
+                }
+
+                if (index == 1) {
+                    EditarPersonalForm editarPersonal = new EditarPersonalForm((PersonalModelo) modelo);
+                    editarPersonal.addEvento(new EventoCerrarForm() {
+                        @Override
+                        public void cerrarForm() {
+                            verPersonal.actualizarTabla();
+                            main.showForm(verPersonal);
+                        }
+                    });
+                    main.showForm(editarPersonal);
+                }
+            }
+        });
+
         WebForm webForm = new WebForm();
 
         menu.addEventMenuSelected(new EventMenuSelected() {
@@ -276,11 +310,11 @@ public class Main extends javax.swing.JFrame {
                             main.showForm(agregarGrupo);
                         }
                     }
-                    
-                    case 4->{
-                        if(subMenuIndex ==2){
+
+                    case 4 -> {
+                        if (subMenuIndex == 2) {
                             main.showForm(verMaterias);
-                        }else if(subMenuIndex == 3){
+                        } else if (subMenuIndex == 3) {
                             AgregarMateria agregarMateria = new AgregarMateria();
                             agregarMateria.addEventoCerrar(new EventoCerrarForm() {
                                 @Override
@@ -289,14 +323,14 @@ public class Main extends javax.swing.JFrame {
                                     main.showForm(verMaterias);
                                 }
                             });
-                            
+
                             main.showForm(agregarMateria);
                         }
                     }
-                    case 5->{
-                        if(subMenuIndex ==2){
+                    case 5 -> {
+                        if (subMenuIndex == 2) {
                             main.showForm(verCarreras);
-                        }else if(subMenuIndex == 3){
+                        } else if (subMenuIndex == 3) {
                             AgregarCarrera agregarCarrera = new AgregarCarrera();
                             agregarCarrera.addEventoCerrar(new EventoCerrarForm() {
                                 @Override
@@ -305,13 +339,26 @@ public class Main extends javax.swing.JFrame {
                                     main.showForm(verCarreras);
                                 }
                             });
-                            
+
                             main.showForm(agregarCarrera);
                         }
                     }
-                    
-                    
-                    case 10 ->{
+
+                    case 7 -> {
+                        if (subMenuIndex == 2) {
+                            main.showForm(verPersonal);
+                        } else if (subMenuIndex == 3) {
+                            AgregarPersonalForm agregarPersonal = new AgregarPersonalForm(new EventoCerrarForm() {
+                                @Override
+                                public void cerrarForm() {
+                                    verPersonal.actualizarTabla();
+                                    main.showForm(verPersonal);
+                                }
+                            });
+                            main.showForm(agregarPersonal);
+                        }
+                    }
+                    case 10 -> {
                         main.showForm(webForm);
                     }
                     default -> {

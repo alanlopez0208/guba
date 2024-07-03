@@ -51,11 +51,10 @@ public class Menu extends javax.swing.JPanel {
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/6.png")), "Estudiantes", "Ver Estudiantes", "Agregar Alumno"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/5.png")), "Maestros", "Ver Docentes", "Agregar Docentes"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/grupo.png")), "Grupos", "Ver Grupos", "Añadir Grupos"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/9.png")), "Materias", "Ver Materias", "Añadir Materias"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/materia.png")), "Materias", "Ver Materias", "Añadir Materias"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/9.png")), "Carreras", "Ver Carreras", "Añadir Carreras"));
-
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Calificaciones"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Personal"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/5.png")), "Personal","Ver Personal", "Añadir Personal"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Pagos Alumnos"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Pagos Maestros"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/2.png")), "Web"));

@@ -1,22 +1,22 @@
-package forms.maestros;
+package forms.personal;
 
+import event.EventoCerrarForm;
 import java.awt.Image;
-import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import modelos.MaestroModelo;
+import modelos.PersonalModelo;
 
-public class MaestroDatosForm extends javax.swing.JPanel {
+public class PersonalDatosForm extends javax.swing.JPanel {
 
-    MaestroModelo modelo;
+    PersonalModelo modelo;
+    EventoCerrarForm evento;
 
-    public MaestroDatosForm(MaestroModelo modelo) {
+    public PersonalDatosForm(PersonalModelo modelo, EventoCerrarForm evento) {
         initComponents();
         this.modelo = modelo;
+        this.evento = evento;
         init();
     }
 
@@ -26,7 +26,7 @@ public class MaestroDatosForm extends javax.swing.JPanel {
         this.txtApPat.setText(modelo.getApPat());
         this.txtApMat.setText(modelo.getApMat());
 
-        this.txtGrado.setText(modelo.getGrado());
+        this.txtMatricula.setText(modelo.getMatricula());
         this.txtCurp.setText(modelo.getCurp());
         this.txtDomicilio.setText(modelo.getDomicilio());
         this.txtCorreoIns.setText(modelo.getCorreoIns());
@@ -46,7 +46,7 @@ public class MaestroDatosForm extends javax.swing.JPanel {
             Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(200, 240, Image.SCALE_REPLICATE));
             txtFoto.setIcon(iconoBack);
         }
-        txtCv.setText(modelo.getCv());
+       
 
     }
 
@@ -141,17 +141,15 @@ public class MaestroDatosForm extends javax.swing.JPanel {
         txtApMat = new javax.swing.JTextField();
         jSeparator4 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
-        txtGrado = new javax.swing.JTextField();
+        txtMatricula = new javax.swing.JTextField();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
         comboSexo = new javax.swing.JComboBox<>();
-        jLabel18 = new javax.swing.JLabel();
-        txtCv = new javax.swing.JTextField();
-        buscarCv = new swim.botones.ButtonRounded();
         jSeparator13 = new javax.swing.JSeparator();
         txtCurp = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         txtFoto = new javax.swing.JLabel();
+        buttonBack = new javax.swing.JButton();
 
         myPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -267,12 +265,12 @@ public class MaestroDatosForm extends javax.swing.JPanel {
 
         jLabel2.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel2.setText("Grado:");
+        jLabel2.setText("Matricula:");
 
-        txtGrado.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        txtGrado.addActionListener(new java.awt.event.ActionListener() {
+        txtMatricula.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtMatricula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtGradoActionPerformed(evt);
+                txtMatriculaActionPerformed(evt);
             }
         });
 
@@ -282,20 +280,6 @@ public class MaestroDatosForm extends javax.swing.JPanel {
 
         comboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--------", "Hombre", "Mujer" }));
         comboSexo.setToolTipText("");
-
-        jLabel18.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel18.setText("C.V:");
-
-        txtCv.setEditable(false);
-
-        buscarCv.setBackground(new java.awt.Color(204, 255, 255));
-        buscarCv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/abierto.png"))); // NOI18N
-        buscarCv.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buscarCvActionPerformed(evt);
-            }
-        });
 
         txtCurp.setEditable(false);
         txtCurp.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -318,7 +302,7 @@ public class MaestroDatosForm extends javax.swing.JPanel {
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(myPanel1Layout.createSequentialGroup()
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel2)
                                 .addComponent(jLabel8)
@@ -393,7 +377,7 @@ public class MaestroDatosForm extends javax.swing.JPanel {
                                             .addComponent(jLabel16)
                                             .addComponent(txtApPat, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                                             .addComponent(jSeparator3))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel17)
                                     .addComponent(txtApMat, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
@@ -403,13 +387,7 @@ public class MaestroDatosForm extends javax.swing.JPanel {
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
-                                .addComponent(jLabel18)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtCv, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buscarCv, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(96, 96, 96))))))
+                                .addGap(96, 535, Short.MAX_VALUE))))))
         );
         myPanel1Layout.setVerticalGroup(
             myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -442,21 +420,14 @@ public class MaestroDatosForm extends javax.swing.JPanel {
                         .addComponent(txtApMat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(22, 22, 22)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(buscarCv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(42, 42, 42)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -508,26 +479,45 @@ public class MaestroDatosForm extends javax.swing.JPanel {
         txtFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/profile.png"))); // NOI18N
 
+        buttonBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/back.png"))); // NOI18N
+        buttonBack.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        buttonBack.setBorderPainted(false);
+        buttonBack.setOpaque(true);
+        buttonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(buttonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(txtFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(buttonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(txtFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -563,32 +553,21 @@ public class MaestroDatosForm extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRfcActionPerformed
 
-    private void txtGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGradoActionPerformed
+    private void txtMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatriculaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtGradoActionPerformed
-
-    private void buscarCvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarCvActionPerformed
-        if (modelo.getCv().equals("------")) {
-            return;
-        }
-        ProcessBuilder p = new ProcessBuilder();
-        try {
-            p.command("cmd.exe", "/c", "start", modelo.getCv());
-            p.start();
-            System.out.println("ABRIENDOOO");
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-
-    }//GEN-LAST:event_buscarCvActionPerformed
+    }//GEN-LAST:event_txtMatriculaActionPerformed
 
     private void txtCurpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCurpActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCurpActionPerformed
 
+    private void buttonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackActionPerformed
+        evento.cerrarForm();
+    }//GEN-LAST:event_buttonBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private swim.botones.ButtonRounded buscarCv;
+    private javax.swing.JButton buttonBack;
     private javax.swing.JComboBox<String> comboSexo;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -598,7 +577,6 @@ public class MaestroDatosForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
@@ -623,11 +601,10 @@ public class MaestroDatosForm extends javax.swing.JPanel {
     private javax.swing.JTextField txtCorreoIns;
     private javax.swing.JTextField txtCorreoPer;
     private javax.swing.JTextField txtCurp;
-    private javax.swing.JTextField txtCv;
     private javax.swing.JTextField txtDomicilio;
     private javax.swing.JTextField txtEstado;
     private javax.swing.JLabel txtFoto;
-    private javax.swing.JTextField txtGrado;
+    private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtMunicipio;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtRfc;

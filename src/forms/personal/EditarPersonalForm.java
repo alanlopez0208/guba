@@ -1,5 +1,6 @@
-package forms.maestros;
+package forms.personal;
 
+import forms.maestros.*;
 import dialogs.CamaraDialog;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,33 +21,33 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import modelos.MaestroModelo;
-import operaciones.OpMaestro;
+import modelos.PersonalModelo;
+import operaciones.OpPersonal;
 import swim.Imagen;
 
-public class EditarMaestroForm extends javax.swing.JPanel {
+public class EditarPersonalForm extends javax.swing.JPanel {
 
-    private MaestroModelo modelo;
+    private PersonalModelo modelo;
     private EventoCerrarForm evento;
-    private OpMaestro opMaestro;
+    private OpPersonal opPersonal;
     private BufferedImage img;
     private Imagen imagen;
     private File pdf;
 
-    public EditarMaestroForm(MaestroModelo modelo) {
+    public EditarPersonalForm(PersonalModelo modelo) {
         initComponents();
         this.modelo = modelo;
         init();
     }
 
     private void init() {
-        opMaestro = new OpMaestro();
+        opPersonal = new OpPersonal();
         this.txtRfc.setText(modelo.getRfc());
         this.txtNombre.setText(modelo.getNombre());
         this.txtApPat.setText(modelo.getApPat());
         this.txtApMat.setText(modelo.getApMat());
 
-        this.txtGrado.setText(modelo.getGrado());
+        this.txtMatricula.setText(modelo.getMatricula());
         this.txtDomicilio.setText(modelo.getDomicilio());
         this.txtCurp.setText(modelo.getCurp());
         this.txtCorreoIns.setText(modelo.getCorreoIns());
@@ -55,7 +56,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         this.txtCelular.setText(modelo.getCelular());
         this.txtEstado.setText(modelo.getEstado());
         this.txtMunicipio.setText(modelo.getMunicipio());
-        this.txtCv.setText(modelo.getCv());
+      
 
         if (modelo.getFoto() != null) {
 
@@ -120,7 +121,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Ingrese el Estado");
             return false;
         }
-        if (txtGrado.getText().trim().isEmpty()) {
+        if (txtMatricula.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ingrese el grado de estudios");
             return false;
         }
@@ -184,13 +185,10 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtGrado = new javax.swing.JTextField();
+        txtMatricula = new javax.swing.JTextField();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
         comboSexo = new javax.swing.JComboBox<>();
-        jLabel17 = new javax.swing.JLabel();
-        txtCv = new javax.swing.JTextField();
-        buscarCv = new swim.botones.ButtonRounded();
         jLabel18 = new javax.swing.JLabel();
         jSeparator13 = new javax.swing.JSeparator();
         txtCurp = new javax.swing.JTextField();
@@ -297,12 +295,12 @@ public class EditarMaestroForm extends javax.swing.JPanel {
 
         jLabel2.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel2.setText("Grado:");
+        jLabel2.setText("Matricula:");
 
-        txtGrado.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        txtGrado.addActionListener(new java.awt.event.ActionListener() {
+        txtMatricula.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtMatricula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtGradoActionPerformed(evt);
+                txtMatriculaActionPerformed(evt);
             }
         });
 
@@ -315,20 +313,6 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         comboSexo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboSexoActionPerformed(evt);
-            }
-        });
-
-        jLabel17.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel17.setText("C.V:");
-
-        txtCv.setEditable(false);
-
-        buscarCv.setBackground(new java.awt.Color(0, 51, 51));
-        buscarCv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/14.png"))); // NOI18N
-        buscarCv.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buscarCvActionPerformed(evt);
             }
         });
 
@@ -384,11 +368,10 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                             .addComponent(jSeparator7)
                             .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jSeparator13)
-                                .addComponent(txtCurp)
-                                .addComponent(txtGrado, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
-                                .addComponent(jSeparator5))
+                            .addComponent(jSeparator13)
+                            .addComponent(txtCurp)
+                            .addComponent(txtMatricula, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                            .addComponent(jSeparator5)
                             .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -398,19 +381,13 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                             .addComponent(txtCorreoIns, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCorreoPer, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtDomicilio, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 156, Short.MAX_VALUE))
                     .addGroup(myPanel1Layout.createSequentialGroup()
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(myPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(32, 32, 32)
-                                .addComponent(jLabel17)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCv, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buscarCv, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(myPanel1Layout.createSequentialGroup()
                                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -459,18 +436,11 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(buscarCv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(myPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -489,7 +459,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                         .addGap(34, 34, 34)
                         .addComponent(jLabel11))
                     .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -620,7 +590,7 @@ public class EditarMaestroForm extends javax.swing.JPanel {
 
     private void EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarActionPerformed
         if (esValido()) {
-            int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de actualizar al alumno : " + txtNombre.getText() + " con matricula: " + txtRfc.getText() + " ?");
+            int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de actualizar al personal : " + txtNombre.getText() + " con matricula: " + txtRfc.getText() + " ?");
 
             if (option == JOptionPane.OK_OPTION) {
 
@@ -635,9 +605,10 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                 modelo.setMunicipio(txtMunicipio.getText().trim());
                 modelo.setDomicilio(txtDomicilio.getText().trim());
                 modelo.setCurp(txtCurp.getText().trim());
-                modelo.setGrado(txtGrado.getText().trim());
+                modelo.setMatricula(txtMatricula.getText().trim());
                 modelo.setPasswordTemp(txtRfc.getText().trim());
                 modelo.setGenero(comboSexo.getSelectedItem().toString());
+           
                 if (img != null) {
                     try {
                         File outputFile = new File("C:\\Guba\\" + txtRfc.getText() + ".jpg");
@@ -648,28 +619,11 @@ public class EditarMaestroForm extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(null, "Error al querer insertar Imagen: " + ex.getMessage());
                     }
                 }
-                if (pdf != null) {
-                      String destino = "C:\\Guba\\CV\\" + modelo.getRfc() + ".pdf";
-                    Path pathDestino = Paths.get(destino);
+               
 
-                    String origen = pdf.getPath();
-                    Path pathOrigen = Paths.get(origen);
-                    
-                    
-                    
-                    modelo.setCv(destino);
-
-                    try {
-                        Files.copy(pathOrigen, pathDestino);
-                    } catch (IOException ex) {
-                        Logger.getLogger(AgregarMaestroForm.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
-
-                boolean agregar = opMaestro.updateDocente(modelo);
+                boolean agregar = opPersonal.updatePersonal(modelo);
                 if (agregar) {
-                    JOptionPane.showMessageDialog(null, "Docente Correctamente Actualizado");
+                    JOptionPane.showMessageDialog(null, "Personal Correctamente Actualizado");
                     evento.cerrarForm();
                 } else {
                     JOptionPane.showMessageDialog(null, "No se pudo agregar");
@@ -678,26 +632,9 @@ public class EditarMaestroForm extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_EditarActionPerformed
 
-    private void buscarCvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarCvActionPerformed
+    private void txtMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatriculaActionPerformed
         // TODO add your handling code here:
-
-        JFileChooser cvChooser = new JFileChooser();
-
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter(
-                "PDF", "pdf");
-        cvChooser.setFileFilter(filtro);
-
-        int returnVal = cvChooser.showOpenDialog(null);
-
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            txtCv.setText(cvChooser.getSelectedFile().getName());
-            pdf = cvChooser.getSelectedFile();
-        }
-    }//GEN-LAST:event_buscarCvActionPerformed
-
-    private void txtGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGradoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtGradoActionPerformed
+    }//GEN-LAST:event_txtMatriculaActionPerformed
 
     private void txtMunicipioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMunicipioActionPerformed
         // TODO add your handling code here:
@@ -816,7 +753,6 @@ public class EditarMaestroForm extends javax.swing.JPanel {
     private swim.botones.ButtonRounded Editar;
     private swim.botones.ButtonRounded btnArchivos;
     private swim.botones.ButtonRounded btnCamara;
-    private swim.botones.ButtonRounded buscarCv;
     private swim.botones.ButtonRounded buttonRounded1;
     private javax.swing.JComboBox<String> comboSexo;
     private javax.swing.JLabel jLabel10;
@@ -826,7 +762,6 @@ public class EditarMaestroForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
@@ -852,11 +787,10 @@ public class EditarMaestroForm extends javax.swing.JPanel {
     private javax.swing.JTextField txtCorreoIns;
     private javax.swing.JTextField txtCorreoPer;
     private javax.swing.JTextField txtCurp;
-    private javax.swing.JTextField txtCv;
     private javax.swing.JTextField txtDomicilio;
     private javax.swing.JTextField txtEstado;
     private javax.swing.JLabel txtFoto;
-    private javax.swing.JTextField txtGrado;
+    private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtMunicipio;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtRfc;

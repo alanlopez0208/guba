@@ -1,4 +1,4 @@
-package forms.maestros;
+package forms.personal;
 
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
@@ -6,16 +6,16 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import modelos.MaestroModelo;
-import operaciones.OpMaestro;
+import modelos.PersonalModelo;
+import operaciones.OpPersonal;
 
-public class VerMaestrosForm extends javax.swing.JPanel {
+public class VerPersonalForm extends javax.swing.JPanel {
 
     private EventoAbrirForm eventoForm;
-    private OpMaestro opMaestro;
+    private OpPersonal opPersonal;
     private EventoAccion accion;
 
-    public VerMaestrosForm() {
+    public VerPersonalForm() {
         initComponents();
         tabla1.setColumnEditor(4);
         tabla1.fixTable(jScrollPane1);
@@ -28,27 +28,26 @@ public class VerMaestrosForm extends javax.swing.JPanel {
                     actualizarTabla();
                 }
             }
-
         });
     }
 
     private void iniciarTabla() {
-        opMaestro = new OpMaestro();
+        opPersonal = new OpPersonal();
         accion = new EventoAccion() {
             @Override
             public void ver(Object modelo) {
-                MaestroModelo maestro = (MaestroModelo) modelo;
+                PersonalModelo personal = (PersonalModelo) modelo;
                 eventoForm.abrirForm(modelo, 0);
             }
 
             @Override
             public void borrar(Object modelo) {
-                MaestroModelo maestro = (MaestroModelo) modelo;
-                int response = JOptionPane.showConfirmDialog(null, "Estas Seguro en Elimnar a " + maestro.getNombre() + " " + " " + maestro.getApPat() + " con RFC: " + maestro.getRfc());
+                PersonalModelo personal = (PersonalModelo) modelo;
+                int response = JOptionPane.showConfirmDialog(null, "Estas Seguro en Elimnar a " + personal.getNombre() + " " + " " + personal.getApPat() + " con RFC: " + personal.getRfc());
                 if (response == JOptionPane.OK_OPTION) {
-                    opMaestro.deleteDocente(maestro.getRfc());
+                    opPersonal.deletePersonal(personal.getRfc());
 
-                    JOptionPane.showMessageDialog(null, "El alumno se ha eliminado con exito");
+                    JOptionPane.showMessageDialog(null, "El personal se ha eliminado con exito");
                     actualizarTabla();
                 }
             }
@@ -70,7 +69,7 @@ public class VerMaestrosForm extends javax.swing.JPanel {
         }
         tabla1.clear();
 
-        ArrayList<MaestroModelo> lista = opMaestro.getDocentes();
+        ArrayList<PersonalModelo> lista = opPersonal.getPersonales();
 
         lista.forEach((docente) -> {
             tabla1.addRow(docente.toRowTable(accion));
@@ -100,7 +99,7 @@ public class VerMaestrosForm extends javax.swing.JPanel {
         jLabel1.setBackground(new java.awt.Color(51, 51, 51));
         jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Maestros:");
+        jLabel1.setText("Personal:");
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -234,7 +233,7 @@ public class VerMaestrosForm extends javax.swing.JPanel {
                     where = "ApellidoMaterno";
                 }
             }
-            ArrayList<MaestroModelo> lista = opMaestro.buscarDocentes(where, txtBuscar.getText().trim());
+            ArrayList<PersonalModelo> lista = opPersonal.buscarPersonales(where, txtBuscar.getText().trim());
 
             lista.forEach((docente) -> {
                 tabla1.addRow(docente.toRowTable(accion));

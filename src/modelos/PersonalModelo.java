@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import swim.tabla.AccionModelo;
 import swim.tabla.EventoAccion;
 
+public class PersonalModelo {
 
-public class MaestroModelo {
     private String rfc;
     private String curp;
-    private String apPat;
     private String nombre;
+    private String apPat;
     private String apMat;
     private String genero;
     private String correoPer;
@@ -18,21 +18,18 @@ public class MaestroModelo {
     private String celular;
     private String estado;
     private String municipio;
-    private String cv;
-    private String grado;
-    private String passwordTemp;
+    private String matricula;
+    private String password;
     private String foto;
-    
-    ArrayList<MateriaModelo> materias;
 
-    public MaestroModelo() {
+    public PersonalModelo() {
     }
-    
-    public MaestroModelo(String rfc, String curp, String apPat, String nombre, String apMat, String genero, String correoPer, String correoIns, String domicilio, String celular, String estado, String municipio, String cv, String grado) {
+
+    public PersonalModelo(String rfc, String curp, String nombre, String apPat, String apMat, String genero, String correoPer, String correoIns, String domicilio, String celular, String estado, String municipio, String matricula, String password, String foto) {
         this.rfc = rfc;
         this.curp = curp;
-        this.apPat = apPat;
         this.nombre = nombre;
+        this.apPat = apPat;
         this.apMat = apMat;
         this.genero = genero;
         this.correoPer = correoPer;
@@ -41,26 +38,9 @@ public class MaestroModelo {
         this.celular = celular;
         this.estado = estado;
         this.municipio = municipio;
-        this.cv = cv;
-        this.grado = grado;
-    }
-
-    public MaestroModelo(String rfc, String curp, String apPat, String nombre, String apMat, String genero, String correoPer, String correoIns, String domicilio, String celular, String estado, String municipio, String cv, String grado, ArrayList<MateriaModelo> materias) {
-        this.rfc = rfc;
-        this.curp = curp;
-        this.apPat = apPat;
-        this.nombre = nombre;
-        this.apMat = apMat;
-        this.genero = genero;
-        this.correoPer = correoPer;
-        this.correoIns = correoIns;
-        this.domicilio = domicilio;
-        this.celular = celular;
-        this.estado = estado;
-        this.municipio = municipio;
-        this.cv = cv;
-        this.grado = grado;
-        this.materias = materias;
+        this.matricula = matricula;
+        this.password = password;
+        this.foto = foto;
     }
 
 
@@ -152,21 +132,6 @@ public class MaestroModelo {
         this.municipio = municipio;
     }
 
-    public String getCv() {
-        return cv;
-    }
-
-    public void setCv(String cv) {
-        this.cv = cv;
-    }
-
-    public String getGrado() {
-        return grado;
-    }
-
-    public void setGrado(String grado) {
-        this.grado = grado;
-    }
 
     public String getNombre() {
         return nombre;
@@ -175,14 +140,13 @@ public class MaestroModelo {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
+
     public String getPasswordTemp() {
-        return passwordTemp;
+        return password;
     }
 
     public void setPasswordTemp(String passwordTemp) {
-        this.passwordTemp = passwordTemp;
+        this.password = passwordTemp;
     }
 
     public String getFoto() {
@@ -192,9 +156,27 @@ public class MaestroModelo {
     public void setFoto(String foto) {
         this.foto = foto;
     }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
-    public Object[] toRowTable(EventoAccion evento){
-             return new Object[]{this.getRfc(), this.getNombre(), this.getApPat(), this.getApMat(), new AccionModelo(this, evento)};
-   
+    
+
+    public Object[] toRowTable(EventoAccion evento) {
+        return new Object[]{this.getRfc(), this.getNombre(), this.getApPat(), this.getApMat(), new AccionModelo(this, evento)};
+
     }
 }
