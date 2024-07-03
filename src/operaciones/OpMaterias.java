@@ -71,7 +71,7 @@ public class OpMaterias {
     }
 
     public boolean insertMateria(MateriaModelo materia) {
-        String sentencia = "INSERT INTO MATERIAS (Nombre, HBCA, HTI, Semestre, Creditos, IdCarrera, Clave) VALUES (?,?,?,?,?,?,?)";
+        String sentencia = "INSERT INTO MATERIAS (Nombre, HBCA, HTI, Semestre, Creditos, IdCarrera, Clave, Modalidad ) VALUES (?,?,?,?,?,?,?,?)";
         //  String sentencia = "UPDATE Materias set Nombre = ?, HBCA = ?, HTI = ? , Semestre = ? , Creditos = ? , IdCarrera = ? WHERE IdMateria = ?";
         try {
             conn = new Conexion().connect();
@@ -83,6 +83,7 @@ public class OpMaterias {
             pstmt.setString(5, materia.getCreditos());
             pstmt.setString(6, materia.getCarrera());
             pstmt.setString(7, materia.getClave());
+            pstmt.setString(8, materia.getModalidad());
             int rowAfecteds = pstmt.executeUpdate();
             conn.close();
             return rowAfecteds > 0;
@@ -95,7 +96,7 @@ public class OpMaterias {
     //Actualizar Mateira 
     public boolean updateMateria(MateriaModelo materia) {
         //  String sentencia = "INSERT INTO MATERIAS (Nombre, HBCA, HTI, Semestre, Creditos, IdCarrera) VALUES (?,?,?,?,?,?)";
-        String sentencia = "UPDATE Materias set Nombre = ?, HBCA = ?, HTI = ? , Semestre = ? , Creditos = ? , IdCarrera = ?, Clave = ? WHERE IdMateria = ?";
+        String sentencia = "UPDATE Materias set Nombre = ?, HBCA = ?, HTI = ? , Semestre = ? , Creditos = ? , IdCarrera = ?, Clave = ? , Modalidad = ? WHERE IdMateria = ?";
         try {
             conn = new Conexion().connect();
             PreparedStatement pstmt = conn.prepareStatement(sentencia);
@@ -106,7 +107,8 @@ public class OpMaterias {
             pstmt.setString(5, materia.getCreditos());
             pstmt.setString(6, materia.getCarrera());
             pstmt.setString(7, materia.getClave());
-            pstmt.setString(8, materia.getIdMateria());
+            pstmt.setString(8, materia.getModalidad());
+            pstmt.setString(9, materia.getIdMateria());
 
             int rowAfecteds = pstmt.executeUpdate();
             conn.close();
@@ -119,8 +121,8 @@ public class OpMaterias {
 
     // Método para mapear un ResultSet a un objeto MateriaModelo
     private MateriaModelo mapResultSetToMateria(ResultSet rs) throws SQLException {
-        MateriaModelo materia = new MateriaModelo();
 
+        MateriaModelo materia = new MateriaModelo();
         materia.setNombre(rs.getString("Nombre"));
         materia.setIdMateria(rs.getString("IdMateria"));
         materia.setHcba(rs.getString("HBCA"));
@@ -129,7 +131,43 @@ public class OpMaterias {
         materia.setCreditos(rs.getString("Creditos"));
         materia.setCarrera(rs.getString("IdCarrera"));
         materia.setClave(rs.getString("Clave"));
+        materia.setModalidad(rs.getString("Modalidad"));
         return materia;
+    }
+
+    public ArrayList<MateriaModelo> buscarMaterias(String where, String filtro) {
+        ArrayList<MateriaModelo> resultados = new ArrayList<>();
+        String sql = "SELECT * FROM Materias WHERE " + where + " LIKE ?";
+
+        conn = new Conexion().connect();
+
+        if (conn == null) {
+            throw new RuntimeException("No se pudo conectar a la base de datos");
+        }
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, filtro + "%");
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    MateriaModelo materia = mapResultSetToMateria(rs);
+                    resultados.add(materia);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al buscar las materias", e);
+        } finally {
+
+            try {
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return resultados;
     }
 
     /**

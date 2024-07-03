@@ -1,3 +1,5 @@
+package operaciones;
+
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
@@ -8,34 +10,40 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class FTPDownloader {
 
     private static final Logger LOGGER = Logger.getLogger(FTPDownloader.class.getName());
 
-    /**
-     * 
-     *
-     * @param ftpServer Servidor FTP
-     * @param user Usuario
-     * @param password Contraseña
-     * @param remoteFilePath Ruta del archivo en el servidor FTP
-     * @param localDir Directorio local donde se guardará el archivo descargado
-     * @param useBinary Usar modo de transferencia binaria
-     */
-    public static void downloadFile(String ftpServer, String user, String password, String remoteFilePath, String localDir, boolean useBinary) {
+    // Configuración del servidor FTP
+    private String ftpServer = "ftp.gubaescolares.com";
+    private String user = "subir@gubaescolares.com";
+    private String password = "p_WyU)p}&shG";
+    private String remoteDir = "BDGUBA - copia.db";
+    private String localDir = "C:\\Users\\jesus\\Documents\\NetBeansProjects\\guba\\BD\\";
+    private boolean useBinary = true;
+
+    public FTPDownloader() {
+        // Constructor por defecto
+    }
+
+    public void downloadFile() {
         FTPClient ftpClient = new FTPClient();
+        boolean success = false;
         try {
             // Conectar al servidor FTP
             ftpClient.connect(ftpServer);
             int replyCode = ftpClient.getReplyCode();
             if (!FTPReply.isPositiveCompletion(replyCode)) {
                 LOGGER.log(Level.SEVERE, "Connection failed. Server reply code: " + replyCode);
+                JOptionPane.showMessageDialog(null, "Error al conectar al servidor FTP. Código de respuesta: " + replyCode, "Error de Conexión", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             if (!ftpClient.login(user, password)) {
                 LOGGER.log(Level.SEVERE, "Login failed.");
+                JOptionPane.showMessageDialog(null, "Error al iniciar sesión en el servidor FTP.", "Error de Inicio de Sesión", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -54,21 +62,24 @@ public class FTPDownloader {
             if (!localDirFile.exists()) {
                 if (!localDirFile.mkdirs()) {
                     LOGGER.log(Level.SEVERE, "Failed to create local directory: " + localDir);
+                    JOptionPane.showMessageDialog(null, "No se pudo crear el directorio local: " + localDir, "Error de Directorio", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }
 
             // Cambiar al directorio remoto
-            String remoteFileName = new File(remoteFilePath).getName();
-            if (!ftpClient.changeWorkingDirectory(new File(remoteFilePath).getParent())) {
-                LOGGER.log(Level.SEVERE, "Failed to change working directory to: " + new File(remoteFilePath).getParent());
+            String remoteFileName = new File(remoteDir).getName();
+            String remoteDirectory = new File(remoteDir).getParent();
+            if (remoteDirectory != null && !ftpClient.changeWorkingDirectory(remoteDirectory)) {
+                LOGGER.log(Level.SEVERE, "Failed to change working directory to: " + remoteDirectory);
+                JOptionPane.showMessageDialog(null, "No se pudo cambiar al directorio remoto: " + remoteDirectory, "Error de Directorio", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             // Descargar el archivo
             File downloadFile = new File(localDir + File.separator + remoteFileName);
             try (OutputStream outputStream = new FileOutputStream(downloadFile)) {
-                boolean success = ftpClient.retrieveFile(remoteFilePath, outputStream);
+                success = ftpClient.retrieveFile(remoteFileName, outputStream);
                 if (success) {
                     LOGGER.log(Level.INFO, "File downloaded successfully: " + remoteFileName);
                 } else {
@@ -87,18 +98,19 @@ public class FTPDownloader {
             } catch (IOException ex) {
                 LOGGER.log(Level.SEVERE, "Error closing FTP connection.", ex);
             }
+
+            // Mostrar mensaje al usuario sobre el resultado de la operación
+            if (success) {
+                JOptionPane.showMessageDialog(null, "Archivo descargado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "La descarga del archivo falló.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
     public static void main(String[] args) {
-        // Configuración del servidor FTP y credenciales
-        String ftpServer = "ftp.gubaescolares.com";
-        String user = "subir@gubaescolares.com";
-        String password = "p_WyU)p}&shG";
-        String remoteDir = "BDGUBA - copia.db";
-        String localDir = "C:\\Users\\jesus\\Documents\\NetBeansProjects\\guba\\BD\\";          
-
-        // Descargar el archivo en modo binario
-        downloadFile(ftpServer, user, password, remoteDir, localDir, true);
+        // Ejemplo de uso desde el main para pruebas independientes
+        FTPDownloader downloader = new FTPDownloader();
+        downloader.downloadFile();
     }
 }

@@ -33,18 +33,13 @@ public class OpAlumno {
         return lista;
     }
 
-    public ArrayList<EstudianteModelo> buscarEstudiantes(String filtro) {
+    public ArrayList<EstudianteModelo> buscarEstudiantes(String where, String filtro) {
         ArrayList<EstudianteModelo> resultados = new ArrayList<>();
-        String sql = "SELECT IdAlumno, Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, CorreoInstitucional, "
-                + "Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, Genero "
-                + "FROM Alumnos WHERE Matricula LIKE ? OR Nombre LIKE ? OR ApellidoPaterno LIKE ? OR ApellidoMaterno LIKE ?";
+        String sql = "SELECT * "
+                + "FROM Alumnos WHERE " + where + " LIKE  ? ";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            String likeParam = "%" + filtro + "%";
-            for (int i = 1; i <= 4; i++) {
-                pstmt.setString(i, likeParam);
-            }
-
+            pstmt.setString(1, filtro + "%");
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     EstudianteModelo estudiante = mapResultSetToEstudiante(rs);

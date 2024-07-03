@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class Conexion {
 
     public Connection connect() {
-        String url = "jdbc:sqlite:C:\\Users\\jesus\\Documents\\NetBeansProjects\\guba\\BD\\BDGUBA.db";
+        String url = "jdbc:sqlite:D:\\Alan Lopez\\Documentos\\NetBeansProjects\\guba\\BD\\BDGUBA.db";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);

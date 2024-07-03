@@ -4,9 +4,9 @@ import java.awt.Image;
 import java.io.InputStream;
 import javax.swing.ImageIcon;
 import swim.Imagen;
+
 import operaciones.FTPUploader;
 import operaciones.FTPDownloader;
-
 
 public class WebForm extends javax.swing.JPanel {
 
@@ -14,9 +14,9 @@ public class WebForm extends javax.swing.JPanel {
         initComponents();
         init();
     }
-    
-    public void init(){
-         Imagen imagen = new Imagen();
+
+    public void init() {
+        Imagen imagen = new Imagen();
         InputStream input = this.getClass().getResourceAsStream("/icon/subir.png");
         Image iconoBack = imagen.toImageResizable(input, 35, 35);
         btnSubir.setIcon(new ImageIcon(iconoBack));
@@ -110,11 +110,12 @@ public class WebForm extends javax.swing.JPanel {
 
     private void btnSubirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubirActionPerformed
         FTPUploader loader = new FTPUploader();
+        loader.uploadFile();
     }//GEN-LAST:event_btnSubirActionPerformed
 
     private void btnBajarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajarActionPerformed
-       
-        FTPDownloader download = new FTPDownloader();
+        operaciones.FTPDownloader downloader = new operaciones.FTPDownloader();
+        downloader.downloadFile();
     }//GEN-LAST:event_btnBajarActionPerformed
 
 

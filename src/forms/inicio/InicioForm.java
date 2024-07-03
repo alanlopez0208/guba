@@ -21,7 +21,7 @@ public class InicioForm extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Bienvenido A Guba");
+        jLabel1.setText("Bienvenido A GUBA");
 
         javax.swing.GroupLayout myPanel1Layout = new javax.swing.GroupLayout(myPanel1);
         myPanel1.setLayout(myPanel1Layout);

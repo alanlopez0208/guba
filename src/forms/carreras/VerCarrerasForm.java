@@ -4,6 +4,8 @@ import forms.materias.*;
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
 import java.util.ArrayList;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.JOptionPane;
 import modelos.CarrerasModelo;
 import modelos.MateriaModelo;
@@ -19,25 +21,35 @@ public class VerCarrerasForm extends javax.swing.JPanel {
         initComponents();
         tabla1.setColumnEditor(4);
         tabla1.fixTable(jScrollPane1);
-        opCarreras=  new OpCarreras();
+        opCarreras = new OpCarreras();
         iniciarTabla();
+        comboFiltro.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    txtBuscar.setText("");
+                    actualizarTabla();
+                }
+            }
+
+        });
     }
 
     private void iniciarTabla() {
-        
+
         accion = new EventoAccion() {
             @Override
             public void ver(Object modelo) {
-                  CarrerasModelo  carrera= (CarrerasModelo) modelo;
+                CarrerasModelo carrera = (CarrerasModelo) modelo;
                 eventoForm.abrirForm(carrera, 0);
             }
 
             @Override
             public void borrar(Object modelo) {
-                CarrerasModelo  carrera= (CarrerasModelo) modelo;
+                CarrerasModelo carrera = (CarrerasModelo) modelo;
                 int response = JOptionPane.showConfirmDialog(null, "Estas Seguro en Elimnar a " + carrera.getNombre());
                 if (response == JOptionPane.OK_OPTION) {
-               
+
                     boolean seElimino = opCarreras.eliminarCarrera(carrera.getIdCarrera());
 
                     if (seElimino) {
@@ -52,7 +64,7 @@ public class VerCarrerasForm extends javax.swing.JPanel {
 
             @Override
             public void editar(Object modelo) {
-                CarrerasModelo  carrera= (CarrerasModelo) modelo;
+                CarrerasModelo carrera = (CarrerasModelo) modelo;
                 eventoForm.abrirForm(carrera, 1);
             }
         };
@@ -63,7 +75,7 @@ public class VerCarrerasForm extends javax.swing.JPanel {
     public void actualizarTabla() {
         tabla1.clear();
         ArrayList<CarrerasModelo> lista = opCarreras.getAllCarreras();
-        
+
         for (int i = 0; i < lista.size(); i++) {
             tabla1.addRow(lista.get(i).toRowTable(accion));
         }
@@ -83,9 +95,9 @@ public class VerCarrerasForm extends javax.swing.JPanel {
         tabla1 = new swim.tabla.Tabla();
         myPanel2 = new swim.panel.MyPanel();
         jSeparator1 = new javax.swing.JSeparator();
-        jTextField1 = new javax.swing.JTextField();
+        txtBuscar = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboFiltro = new javax.swing.JComboBox<>();
 
         setEnabled(false);
 
@@ -130,32 +142,37 @@ public class VerCarrerasForm extends javax.swing.JPanel {
             .addGroup(myPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 854, Short.MAX_VALUE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                    .addGroup(myPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 995, Short.MAX_VALUE))
+                .addContainerGap())
         );
         myPanel1Layout.setVerticalGroup(
             myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(myPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
-                .addGap(31, 31, 31)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         myPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTextField1.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
-        jTextField1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jTextField1.setEnabled(false);
+        txtBuscar.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
+        txtBuscar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyReleased(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Buscar por: ");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre" }));
-        jComboBox1.setEnabled(false);
+        comboFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clave", "Nombre", "Creditos", "Modalidad" }));
 
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);
         myPanel2.setLayout(myPanel2Layout);
@@ -165,11 +182,11 @@ public class VerCarrerasForm extends javax.swing.JPanel {
                 .addGap(26, 26, 26)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jSeparator1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         myPanel2Layout.setVerticalGroup(
@@ -177,12 +194,12 @@ public class VerCarrerasForm extends javax.swing.JPanel {
             .addGroup(myPanel2Layout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -191,32 +208,63 @@ public class VerCarrerasForm extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(myPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(myPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addComponent(myPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(myPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(myPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(myPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
+        if (txtBuscar.getText().length() > 0) {
+            if (tabla1.isEditing()) {
+                tabla1.getCellEditor().stopCellEditing();
+            }
+            tabla1.clear();
+
+            String where = "";
+            switch (comboFiltro.getSelectedIndex()) {
+                case 0 -> {
+                    where = "Clave";
+                }
+                case 1 -> {
+                    where = "Nombre";
+                }
+                case 2 -> {
+                    where = "Creditos";
+                }
+                case 3 -> {
+                    where = "Modalidad";
+                }
+            }
+            ArrayList<CarrerasModelo> lista = opCarreras.buscarCarreras(where, txtBuscar.getText());
+            for (int i = 0; i < lista.size(); i++) {
+                tabla1.addRow(lista.get(i).toRowTable(accion));
+            }
+
+        } else {
+            actualizarTabla();
+        }
+    }//GEN-LAST:event_txtBuscarKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> comboFiltro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
     private swim.panel.MyPanel myPanel1;
     private swim.panel.MyPanel myPanel2;
     private swim.tabla.Tabla tabla1;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

@@ -3,6 +3,8 @@ package forms.estudiantes;
 import modelos.EstudianteModelo;
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,7 +22,16 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         tabla1.fixTable(jScrollPane1);
         opAlumno = new OpAlumno();
         iniciarTabla();
+        comboFiltro.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    txtBuscar.setText("");
+                    actualizarTabla();
+                }
+            }
 
+        });
     }
 
     private void iniciarTabla() {
@@ -58,7 +69,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
     }
 
     public void actualizarTabla() {
-        
+
         if (tabla1.isEditing()) {
             tabla1.getCellEditor().stopCellEditing();
         }
@@ -91,7 +102,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
         txtBuscar = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboFiltro = new javax.swing.JComboBox<>();
 
         myPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -148,7 +159,6 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
 
         txtBuscar.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
         txtBuscar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        txtBuscar.setEnabled(false);
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtBuscarKeyReleased(evt);
@@ -159,8 +169,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Buscar por: ");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Matricula", "Nombre", "Apellido Paterno", "Apellido Materno" }));
-        jComboBox1.setEnabled(false);
+        comboFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Matricula", "Nombre", "Apellido Paterno", "Apellido Materno" }));
 
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);
         myPanel2.setLayout(myPanel2Layout);
@@ -170,7 +179,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
                 .addGap(26, 26, 26)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jSeparator1)
@@ -184,7 +193,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(15, Short.MAX_VALUE))
@@ -214,9 +223,33 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
         if (txtBuscar.getText().length() > 0) {
+            if (tabla1.isEditing()) {
+                tabla1.getCellEditor().stopCellEditing();
+            }
+            DefaultTableModel model = (DefaultTableModel) tabla1.getModel();
+            int rows = model.getRowCount();
+            for (int i = rows - 1; i >= 0; i--) {
+                model.removeRow(i);
+            }
+            
+            
+            String where = "";
+            switch (comboFiltro.getSelectedIndex()) {
+                case 0 -> {
+                    where = "Matricula";
+                }
+                case 1 -> {
+                    where = "Nombre";
+                }
+                case 2 -> {
+                    where = "ApellidoPaterno";
+                }
+                case 3 -> {
+                    where = "ApellidoMaterno";
+                }
+            }
+            ArrayList<EstudianteModelo> lista = opAlumno.buscarEstudiantes(where, txtBuscar.getText());
 
-            ArrayList<EstudianteModelo> lista = opAlumno.buscarEstudiantes(txtBuscar.getText());
-            System.out.println(lista.size());
             lista.forEach((alumno) -> {
                 tabla1.addRow(alumno.toRowTable(accion));
             });
@@ -227,7 +260,7 @@ public class VerEstudiantesForm extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> comboFiltro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

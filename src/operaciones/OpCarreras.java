@@ -149,4 +149,38 @@ public class OpCarreras {
         return carrera;
     }
 
+    public ArrayList<CarrerasModelo> buscarCarreras(String where, String filtro) {
+        ArrayList<CarrerasModelo> resultados = new ArrayList<>();
+        String sql = "SELECT * FROM Carreras WHERE " + where + " LIKE ?";
+
+        conn = new Conexion().connect();
+
+        if (conn == null) {
+            throw new RuntimeException("No se pudo conectar a la base de datos");
+        }
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, filtro + "%");
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    CarrerasModelo carrera = mapResultSetToCarrera(rs);
+                    resultados.add(carrera);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al buscar las carreras ", e);
+        } finally {
+
+            try {
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return resultados;
+    }
 }

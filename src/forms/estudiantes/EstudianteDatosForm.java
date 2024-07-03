@@ -527,7 +527,7 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
                             .addComponent(jLabel11))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 40, Short.MAX_VALUE))
+                .addGap(0, 14, Short.MAX_VALUE))
         );
 
         txtFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -549,10 +549,10 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(74, 74, 74)
                 .addComponent(txtFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(237, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(myPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 31, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

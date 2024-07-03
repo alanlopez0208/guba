@@ -14,6 +14,7 @@ public class MateriaModelo {
     String carrera;
     String semestre;
     CarrerasModelo carreraModelo;
+    String modalidad;
 
     public MateriaModelo() {
     }
@@ -99,6 +100,24 @@ public class MateriaModelo {
         this.carreraModelo = carreraModelo;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getModalidad() {
+        return modalidad;
+    }
+
+    public void setModalidad(String modalidad) {
+        this.modalidad = modalidad;
+    }
+    
+    
+
     @Override
     public String toString() {
         return nombre;
@@ -106,7 +125,7 @@ public class MateriaModelo {
 
     public Object[] toRowTable(EventoAccion eventoAccion) {
         return new Object[]{
-            this.getNombre(), this.getCreditos(), this.getSemestre(), this.getCarreraModelo().getNombre(), new AccionModelo(this, eventoAccion)
+            this.getNombre(), this.getCreditos(), this.getSemestre(), this.getCarreraModelo().getNombre(), this.getModalidad() ,new AccionModelo(this, eventoAccion)
         };
     }
 

@@ -43,15 +43,13 @@ public class OpGrupo {
         }
         return listaGrupos;
     }
-    
-    
 
     //Metodo para obtener las material del Grupo
     public ArrayList<MateriaModelo> getMateriasByGrupo(String idGrupo) {
         ArrayList<MateriaModelo> materias = new ArrayList<>();
         try {
             String sql = """
-                        SELECT m.IdMateria , m.IdCarrera,m.Nombre, m.HBCA, m.HTI, m.Semestre, m.Creditos FROM GruposMaterias as gm JOIN Materias as m ON m.IdMateria = gm.IdMateria
+                        SELECT m.IdMateria , m.IdCarrera,m.Nombre, m.HBCA, m.HTI, m.Semestre, m.Creditos, m.Clave FROM GruposMaterias as gm JOIN Materias as m ON m.IdMateria = gm.IdMateria
                         JOIN Grupos as g ON g.IdGrupo = gm.IdGrupo WHERE g.IdGrupo = ?""";
 
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -69,7 +67,7 @@ public class OpGrupo {
                 materia.setSemestre(rs.getString("Semestre"));
                 materia.setCreditos(rs.getString("Creditos"));
                 materia.setCarrera(rs.getString("IdCarrera"));
-
+                materia.setClave(rs.getString("Clave"));
                 materias.add(materia);
             }
 
@@ -236,6 +234,28 @@ public class OpGrupo {
             System.out.println("Error al seleccionar grupo: " + e.getMessage());
         }
         return grupoSeleccionado;
+    }
+    
+    // Buscar docentes por filtro
+    public ArrayList<GrupoModelo> buscarGrupos(String where, String filtro) {
+        ArrayList<GrupoModelo> resultados = new ArrayList<>();
+        String sql = "SELECT * "
+                + "FROM Grupos WHERE " + where + " LIKE ? ";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, filtro + "%");
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    GrupoModelo docente = mapResultSetToGrupo(rs);
+                    resultados.add(docente);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al buscar docentes", e);
+        }
+        return resultados;
     }
 
 }

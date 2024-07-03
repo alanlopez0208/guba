@@ -35,18 +35,14 @@ public class OpMaestro {
     }
 
     // Buscar docentes por filtro
-    public ArrayList<MaestroModelo> buscarDocentes(String filtro) {
+    public ArrayList<MaestroModelo> buscarDocentes(String where, String filtro) {
         ArrayList<MaestroModelo> resultados = new ArrayList<>();
-        String sql = "SELECT RFC, CURP, Nombre, ApellidoPaterno, ApellidoMaterno, Genero, CorreoPersonal, "
-                + "CorreoInstitucional, Domicilio, Celular, Estado, Municipio, CV, GradoEstudios, "
-                + "PasswordTemporal, Foto FROM Docentes WHERE RFC LIKE ? OR Nombre LIKE ? "
-                + "OR ApellidoPaterno LIKE ? OR ApellidoMaterno LIKE ?";
+        String sql = "SELECT * "
+                + "FROM Docentes WHERE " + where + " LIKE ? ";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            String likeParam = "%" + filtro + "%";
-            for (int i = 1; i <= 4; i++) {
-                pstmt.setString(i, likeParam);
-            }
+
+            pstmt.setString(1, filtro + "%");
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -91,8 +87,6 @@ public class OpMaestro {
                 + "CorreoPersonal = ?, CorreoInstitucional = ?, Domicilio = ?, Celular = ?, Estado = ?, Municipio = ?, CV = ?, GradoEstudios = ?"
                 + (docenteModelo.getFoto() != null ? ", Foto = ? " : "")
                 + " WHERE RFC = ?";
-        
-    
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, docenteModelo.getCurp());

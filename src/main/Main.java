@@ -28,6 +28,9 @@ import forms.materias.EditarMateria;
 import forms.materias.VerMateria;
 import forms.materias.VerMateriasForm;
 import forms.web.WebForm;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
 
 import modelos.*;
 
@@ -44,6 +47,16 @@ public class Main extends javax.swing.JFrame {
 
     public Main() {
         initComponents();
+         // Obtener el tamaño de la pantalla disponible
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        // Configurar el tamaño del JFrame
+        int width = (int) screenSize.getWidth();
+        int height = (int) screenSize.getHeight() - getInsets().top; // Restar el borde superior (barra de tareas)
+        setSize(width, height);
+
+        // Establecer la posición del JFrame en la esquina superior izquierda
+        setLocation(0, 0);
         init();
     }
 
@@ -321,7 +334,6 @@ public class Main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(7);
-        setResizable(false);
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
@@ -345,7 +357,7 @@ public class Main extends javax.swing.JFrame {
             .addComponent(bg)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(1214, 529));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
