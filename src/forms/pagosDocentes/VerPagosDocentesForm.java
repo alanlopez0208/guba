@@ -1,28 +1,26 @@
-package forms.pagosAlumnos;
+package forms.pagosDocentes;
 
-import forms.carreras.*;
-import forms.materias.*;
+
 import swim.tabla.EventoAccion;
 import event.EventoAbrirForm;
 import java.util.ArrayList;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.JOptionPane;
-import modelos.CarrerasModelo;
-import modelos.PagoAlumnosModelo;
-import operaciones.OpPagoAlumnos;
+import modelos.PagoDocentesModelo;
+import operaciones.OpPagoDocentes;
 
-public class VerPagosAlumnosForm extends javax.swing.JPanel {
+public class VerPagosDocentesForm extends javax.swing.JPanel {
 
     private EventoAbrirForm eventoForm;
-    private OpPagoAlumnos opPago;
+    private OpPagoDocentes opPago;
     private EventoAccion accion;
 
-    public VerPagosAlumnosForm() {
+    public VerPagosDocentesForm() {
         initComponents();
         tabla1.setColumnEditor(4);
         tabla1.fixTable(jScrollPane1);
-        opPago = new OpPagoAlumnos();
+        opPago = new OpPagoDocentes();
         iniciarTabla();
         comboFiltro.addItemListener(new ItemListener() {
             @Override
@@ -40,13 +38,13 @@ public class VerPagosAlumnosForm extends javax.swing.JPanel {
         accion = new EventoAccion() {
             @Override
             public void ver(Object modelo) {
-                PagoAlumnosModelo pago = (PagoAlumnosModelo) modelo;
+                PagoDocentesModelo pago = (PagoDocentesModelo) modelo;
                 eventoForm.abrirForm(pago, 0);
             }
 
             @Override
             public void borrar(Object modelo) {
-                PagoAlumnosModelo pago = (PagoAlumnosModelo) modelo;
+                PagoDocentesModelo pago = (PagoDocentesModelo) modelo;
                 int response = JOptionPane.showConfirmDialog(null, "Estas Seguro en Elimnar a " + pago.getConcepto());
                 if (response == JOptionPane.OK_OPTION) {
 
@@ -64,7 +62,7 @@ public class VerPagosAlumnosForm extends javax.swing.JPanel {
 
             @Override
             public void editar(Object modelo) {
-                PagoAlumnosModelo pago = (PagoAlumnosModelo) modelo;
+                PagoDocentesModelo pago = (PagoDocentesModelo) modelo;
                 eventoForm.abrirForm(pago, 1);
             }
         };
@@ -74,7 +72,7 @@ public class VerPagosAlumnosForm extends javax.swing.JPanel {
 
     public void actualizarTabla() {
         tabla1.clear();
-        ArrayList<PagoAlumnosModelo> lista = opPago.getPagos();
+        ArrayList<PagoDocentesModelo> lista = opPago.getPagos();
 
         for (int i = 0; i < lista.size(); i++) {
             tabla1.addRow(lista.get(i).toRowTable(accion));
@@ -244,7 +242,7 @@ public class VerPagosAlumnosForm extends javax.swing.JPanel {
                     where = "Concepto";
                 }
             }
-            ArrayList<PagoAlumnosModelo> lista = opPago.buscarPagos(where, txtBuscar.getText());
+            ArrayList<PagoDocentesModelo> lista = opPago.buscarPagos(where, txtBuscar.getText());
             for (int i = 0; i < lista.size(); i++) {
                 tabla1.addRow(lista.get(i).toRowTable(accion));
             }

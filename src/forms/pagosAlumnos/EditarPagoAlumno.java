@@ -132,7 +132,7 @@ public class EditarPagoAlumno extends javax.swing.JPanel {
 
         btnGuardar.setBackground(new java.awt.Color(20, 90, 95));
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
-        btnGuardar.setText("Actualizar Carrera");
+        btnGuardar.setText("Actualizar Pago");
         btnGuardar.setFont(new java.awt.Font("Malgun Gothic", 1, 12)); // NOI18N
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

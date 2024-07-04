@@ -1,5 +1,6 @@
-package forms.pagosAlumnos;
+package forms.pagosDocentes;
 
+import forms.pagosAlumnos.*;
 import forms.carreras.*;
 import event.EventoCerrarForm;
 import java.awt.Image;
@@ -15,25 +16,26 @@ import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelos.EstudianteModelo;
-import modelos.PagoAlumnosModelo;
+import modelos.MaestroModelo;
+import modelos.PagoDocentesModelo;
 import operaciones.OpAlumno;
-import operaciones.OpPagoAlumnos;
+import operaciones.OpMaestro;
+import operaciones.OpPagoDocentes;
 import swim.Imagen;
 
-public class EditarPagoAlumno extends javax.swing.JPanel {
+public class EditarPagoDocente extends javax.swing.JPanel {
 
     private EventoCerrarForm eventoCerrar;
     private Imagen imagen;
-    private OpPagoAlumnos opPago;
-    private OpAlumno opAlumno;
-    private PagoAlumnosModelo modelo;
+    private final PagoDocentesModelo modelo;
+    private final OpMaestro opMaestro;
+    private final OpPagoDocentes opPago;
 
-    public EditarPagoAlumno(PagoAlumnosModelo modelo) {
+    public EditarPagoDocente(PagoDocentesModelo modelo) {
         initComponents();
         this.modelo = modelo;
-        opPago = new OpPagoAlumnos();
-        opAlumno = new OpAlumno();
-
+        opPago = new OpPagoDocentes();
+        opMaestro = new OpMaestro();
         init();
     }
 
@@ -47,13 +49,13 @@ public class EditarPagoAlumno extends javax.swing.JPanel {
         Image iconoBack = imagen.toImageResizable(input, 40, 40);
         btnBack.setIcon(new ImageIcon(iconoBack));
 
-        ArrayList<EstudianteModelo> alumnos = opAlumno.getEstudiantes();
+        ArrayList<MaestroModelo> docentes = opMaestro.getDocentes();
 
-        alumnos.forEach((alumno) -> {
+        docentes.forEach((alumno) -> {
             comboAlumno.addItem(alumno);
         });
 
-        comboAlumno.setSelectedItem((EstudianteModelo) modelo.getEstudiante());
+        comboAlumno.setSelectedItem((MaestroModelo) modelo.getMaestro());
 
         txtCantidad.setText(modelo.getCantidad());
         txtConcepto.setText(modelo.getConcepto());
@@ -62,10 +64,9 @@ public class EditarPagoAlumno extends javax.swing.JPanel {
         try {
             fechaSeleccionada = sdf.parse(modelo.getFecha());
         } catch (ParseException ex) {
-            Logger.getLogger(EditarPagoAlumno.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditarPagoDocente.class.getName()).log(Level.SEVERE, null, ex);
         }
         fecha.setDate(fechaSeleccionada);
-
     }
 
     public void addEventoCerrar(EventoCerrarForm eventoCerrar) {
@@ -132,7 +133,7 @@ public class EditarPagoAlumno extends javax.swing.JPanel {
 
         btnGuardar.setBackground(new java.awt.Color(20, 90, 95));
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
-        btnGuardar.setText("Actualizar Carrera");
+        btnGuardar.setText("Actualizar Pago");
         btnGuardar.setFont(new java.awt.Font("Malgun Gothic", 1, 12)); // NOI18N
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,7 +144,7 @@ public class EditarPagoAlumno extends javax.swing.JPanel {
         jLabel1.setBackground(new java.awt.Color(51, 51, 51));
         jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Alumno:");
+        jLabel1.setText("Docente:");
 
         jLabel3.setBackground(new java.awt.Color(51, 51, 51));
         jLabel3.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
@@ -264,8 +265,8 @@ public class EditarPagoAlumno extends javax.swing.JPanel {
 
                 modelo.setFecha(fechaFormateada);
 
-                EstudianteModelo estudiante = (EstudianteModelo) comboAlumno.getSelectedItem();
-                modelo.setIdAlumno(estudiante.getMatricula());
+                MaestroModelo docente = (MaestroModelo) comboAlumno.getSelectedItem();
+                modelo.setIdMaestro(docente.getRfc());
                 modelo.setCantidad(txtCantidad.getText().trim());
                 modelo.setConcepto(txtConcepto.getText().trim());
 

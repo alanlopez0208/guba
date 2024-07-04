@@ -1,5 +1,6 @@
-package forms.pagosAlumnos;
+package forms.pagosDocentes;
 
+import forms.pagosAlumnos.*;
 import event.EventoCerrarForm;
 import java.awt.Image;
 import java.io.InputStream;
@@ -9,23 +10,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import modelos.EstudianteModelo;
-import modelos.PagoAlumnosModelo;
-import operaciones.OpAlumno;
-import operaciones.OpPagoAlumnos;
+import modelos.MaestroModelo;
+import modelos.PagoDocentesModelo;
+import operaciones.OpMaestro;
+import operaciones.OpPagoDocentes;
 import swim.Imagen;
 
-public class AgregarPagoAlumno extends javax.swing.JPanel {
+public class AgregarPagoDocente extends javax.swing.JPanel {
 
     private EventoCerrarForm eventoCerrar;
     private Imagen imagen;
-    private OpPagoAlumnos opPago;
-    private OpAlumno opAlumno;
+    private final OpMaestro opMaestro;
+    private final OpPagoDocentes opPago;
 
-    public AgregarPagoAlumno() {
+    public AgregarPagoDocente() {
         initComponents();
-        opPago = new OpPagoAlumnos();
-        opAlumno = new OpAlumno();
+        opPago = new OpPagoDocentes();
+        opMaestro = new OpMaestro();
         init();
     }
 
@@ -38,9 +39,9 @@ public class AgregarPagoAlumno extends javax.swing.JPanel {
         Image iconoBack = imagen.toImageResizable(input, 40, 40);
         btnBack.setIcon(new ImageIcon(iconoBack));
 
-        ArrayList<EstudianteModelo> alumnos = opAlumno.getEstudiantes();
+        ArrayList<MaestroModelo> docentes = opMaestro.getDocentes();
 
-        alumnos.forEach((alumno) -> {
+        docentes.forEach((alumno) -> {
             comboAlumno.addItem(alumno);
         });
 
@@ -62,8 +63,8 @@ public class AgregarPagoAlumno extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Ingrese correctamente un Alumno");
             return false;
         }
-        if(fecha.getDate() == null){
-             JOptionPane.showMessageDialog(null, "Ingrese una fecha");
+        if (fecha.getDate() == null) {
+            JOptionPane.showMessageDialog(null, "Ingrese una fecha");
             return false;
         }
 
@@ -124,7 +125,7 @@ public class AgregarPagoAlumno extends javax.swing.JPanel {
         jLabel1.setBackground(new java.awt.Color(51, 51, 51));
         jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Alumno:");
+        jLabel1.setText("Docente:");
 
         jLabel3.setBackground(new java.awt.Color(51, 51, 51));
         jLabel3.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
@@ -254,15 +255,14 @@ public class AgregarPagoAlumno extends javax.swing.JPanel {
             int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de agregar el pago ?");
 
             if (option == JOptionPane.OK_OPTION) {
-                PagoAlumnosModelo modelo = new PagoAlumnosModelo();
+                PagoDocentesModelo modelo = new PagoDocentesModelo();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 String fechaFormateada = sdf.format(fecha.getDate());
-                
-                
+
                 modelo.setFecha(fechaFormateada);
 
-                EstudianteModelo estudiante = (EstudianteModelo) comboAlumno.getSelectedItem();
-                modelo.setIdAlumno(estudiante.getMatricula());
+                MaestroModelo docente = (MaestroModelo) comboAlumno.getSelectedItem();
+                modelo.setIdMaestro(docente.getRfc());
                 modelo.setCantidad(txtCantidad.getText().trim());
                 modelo.setConcepto(txtConcepto.getText().trim());
 

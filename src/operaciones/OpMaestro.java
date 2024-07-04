@@ -7,14 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import modelos.MaestroModelo;
 import operaciones.conexion.Conexion;
-
 public class OpMaestro {
-
-    private Connection conn;
-
-    public OpMaestro() {
-        conn = new Conexion().connect();
-    }
 
     // Obtener todos los docentes
     public ArrayList<MaestroModelo> getDocentes() {
@@ -23,7 +16,9 @@ public class OpMaestro {
                 + "CorreoInstitucional, Domicilio, Celular, Estado, Municipio, CV, GradoEstudios, "
                 + "PasswordTemporal, Foto FROM Docentes";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 MaestroModelo docente = mapResultSetToDocente(rs);
                 lista.add(docente);
@@ -37,11 +32,10 @@ public class OpMaestro {
     // Buscar docentes por filtro
     public ArrayList<MaestroModelo> buscarDocentes(String where, String filtro) {
         ArrayList<MaestroModelo> resultados = new ArrayList<>();
-        String sql = "SELECT * "
-                + "FROM Docentes WHERE " + where + " LIKE ? ";
+        String sql = "SELECT * FROM Docentes WHERE " + where + " LIKE ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, filtro + "%");
 
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -56,9 +50,8 @@ public class OpMaestro {
         return resultados;
     }
 
-    // Mapear ResultSet a DocenteModelo
+    // Mapear ResultSet a MaestroModelo
     private MaestroModelo mapResultSetToDocente(ResultSet rs) throws SQLException {
-
         MaestroModelo maestro = new MaestroModelo();
         maestro.setRfc(rs.getString("RFC"));
         maestro.setCurp(rs.getString("CURP"));
@@ -76,9 +69,7 @@ public class OpMaestro {
         maestro.setGrado(rs.getString("GradoEstudios"));
         maestro.setPasswordTemp(rs.getString("PasswordTemporal"));
         maestro.setFoto(rs.getString("Foto"));
-
         return maestro;
-
     }
 
     // Actualizar un docente
@@ -88,7 +79,8 @@ public class OpMaestro {
                 + (docenteModelo.getFoto() != null ? ", Foto = ? " : "")
                 + " WHERE RFC = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, docenteModelo.getCurp());
             pstmt.setString(2, docenteModelo.getNombre());
             pstmt.setString(3, docenteModelo.getApPat());
@@ -102,6 +94,7 @@ public class OpMaestro {
             pstmt.setString(11, docenteModelo.getMunicipio());
             pstmt.setString(12, docenteModelo.getCv());
             pstmt.setString(13, docenteModelo.getGrado());
+
             if (docenteModelo.getFoto() != null) {
                 pstmt.setString(14, docenteModelo.getFoto());
                 pstmt.setString(15, docenteModelo.getRfc());
@@ -120,7 +113,8 @@ public class OpMaestro {
     public boolean deleteDocente(String rfc) {
         String sql = "DELETE FROM Docentes WHERE RFC = ?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, rfc);
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
@@ -130,13 +124,14 @@ public class OpMaestro {
     }
 
     // Recuperar un docente por RFC
-    public MaestroModelo retornarDocente(String rfc) {
+    public MaestroModelo obtenerDocente(String rfc) {
         String sql = "SELECT RFC, CURP, Nombre, ApellidoPaterno, ApellidoMaterno, Genero, CorreoPersonal, "
                 + "CorreoInstitucional, Domicilio, Celular, Estado, Municipio, CV, GradoEstudios, "
                 + "PasswordTemporal, Foto FROM Docentes WHERE RFC = ?";
         MaestroModelo docente = null;
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, rfc);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
@@ -159,9 +154,8 @@ public class OpMaestro {
                 + (docenteModelo.getFoto() != null ? ", ?" : "")
                 + " )";
 
-        System.out.println(sql);
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, docenteModelo.getRfc());
             pstmt.setString(2, docenteModelo.getCurp());
             pstmt.setString(3, docenteModelo.getNombre());
@@ -176,7 +170,8 @@ public class OpMaestro {
             pstmt.setString(12, docenteModelo.getMunicipio());
             pstmt.setString(13, docenteModelo.getCv());
             pstmt.setString(14, docenteModelo.getGrado());
-            pstmt.setString(15, docenteModelo.getRfc());
+            pstmt.setString(15, docenteModelo.getPasswordTemp());
+
             if (docenteModelo.getFoto() != null) {
                 pstmt.setString(16, docenteModelo.getFoto());
             }

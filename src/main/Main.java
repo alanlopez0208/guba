@@ -31,6 +31,10 @@ import forms.pagosAlumnos.AgregarPagoAlumno;
 import forms.pagosAlumnos.EditarPagoAlumno;
 import forms.pagosAlumnos.VerPagoAlumno;
 import forms.pagosAlumnos.VerPagosAlumnosForm;
+import forms.pagosDocentes.VerPagosDocentesForm;
+import forms.pagosDocentes.AgregarPagoDocente;
+import forms.pagosDocentes.EditarPagoDocente;
+import forms.pagosDocentes.VerPagoDocente;
 import forms.personal.AgregarPersonalForm;
 import forms.personal.EditarPersonalForm;
 import forms.personal.PersonalDatosForm;
@@ -54,8 +58,8 @@ public class Main extends javax.swing.JFrame {
     private VerCarrerasForm verCarreras;
     private VerPersonalForm verPersonal;
     private VerPagosAlumnosForm verPagosAlumnos;
-    
-    
+    private VerPagosDocentesForm verPagosDocentes;
+
     public Main() {
         initComponents();
         // Obtener el tamaño de la pantalla disponible
@@ -259,15 +263,12 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        
-        
         verPagosAlumnos = new VerPagosAlumnosForm();
         verPagosAlumnos.addEventoForm(new EventoAbrirForm() {
             @Override
             public void abrirForm(Object modelo, int index) {
                 PagoAlumnosModelo alumnoPago = (PagoAlumnosModelo) modelo;
-                
-                
+
                 if (index == 0) {
                     VerPagoAlumno verPago = new VerPagoAlumno(alumnoPago);
                     verPago.addEventoCerrar(new EventoCerrarForm() {
@@ -292,7 +293,38 @@ public class Main extends javax.swing.JFrame {
             }
 
         });
-        
+
+        verPagosDocentes = new VerPagosDocentesForm();
+        verPagosDocentes.addEventoForm(new EventoAbrirForm() {
+            @Override
+            public void abrirForm(Object modelo, int index) {
+                PagoDocentesModelo docentePago = (PagoDocentesModelo) modelo;
+
+                if (index == 0) {
+                    VerPagoDocente verPago = new VerPagoDocente(docentePago);
+                    verPago.addEventoCerrar(new EventoCerrarForm() {
+                        @Override
+                        public void cerrarForm() {
+                            main.showForm(verPagosDocentes);
+                        }
+                    });
+                    main.showForm(verPago);
+
+                } else if (index == 1) {
+                    EditarPagoDocente editarPago = new EditarPagoDocente(docentePago);
+                    editarPago.addEventoCerrar(new EventoCerrarForm() {
+                        @Override
+                        public void cerrarForm() {
+                            verPagosDocentes.actualizarTabla();
+                            main.showForm(verPagosDocentes);
+                        }
+                    });
+                    main.showForm(editarPago);
+                }
+            }
+
+        });
+
         WebForm webForm = new WebForm();
 
         menu.addEventMenuSelected(new EventMenuSelected() {
@@ -398,8 +430,8 @@ public class Main extends javax.swing.JFrame {
                             main.showForm(agregarPersonal);
                         }
                     }
-                    
-                     case 8 -> {
+
+                    case 8 -> {
                         if (subMenuIndex == 2) {
                             main.showForm(verPagosAlumnos);
                         } else if (subMenuIndex == 3) {
@@ -409,6 +441,22 @@ public class Main extends javax.swing.JFrame {
                                 public void cerrarForm() {
                                     verPagosAlumnos.actualizarTabla();
                                     main.showForm(verPagosAlumnos);
+                                }
+                            });
+
+                            main.showForm(agregarPago);
+                        }
+                    }
+                     case 9 -> {
+                        if (subMenuIndex == 2) {
+                            main.showForm(verPagosDocentes);
+                        } else if (subMenuIndex == 3) {
+                            AgregarPagoDocente agregarPago = new AgregarPagoDocente();
+                            agregarPago.addEventoCerrar(new EventoCerrarForm() {
+                                @Override
+                                public void cerrarForm() {
+                                    verPagosDocentes.actualizarTabla();
+                                    main.showForm(verPagosDocentes);
                                 }
                             });
 

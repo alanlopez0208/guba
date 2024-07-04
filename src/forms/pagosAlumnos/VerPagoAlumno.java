@@ -100,6 +100,7 @@ public class VerPagoAlumno extends javax.swing.JPanel {
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("Cantidad:");
 
+        txtCantidad.setEditable(false);
         txtCantidad.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         txtCantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -114,6 +115,7 @@ public class VerPagoAlumno extends javax.swing.JPanel {
         jLabel8.setForeground(new java.awt.Color(51, 51, 51));
         jLabel8.setText("Concepto :");
 
+        txtConcepto.setEditable(false);
         txtConcepto.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         txtConcepto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,6 +126,7 @@ public class VerPagoAlumno extends javax.swing.JPanel {
         jSeparator7.setVerifyInputWhenFocusTarget(false);
 
         comboAlumno.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "----------------" }));
+        comboAlumno.setEnabled(false);
 
         javax.swing.GroupLayout myPanel1Layout = new javax.swing.GroupLayout(myPanel1);
         myPanel1.setLayout(myPanel1Layout);

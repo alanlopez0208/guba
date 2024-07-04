@@ -56,7 +56,7 @@ public class Menu extends javax.swing.JPanel {
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Calificaciones"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/5.png")), "Personal","Ver Personal", "Añadir Personal"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Pagos Alumnos", "Ver Pagos", "Añadir Pago"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Pagos Maestros"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Pagos Maestros", "Ver Pagos", "Añadir Pago"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/2.png")), "Web"));
 
     }

@@ -1,5 +1,6 @@
-package forms.pagosAlumnos;
+package forms.pagosDocentes;
 
+import forms.pagosAlumnos.*;
 import event.EventoCerrarForm;
 import java.awt.Image;
 import java.io.InputStream;
@@ -10,22 +11,22 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import modelos.EstudianteModelo;
-import modelos.PagoAlumnosModelo;
-import operaciones.OpAlumno;
+import modelos.MaestroModelo;
+import modelos.PagoDocentesModelo;
+import operaciones.OpMaestro;
 import swim.Imagen;
 
-public class VerPagoAlumno extends javax.swing.JPanel {
+public class VerPagoDocente extends javax.swing.JPanel {
 
     private EventoCerrarForm eventoCerrar;
     private Imagen imagen;
-    private final PagoAlumnosModelo modelo;
-    private final OpAlumno opAlumno;
+    private final PagoDocentesModelo modelo;
+    private final OpMaestro opMaestro;
 
-    public VerPagoAlumno(PagoAlumnosModelo modelo) {
+    public VerPagoDocente(PagoDocentesModelo modelo) {
         initComponents();
         this.modelo = modelo;
-        this.opAlumno = new OpAlumno();
+        this.opMaestro = new OpMaestro();
         init();
     }
 
@@ -34,13 +35,13 @@ public class VerPagoAlumno extends javax.swing.JPanel {
         InputStream input = this.getClass().getResourceAsStream("/icon/back.png");
         Image iconoBack = imagen.toImageResizable(input, 40, 40);
         btnCerrar.setIcon(new ImageIcon(iconoBack));
-         ArrayList<EstudianteModelo> alumnos = opAlumno.getEstudiantes();
+        ArrayList<MaestroModelo> docentes = opMaestro.getDocentes();
 
-        alumnos.forEach((alumno) -> {
+        docentes.forEach((alumno) -> {
             comboAlumno.addItem(alumno);
         });
 
-        comboAlumno.setSelectedItem((EstudianteModelo) modelo.getEstudiante());
+        comboAlumno.setSelectedItem((MaestroModelo) modelo.getMaestro());
 
         txtCantidad.setText(modelo.getCantidad());
         txtConcepto.setText(modelo.getConcepto());
@@ -49,7 +50,7 @@ public class VerPagoAlumno extends javax.swing.JPanel {
         try {
             fechaSeleccionada = sdf.parse(modelo.getFecha());
         } catch (ParseException ex) {
-            Logger.getLogger(EditarPagoAlumno.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditarPagoDocente.class.getName()).log(Level.SEVERE, null, ex);
         }
         fecha.setDate(fechaSeleccionada);
     }
@@ -88,7 +89,7 @@ public class VerPagoAlumno extends javax.swing.JPanel {
         jLabel1.setBackground(new java.awt.Color(51, 51, 51));
         jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Alumno:");
+        jLabel1.setText("Docente:");
 
         jLabel3.setBackground(new java.awt.Color(51, 51, 51));
         jLabel3.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
@@ -100,6 +101,7 @@ public class VerPagoAlumno extends javax.swing.JPanel {
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("Cantidad:");
 
+        txtCantidad.setEditable(false);
         txtCantidad.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         txtCantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -114,6 +116,7 @@ public class VerPagoAlumno extends javax.swing.JPanel {
         jLabel8.setForeground(new java.awt.Color(51, 51, 51));
         jLabel8.setText("Concepto :");
 
+        txtConcepto.setEditable(false);
         txtConcepto.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         txtConcepto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
