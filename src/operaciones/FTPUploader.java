@@ -21,7 +21,7 @@ public class FTPUploader {
     private String user = "subir@gubaescolares.com";
     private String password = "p_WyU)p}&shG";
     private String remoteDir = "";
-    private File localFile = new File("C:\\Users\\jesus\\Documents\\NetBeansProjects\\guba\\BD\\BDGUBA - copia.db");
+    private File localFile = new File("D:\\Alan Lopez\\Documentos\\NetBeansProjects\\guba\\BD\\BDGUBA.db");
     private boolean useBinary = true;
 
     public FTPUploader() {

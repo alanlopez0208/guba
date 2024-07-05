@@ -20,8 +20,8 @@ public class FTPDownloader {
     private String ftpServer = "ftp.gubaescolares.com";
     private String user = "subir@gubaescolares.com";
     private String password = "p_WyU)p}&shG";
-    private String remoteDir = "BDGUBA - copia.db";
-    private String localDir = "C:\\Users\\jesus\\Documents\\NetBeansProjects\\guba\\BD\\";
+    private String remoteDir = "BDGUBA.db";
+    private String localDir = "D:\\Alan Lopez\\Documentos\\NetBeansProjects\\guba\\BD\\";
     private boolean useBinary = true;
 
     public FTPDownloader() {

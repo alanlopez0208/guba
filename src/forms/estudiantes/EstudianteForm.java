@@ -30,7 +30,7 @@ public class EstudianteForm extends javax.swing.JPanel {
         this.setLayout(layout);
 
         header = new ButtonsHeader();
-        header.getBtn2().setEnabled(false);
+
         JPanel menu = new JPanel();
         menu.setOpaque(false);
         menu.setLayout(new BorderLayout());
@@ -57,7 +57,7 @@ public class EstudianteForm extends javax.swing.JPanel {
         };
 
         header.addEventButtonsHeader(eventButtonsHeader);
-       
+
         header.addEventoCerrar(eventoCerrar);
 
         this.add(header, "h 50!, wrap");

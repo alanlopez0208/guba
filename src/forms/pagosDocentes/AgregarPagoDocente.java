@@ -60,7 +60,7 @@ public class AgregarPagoDocente extends javax.swing.JPanel {
             return false;
         }
         if (comboAlumno.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(null, "Ingrese correctamente un Alumno");
+            JOptionPane.showMessageDialog(null, "Ingrese correctamente un Docente");
             return false;
         }
         if (fecha.getDate() == null) {

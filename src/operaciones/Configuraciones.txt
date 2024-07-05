@@ -1,0 +1,1 @@
+01 RUTA BD = D:\Alan Lopez\Documentos\NetBeansProjects\guba\BD\BDGUBA.db
