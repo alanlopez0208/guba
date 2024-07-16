@@ -12,7 +12,7 @@ public class Config {
     public String obtenerRutaBD() {
         String rutaBD = null;
         try {
-            archivo = new FileReader("src\\operaciones\\Configuraciones.txt");
+            archivo = new FileReader("C:\\Guba\\Configuraciones.txt");
             lector = new BufferedReader(archivo);
 
             String linea;

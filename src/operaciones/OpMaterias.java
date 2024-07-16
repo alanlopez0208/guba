@@ -170,6 +170,28 @@ public class OpMaterias {
         return resultados;
     }
 
+    //Obtener todas las materias por la carrera y semestre
+    public MateriaModelo getMateria(String idMateria) {
+        MateriaModelo materia = null;
+        String sentencia = "SELECT * FROM MATERIAS WHERE IdMateria = ?";
+        try {
+            conn = new Conexion().connect();
+            PreparedStatement pstmt = conn.prepareStatement(sentencia);
+            pstmt.setString(1, idMateria);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                materia = mapResultSetToMateria(rs);
+            }
+            
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println("Error al obtener la materia " + e.getMessage() + "\n" + e.getSQLState());
+        }
+
+        return materia;
+    }
+
     /**
      * public static void main(String[] args) { OpMateria op = new OpMateria();
      *

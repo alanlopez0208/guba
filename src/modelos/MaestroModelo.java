@@ -5,8 +5,9 @@ import java.util.Objects;
 import swim.tabla.AccionModelo;
 import swim.tabla.EventoAccion;
 
-
 public class MaestroModelo {
+
+    private String id;
     private String rfc;
     private String curp;
     private String apPat;
@@ -23,12 +24,12 @@ public class MaestroModelo {
     private String grado;
     private String passwordTemp;
     private String foto;
-    
-    ArrayList<MateriaModelo> materias;
+
+    ArrayList<GrupoModelo> grupos;
 
     public MaestroModelo() {
     }
-    
+
     public MaestroModelo(String rfc, String curp, String apPat, String nombre, String apMat, String genero, String correoPer, String correoIns, String domicilio, String celular, String estado, String municipio, String cv, String grado) {
         this.rfc = rfc;
         this.curp = curp;
@@ -46,7 +47,7 @@ public class MaestroModelo {
         this.grado = grado;
     }
 
-    public MaestroModelo(String rfc, String curp, String apPat, String nombre, String apMat, String genero, String correoPer, String correoIns, String domicilio, String celular, String estado, String municipio, String cv, String grado, ArrayList<MateriaModelo> materias) {
+    public MaestroModelo(String rfc, String curp, String apPat, String nombre, String apMat, String genero, String correoPer, String correoIns, String domicilio, String celular, String estado, String municipio, String cv, String grado, ArrayList<GrupoModelo> grupos) {
         this.rfc = rfc;
         this.curp = curp;
         this.apPat = apPat;
@@ -61,9 +62,16 @@ public class MaestroModelo {
         this.municipio = municipio;
         this.cv = cv;
         this.grado = grado;
-        this.materias = materias;
+        this.grupos = grupos;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getRfc() {
         return rfc;
@@ -176,8 +184,7 @@ public class MaestroModelo {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
+
     public String getPasswordTemp() {
         return passwordTemp;
     }
@@ -194,26 +201,35 @@ public class MaestroModelo {
         this.foto = foto;
     }
 
+    public ArrayList<GrupoModelo> getGrupos() {
+        return grupos;
+    }
+
+    public void setGrupos(ArrayList<GrupoModelo> grupos) {
+        this.grupos = grupos;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 23 * hash + Objects.hashCode(this.rfc);
-        hash = 23 * hash + Objects.hashCode(this.curp);
-        hash = 23 * hash + Objects.hashCode(this.apPat);
-        hash = 23 * hash + Objects.hashCode(this.nombre);
-        hash = 23 * hash + Objects.hashCode(this.apMat);
-        hash = 23 * hash + Objects.hashCode(this.genero);
-        hash = 23 * hash + Objects.hashCode(this.correoPer);
-        hash = 23 * hash + Objects.hashCode(this.correoIns);
-        hash = 23 * hash + Objects.hashCode(this.domicilio);
-        hash = 23 * hash + Objects.hashCode(this.celular);
-        hash = 23 * hash + Objects.hashCode(this.estado);
-        hash = 23 * hash + Objects.hashCode(this.municipio);
-        hash = 23 * hash + Objects.hashCode(this.cv);
-        hash = 23 * hash + Objects.hashCode(this.grado);
-        hash = 23 * hash + Objects.hashCode(this.passwordTemp);
-        hash = 23 * hash + Objects.hashCode(this.foto);
-        hash = 23 * hash + Objects.hashCode(this.materias);
+        hash = 53 * hash + Objects.hashCode(this.id);
+        hash = 53 * hash + Objects.hashCode(this.rfc);
+        hash = 53 * hash + Objects.hashCode(this.curp);
+        hash = 53 * hash + Objects.hashCode(this.apPat);
+        hash = 53 * hash + Objects.hashCode(this.nombre);
+        hash = 53 * hash + Objects.hashCode(this.apMat);
+        hash = 53 * hash + Objects.hashCode(this.genero);
+        hash = 53 * hash + Objects.hashCode(this.correoPer);
+        hash = 53 * hash + Objects.hashCode(this.correoIns);
+        hash = 53 * hash + Objects.hashCode(this.domicilio);
+        hash = 53 * hash + Objects.hashCode(this.celular);
+        hash = 53 * hash + Objects.hashCode(this.estado);
+        hash = 53 * hash + Objects.hashCode(this.municipio);
+        hash = 53 * hash + Objects.hashCode(this.cv);
+        hash = 53 * hash + Objects.hashCode(this.grado);
+        hash = 53 * hash + Objects.hashCode(this.passwordTemp);
+        hash = 53 * hash + Objects.hashCode(this.foto);
+        hash = 53 * hash + Objects.hashCode(this.grupos);
         return hash;
     }
 
@@ -229,6 +245,9 @@ public class MaestroModelo {
             return false;
         }
         final MaestroModelo other = (MaestroModelo) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
         if (!Objects.equals(this.rfc, other.rfc)) {
             return false;
         }
@@ -277,17 +296,19 @@ public class MaestroModelo {
         if (!Objects.equals(this.foto, other.foto)) {
             return false;
         }
-        return Objects.equals(this.materias, other.materias);
+        return Objects.equals(this.grupos, other.grupos);
     }
+
+
 
     @Override
     public String toString() {
-        return this.getNombre() + " " + this.getApPat() + " " + this.getApMat() ;
+        return this.getNombre() + " " + this.getApPat() + " " + this.getApMat();
     }
-    
-    public Object[] toRowTable(EventoAccion evento){
-             return new Object[]{this.getRfc(), this.getNombre(), this.getApPat(), this.getApMat(), new AccionModelo(this, evento)};
-   
+
+    public Object[] toRowTable(EventoAccion evento) {
+        return new Object[]{this.getRfc(), this.getNombre(), this.getApPat(), this.getApMat(), new AccionModelo(this, evento)};
+
     }
-    
+
 }

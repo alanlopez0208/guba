@@ -5,20 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import modelos.GrupoModelo;
 import modelos.MaestroModelo;
 import operaciones.conexion.Conexion;
+
 public class OpMaestro {
 
     // Obtener todos los docentes
     public ArrayList<MaestroModelo> getDocentes() {
         ArrayList<MaestroModelo> lista = new ArrayList<>();
-        String sql = "SELECT RFC, CURP, Nombre, ApellidoPaterno, ApellidoMaterno, Genero, CorreoPersonal, "
-                + "CorreoInstitucional, Domicilio, Celular, Estado, Municipio, CV, GradoEstudios, "
-                + "PasswordTemporal, Foto FROM Docentes";
+        String sql = "SELECT * FROM Docentes";
 
-        try (Connection conn = new Conexion().connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+
             while (rs.next()) {
                 MaestroModelo docente = mapResultSetToDocente(rs);
                 lista.add(docente);
@@ -34,8 +33,8 @@ public class OpMaestro {
         ArrayList<MaestroModelo> resultados = new ArrayList<>();
         String sql = "SELECT * FROM Docentes WHERE " + where + " LIKE ?";
 
-        try (Connection conn = new Conexion().connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, filtro + "%");
 
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -69,43 +68,68 @@ public class OpMaestro {
         maestro.setGrado(rs.getString("GradoEstudios"));
         maestro.setPasswordTemp(rs.getString("PasswordTemporal"));
         maestro.setFoto(rs.getString("Foto"));
+        maestro.setGrupos(obtenerGruposPorRFC(rs.getString("RFC")));
+        maestro.setId(rs.getString("IdDocente"));
         return maestro;
     }
 
-    // Actualizar un docente
     public boolean updateDocente(MaestroModelo docenteModelo) {
-        String sql = "UPDATE Docentes SET CURP = ?, Nombre = ?, ApellidoPaterno = ?, ApellidoMaterno = ?, Genero = ?, "
+        String sqlDocente = "UPDATE Docentes SET CURP = ?, Nombre = ?, ApellidoPaterno = ?, ApellidoMaterno = ?, Genero = ?, "
                 + "CorreoPersonal = ?, CorreoInstitucional = ?, Domicilio = ?, Celular = ?, Estado = ?, Municipio = ?, CV = ?, GradoEstudios = ?"
                 + (docenteModelo.getFoto() != null ? ", Foto = ? " : "")
                 + " WHERE RFC = ?";
+        String sqlDeleteDocenteGrupos = "DELETE FROM DocentesGrupos WHERE IdDocente = ?";
+        String sqlInsertDocenteGrupos = "INSERT INTO DocentesGrupos (IdDocente, IdGrupo) VALUES (?, ?)";
 
-        try (Connection conn = new Conexion().connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, docenteModelo.getCurp());
-            pstmt.setString(2, docenteModelo.getNombre());
-            pstmt.setString(3, docenteModelo.getApPat());
-            pstmt.setString(4, docenteModelo.getApMat());
-            pstmt.setString(5, docenteModelo.getGenero());
-            pstmt.setString(6, docenteModelo.getCorreoPer());
-            pstmt.setString(7, docenteModelo.getCorreoIns());
-            pstmt.setString(8, docenteModelo.getDomicilio());
-            pstmt.setString(9, docenteModelo.getCelular());
-            pstmt.setString(10, docenteModelo.getEstado());
-            pstmt.setString(11, docenteModelo.getMunicipio());
-            pstmt.setString(12, docenteModelo.getCv());
-            pstmt.setString(13, docenteModelo.getGrado());
+        try (Connection conn = new Conexion().connect()) {
+            conn.setAutoCommit(false);
 
-            if (docenteModelo.getFoto() != null) {
-                pstmt.setString(14, docenteModelo.getFoto());
-                pstmt.setString(15, docenteModelo.getRfc());
-            } else {
-                pstmt.setString(14, docenteModelo.getRfc());
+            try (PreparedStatement pstmtDocente = conn.prepareStatement(sqlDocente)) {
+                pstmtDocente.setString(1, docenteModelo.getCurp());
+                pstmtDocente.setString(2, docenteModelo.getNombre());
+                pstmtDocente.setString(3, docenteModelo.getApPat());
+                pstmtDocente.setString(4, docenteModelo.getApMat());
+                pstmtDocente.setString(5, docenteModelo.getGenero());
+                pstmtDocente.setString(6, docenteModelo.getCorreoPer());
+                pstmtDocente.setString(7, docenteModelo.getCorreoIns());
+                pstmtDocente.setString(8, docenteModelo.getDomicilio());
+                pstmtDocente.setString(9, docenteModelo.getCelular());
+                pstmtDocente.setString(10, docenteModelo.getEstado());
+                pstmtDocente.setString(11, docenteModelo.getMunicipio());
+                pstmtDocente.setString(12, docenteModelo.getCv());
+                pstmtDocente.setString(13, docenteModelo.getGrado());
+                if (docenteModelo.getFoto() != null) {
+                    pstmtDocente.setString(14, docenteModelo.getFoto());
+                    pstmtDocente.setString(15, docenteModelo.getRfc());
+                } else {
+                    pstmtDocente.setString(14, docenteModelo.getRfc());
+                }
+
+                int affectedRowsDocente = pstmtDocente.executeUpdate();
+                if (affectedRowsDocente == 0) {
+                    conn.rollback();
+                    throw new SQLException("Error al actualizar el docente, no se actualizó ninguna fila");
+                }
             }
 
-            int affectedRows = pstmt.executeUpdate();
-            return affectedRows > 0;
+            try (PreparedStatement pstmtDeleteDocenteGrupos = conn.prepareStatement(sqlDeleteDocenteGrupos)) {
+                pstmtDeleteDocenteGrupos.setString(1, docenteModelo.getRfc());
+                pstmtDeleteDocenteGrupos.executeUpdate();
+            }
+
+            try (PreparedStatement pstmtInsertDocenteGrupos = conn.prepareStatement(sqlInsertDocenteGrupos)) {
+                for (GrupoModelo grupo : docenteModelo.getGrupos()) {
+                    pstmtInsertDocenteGrupos.setString(1, docenteModelo.getRfc());
+                    pstmtInsertDocenteGrupos.setString(2, grupo.getId());
+                    pstmtInsertDocenteGrupos.addBatch();
+                }
+                pstmtInsertDocenteGrupos.executeBatch();
+            }
+
+            conn.commit();
+            return true;
         } catch (SQLException e) {
-            throw new RuntimeException("Error al actualizar docente", e);
+            throw new RuntimeException("Error al actualizar docente y sus relaciones en DocentesGrupos", e);
         }
     }
 
@@ -113,8 +137,8 @@ public class OpMaestro {
     public boolean deleteDocente(String rfc) {
         String sql = "DELETE FROM Docentes WHERE RFC = ?";
 
-        try (Connection conn = new Conexion().connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, rfc);
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
@@ -125,13 +149,31 @@ public class OpMaestro {
 
     // Recuperar un docente por RFC
     public MaestroModelo obtenerDocente(String rfc) {
-        String sql = "SELECT RFC, CURP, Nombre, ApellidoPaterno, ApellidoMaterno, Genero, CorreoPersonal, "
-                + "CorreoInstitucional, Domicilio, Celular, Estado, Municipio, CV, GradoEstudios, "
-                + "PasswordTemporal, Foto FROM Docentes WHERE RFC = ?";
+        String sql = "SELECT * FROM Docentes WHERE RFC = ?";
         MaestroModelo docente = null;
 
-        try (Connection conn = new Conexion().connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, rfc);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    docente = mapResultSetToDocente(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al recuperar docente", e);
+        }
+        return docente;
+    }
+    
+    
+      // Recuperar un docente por RFC
+    public MaestroModelo obtenerDocentePorId(String rfc) {
+        String sql = "SELECT * FROM Docentes WHERE IdDocente = ?";
+        MaestroModelo docente = null;
+
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, rfc);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
@@ -144,42 +186,103 @@ public class OpMaestro {
         return docente;
     }
 
-    // Método para agregar un nuevo docente
+
     public boolean crearDocente(MaestroModelo docenteModelo) {
-        String sql = "INSERT INTO Docentes (RFC, CURP, Nombre, ApellidoPaterno, ApellidoMaterno, Genero, CorreoPersonal, "
+        String sqlDocente = "INSERT INTO Docentes (RFC, CURP, Nombre, ApellidoPaterno, ApellidoMaterno, Genero, CorreoPersonal, "
                 + "CorreoInstitucional, Domicilio, Celular, Estado, Municipio, CV, GradoEstudios, PasswordTemporal"
                 + (docenteModelo.getFoto() != null ? ", Foto" : "")
-                + " ) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?"
+                + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?"
                 + (docenteModelo.getFoto() != null ? ", ?" : "")
-                + " )";
+                + ")";
+        String sqlDocenteId = "SELECT last_insert_rowid() as nuevo_id_docente";
+        String sqlDocenteGrupos = "INSERT INTO DocentesGrupos (IdDocente, IdGrupo) VALUES (?, ?)";
 
-        try (Connection conn = new Conexion().connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, docenteModelo.getRfc());
-            pstmt.setString(2, docenteModelo.getCurp());
-            pstmt.setString(3, docenteModelo.getNombre());
-            pstmt.setString(4, docenteModelo.getApPat());
-            pstmt.setString(5, docenteModelo.getApMat());
-            pstmt.setString(6, docenteModelo.getGenero());
-            pstmt.setString(7, docenteModelo.getCorreoPer());
-            pstmt.setString(8, docenteModelo.getCorreoIns());
-            pstmt.setString(9, docenteModelo.getDomicilio());
-            pstmt.setString(10, docenteModelo.getCelular());
-            pstmt.setString(11, docenteModelo.getEstado());
-            pstmt.setString(12, docenteModelo.getMunicipio());
-            pstmt.setString(13, docenteModelo.getCv());
-            pstmt.setString(14, docenteModelo.getGrado());
-            pstmt.setString(15, docenteModelo.getPasswordTemp());
+        try (Connection conn = new Conexion().connect()) {
+            conn.setAutoCommit(false);
+            int newDocenteId;
 
-            if (docenteModelo.getFoto() != null) {
-                pstmt.setString(16, docenteModelo.getFoto());
+            try (PreparedStatement pstmtDocente = conn.prepareStatement(sqlDocente)) {
+                pstmtDocente.setString(1, docenteModelo.getRfc());
+                pstmtDocente.setString(2, docenteModelo.getCurp());
+                pstmtDocente.setString(3, docenteModelo.getNombre());
+                pstmtDocente.setString(4, docenteModelo.getApPat());
+                pstmtDocente.setString(5, docenteModelo.getApMat());
+                pstmtDocente.setString(6, docenteModelo.getGenero());
+                pstmtDocente.setString(7, docenteModelo.getCorreoPer());
+                pstmtDocente.setString(8, docenteModelo.getCorreoIns());
+                pstmtDocente.setString(9, docenteModelo.getDomicilio());
+                pstmtDocente.setString(10, docenteModelo.getCelular());
+                pstmtDocente.setString(11, docenteModelo.getEstado());
+                pstmtDocente.setString(12, docenteModelo.getMunicipio());
+                pstmtDocente.setString(13, docenteModelo.getCv());
+                pstmtDocente.setString(14, docenteModelo.getGrado());
+                pstmtDocente.setString(15, docenteModelo.getPasswordTemp());
+                if (docenteModelo.getFoto() != null) {
+                    pstmtDocente.setString(16, docenteModelo.getFoto());
+                }
+
+                int affectedRows = pstmtDocente.executeUpdate();
+                if (affectedRows == 0) {
+                    conn.rollback();
+                    throw new SQLException("Error al crear docente, no se insertó ninguna fila");
+                }
             }
 
-            int affectedRows = pstmt.executeUpdate();
-            return affectedRows > 0;
+            try (PreparedStatement pstmtDocenteId = conn.prepareStatement(sqlDocenteId); ResultSet rs = pstmtDocenteId.executeQuery()) {
+
+                if (rs.next()) {
+                    newDocenteId = rs.getInt("nuevo_id_docente");
+                } else {
+                    conn.rollback();
+                    throw new SQLException("Error al obtener el ID del nuevo docente");
+                }
+            }
+
+            try (PreparedStatement pstmtDocenteGrupos = conn.prepareStatement(sqlDocenteGrupos)) {
+                for (GrupoModelo grupo : docenteModelo.getGrupos()) {
+                    pstmtDocenteGrupos.setInt(1, newDocenteId);
+                    pstmtDocenteGrupos.setString(2, grupo.getId());
+                    pstmtDocenteGrupos.addBatch();
+                }
+                pstmtDocenteGrupos.executeBatch();
+            }
+
+            conn.commit();
+            return true;
         } catch (SQLException e) {
-            throw new RuntimeException("Error al crear docente", e);
+            throw new RuntimeException("Error al crear docente y sus relaciones en DocentesGrupos", e);
         }
+    }
+
+    // Método para obtener grupos por RFC
+    public ArrayList<GrupoModelo> obtenerGruposPorRFC(String rfc) {
+        ArrayList<GrupoModelo> grupos = new ArrayList<>();
+        String sql = "SELECT g.* "
+                + "FROM Grupos g "
+                + "JOIN DocentesGrupos dg ON g.IdGrupo = dg.IdGrupo "
+                + "JOIN Docentes d ON dg.IdDocente = d.RFC "
+                + "WHERE d.RFC = ?";
+
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, rfc);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                
+                    GrupoModelo grupo = seleccionarGrupo(rs.getInt("IdGrupo"));
+                    grupos.add(grupo);
+                  
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al obtener grupos por RFC", e);
+        }
+        return grupos;
+    }
+
+    // Método para seleccionar un grupo por IdGrupo
+    private GrupoModelo seleccionarGrupo(int idGrupo) throws SQLException {
+        OpGrupo opGrupo = new OpGrupo();
+        return opGrupo.seleccionarGrupo(idGrupo);
     }
 }

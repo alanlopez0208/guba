@@ -1,90 +1,109 @@
 package operaciones;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import modelos.CalificacionModelo;
+import modelos.GrupoModelo;
+import modelos.MateriaModelo;
+import operaciones.conexion.Conexion;
 
 public class OpCalificaciones {
 
-    public ArrayList<CalificacionModelo> getCalificaciones(String matricula) {
+    // Obtener todas las calificaciones
+    public ArrayList<CalificacionModelo> obtenerCalificaciones(String idAlumno) {
         ArrayList<CalificacionModelo> lista = new ArrayList<>();
+        String sql = "SELECT * FROM Calificaciones WHERE IdAlumno = ? ";
 
-        CalificacionModelo calificacion1 = new CalificacionModelo();
-        calificacion1.setSemestre("Primavera 2024");
-      
-        calificacion1.setGrupo("A");
-        calificacion1.setMateria("Matemáticas");
-        calificacion1.setU1P1(8.5f);
-        calificacion1.setU1P2(9.0f);
-        calificacion1.setU1P3(7.5f);
-        calificacion1.setU2P1(8.0f);
-        calificacion1.setU2P2(9.5f);
-        calificacion1.setU2P3(8.0f);
-        calificacion1.setTrabajoFinal(9.0f);
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql);) {
 
-        CalificacionModelo calificacion2 = new CalificacionModelo();
-        calificacion2.setSemestre("Otoño 2023");
-      
-        calificacion2.setGrupo("B");
-        calificacion2.setMateria("Ciencias");
-        calificacion2.setU1P1(7.0f);
-        calificacion2.setU1P2(8.0f);
-        calificacion2.setU1P3(7.5f);
-        calificacion2.setU2P1(9.0f);
-        calificacion2.setU2P2(8.5f);
-        calificacion2.setU2P3(9.0f);
-        calificacion2.setTrabajoFinal(8.0f);
+            pstmt.setString(1, idAlumno);
 
-        CalificacionModelo calificacion3 = new CalificacionModelo();
-        calificacion3.setSemestre("Invierno 2023");
-       
-        calificacion3.setGrupo("C");
-        calificacion3.setMateria("Historia");
-        calificacion3.setU1P1(9.5f);
-        calificacion3.setU1P2(8.5f);
-        calificacion3.setU1P3(9.0f);
-        calificacion3.setU2P1(7.0f);
-        calificacion3.setU2P2(8.0f);
-        calificacion3.setU2P3(8.5f);
-        calificacion3.setTrabajoFinal(9.5f);
-
-        CalificacionModelo calificacion4 = new CalificacionModelo();
-        calificacion4.setSemestre("Verano 2022");
-       
-        calificacion4.setGrupo("D");
-        calificacion4.setMateria("Arte");
-        calificacion4.setU1P1(8.0f);
-        calificacion4.setU1P2(7.5f);
-        calificacion4.setU1P3(8.5f);
-        calificacion4.setU2P1(9.0f);
-        calificacion4.setU2P2(8.0f);
-        calificacion4.setU2P3(7.0f);
-        calificacion4.setTrabajoFinal(8.5f);
-
-        CalificacionModelo calificacion5 = new CalificacionModelo();
-        calificacion5.setSemestre("Primavera 2021");
-       
-        calificacion5.setGrupo("E");
-        calificacion5.setMateria("Educación Física");
-        calificacion5.setU1P1(9.0f);
-        calificacion5.setU1P2(8.0f);
-        calificacion5.setU1P3(9.5f);
-        calificacion5.setU2P1(7.5f);
-        calificacion5.setU2P2(8.5f);
-        calificacion5.setU2P3(9.0f);
-        calificacion5.setTrabajoFinal(8.0f);
-
-        lista.add(calificacion1);
-        lista.add(calificacion2);
-        lista.add(calificacion3);
-        lista.add(calificacion4);
-        lista.add(calificacion5);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                CalificacionModelo calificacion = mapResultSetToCalificacion(rs);
+                lista.add(calificacion);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al recuperar calificaciones", e);
+        }
         return lista;
     }
 
-    //Metodo para actualizar alumno
-    public boolean updateAlumno(String matricula) {
+    //Actualizar la calificacion
+    public boolean updateCalificacion(CalificacionModelo calificacion) {
+        String sql = "UPDATE Calificaciones SET IdAlumno = ?, IdMateria = ?, IdGrupo = ?, "
+                + "P1U1 = ?, P2U1 = ?, P3U1 = ?, P4U1 = ?, "
+                + "P1U2 = ?, P2U2 = ?, P3U2 = ?, P4U2 = ?, "
+                + "TB = ? "
+                + "WHERE IdCalificacion = ?";
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setInt(1, calificacion.getIdAlumno());
+        //   pstmt.setInt(2, calificacion.getIdDocente());
+            pstmt.setInt(2, Integer.parseInt(calificacion.getMateria().getIdMateria()));
+            pstmt.setString(3, calificacion.getGrupo().getId());
 
-        return true;
+            if (calificacion.getP1U1() != null) {
+                pstmt.setFloat(4, calificacion.getP1U1());
+            } else {
+                pstmt.setNull(4, java.sql.Types.FLOAT);
+            }
+            if (calificacion.getP1U1() != null) {
+                pstmt.setFloat(4, calificacion.getP1U1());
+            } else {
+                pstmt.setNull(4, java.sql.Types.FLOAT);
+            }
+            if (calificacion.getP2U1() != null) {
+                pstmt.setFloat(5, calificacion.getP2U1());
+            } else {
+                pstmt.setNull(5, java.sql.Types.FLOAT);
+            }
+            if (calificacion.getP3U1() != null) {
+                pstmt.setFloat(6, calificacion.getP3U1());
+            } else {
+                pstmt.setNull(6, java.sql.Types.FLOAT);
+            }
+            if (calificacion.getP4U1() != null) {
+                pstmt.setFloat(7, calificacion.getP4U1());
+            } else {
+                pstmt.setNull(7, java.sql.Types.FLOAT);
+            }
+            if (calificacion.getP1U2() != null) {
+                pstmt.setFloat(8, calificacion.getP1U2());
+            } else {
+                pstmt.setNull(8, java.sql.Types.FLOAT);
+            }
+            if (calificacion.getP2U2() != null) {
+                pstmt.setFloat(9, calificacion.getP2U2());
+            } else {
+                pstmt.setNull(9, java.sql.Types.FLOAT);
+            }
+            if (calificacion.getP3U2() != null) {
+                pstmt.setFloat(10, calificacion.getP3U2());
+            } else {
+                pstmt.setNull(10, java.sql.Types.FLOAT);
+            }
+            if (calificacion.getP4U2() != null) {
+                pstmt.setFloat(11, calificacion.getP4U2());
+            } else {
+                pstmt.setNull(11, java.sql.Types.FLOAT);
+            }
+
+            if (calificacion.getTrabjoFinal() != null) {
+                pstmt.setFloat(12, calificacion.getTrabjoFinal());
+            } else {
+                pstmt.setNull(12, java.sql.Types.FLOAT);
+            }
+
+            pstmt.setInt(13, calificacion.getIdCalificacion());
+
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al actualizar la calificación", e);
+        }
     }
 
     //Metodo para eliminarAlumno
@@ -92,10 +111,47 @@ public class OpCalificaciones {
 
         return true;
     }
-    
-     public CalificacionModelo returestudiante(String matricula) {
-            //Logica para actualizar
-            //tiene que retornar true si se pudo y false si no
-        return  new CalificacionModelo();
+
+    // Mapear ResultSet a CalificacionModelo
+    private CalificacionModelo mapResultSetToCalificacion(ResultSet rs) throws SQLException {
+        CalificacionModelo calificacion = new CalificacionModelo();
+
+        OpGrupo opGrupo = new OpGrupo();
+        GrupoModelo grupo = opGrupo.seleccionarGrupo(rs.getInt("IdGrupo"));
+        OpMaterias opMateria = new OpMaterias();
+        MateriaModelo materia = opMateria.getMateria(rs.getString("IdMateria"));
+        calificacion.setIdCalificacion(rs.getInt("IdCalificacion"));
+        calificacion.setIdAlumno(rs.getInt("IdAlumno"));
+        calificacion.setIdDocente(rs.getInt("IdDocente"));
+        calificacion.setMateria(materia);
+        calificacion.setGrupo(grupo);
+        Float p1u1 = rs.getFloat("P1U1");
+        calificacion.setP1U1(rs.wasNull() ? null : p1u1);
+
+        Float p2u1 = rs.getFloat("P2U1");
+        calificacion.setP2U1(rs.wasNull() ? null : p2u1);
+
+        Float p3u1 = rs.getFloat("P3U1");
+        calificacion.setP3U1(rs.wasNull() ? null : p3u1);
+
+        Float p4u1 = rs.getFloat("P4U1");
+        calificacion.setP4U1(rs.wasNull() ? null : p4u1);
+
+        Float p1u2 = rs.getFloat("P1U2");
+        calificacion.setP1U2(rs.wasNull() ? null : p1u2);
+
+        Float p2u2 = rs.getFloat("P2U2");
+        calificacion.setP2U2(rs.wasNull() ? null : p2u2);
+
+        Float p3u2 = rs.getFloat("P3U2");
+        calificacion.setP3U2(rs.wasNull() ? null : p3u2);
+
+        Float p4u2 = rs.getFloat("P4U2");
+        calificacion.setP4U2(rs.wasNull() ? null : p4u2);
+
+        Float tb = rs.getFloat("TB");
+        calificacion.setTrabjoFinal(rs.wasNull() ? null : tb);
+        return calificacion;
     }
+
 }

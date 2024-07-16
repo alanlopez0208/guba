@@ -11,6 +11,7 @@ public class GrupoModelo {
     String id;
     String nombre;
     String semestre;
+    MaestroModelo maestro;
     ArrayList<MateriaModelo> materias;
 
     public GrupoModelo() {
@@ -53,6 +54,15 @@ public class GrupoModelo {
     public void setMaterias(ArrayList<MateriaModelo> materias) {
         this.materias = materias;
     }
+
+    public MaestroModelo getMaestro() {
+        return maestro;
+    }
+
+    public void setMaestro(MaestroModelo maestro) {
+        this.maestro = maestro;
+    }
+   
      public Object[] toRowTable(EventoAccion evento){
              return new Object[]{this.getId(), this.getNombre(), this.semestre, new AccionModelo(this, evento)};
    

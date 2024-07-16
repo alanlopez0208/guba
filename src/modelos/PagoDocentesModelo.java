@@ -10,17 +10,19 @@ public class PagoDocentesModelo {
     String fecha;
     String cantidad;
     String concepto;
+    String factura;
     MaestroModelo maestro;
 
     public PagoDocentesModelo() {
     }
 
-    public PagoDocentesModelo(String idPago, String idMaestro, String fecha, String cantidad, String concepto) {
+    public PagoDocentesModelo(String idPago, String idMaestro, String fecha, String cantidad, String concepto, String factura) {
         this.idPago = idPago;
         this.idMaestro = idMaestro;
         this.fecha = fecha;
         this.cantidad = cantidad;
         this.concepto = concepto;
+        this.factura = factura;
     }
 
     public String getIdPago() {
@@ -61,6 +63,14 @@ public class PagoDocentesModelo {
 
     public void setConcepto(String concepto) {
         this.concepto = concepto;
+    }
+
+    public String getFactura() {
+        return factura;
+    }
+
+    public void setFactura(String factura) {
+        this.factura = factura;
     }
 
     public MaestroModelo getMaestro() {

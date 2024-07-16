@@ -9,17 +9,20 @@ public class PagoAlumnosModelo {
     String fecha;
     String cantidad;
     String concepto;
+    String factura;
     EstudianteModelo estudiante;
+    
 
     public PagoAlumnosModelo() {
     }
 
-    public PagoAlumnosModelo(String idPago, String idAlumno, String fecha, String cantidad, String concepto) {
+    public PagoAlumnosModelo(String idPago, String idAlumno, String fecha, String cantidad, String concepto, String factura) {
         this.idPago = idPago;
         this.idAlumno = idAlumno;
         this.fecha = fecha;
         this.cantidad = cantidad;
         this.concepto = concepto;
+        this.factura = factura;
     }
 
     public String getIdPago() {
@@ -60,6 +63,14 @@ public class PagoAlumnosModelo {
 
     public void setConcepto(String concepto) {
         this.concepto = concepto;
+    }
+
+    public String getFactura() {
+        return factura;
+    }
+
+    public void setFactura(String factura) {
+        this.factura = factura;
     }
 
     public EstudianteModelo getEstudiante() {

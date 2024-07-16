@@ -26,6 +26,7 @@ public class EstudianteForm extends javax.swing.JPanel {
     }
 
     private void init() {
+        System.out.println(modelo);
         layout = new MigLayout("fill");
         this.setLayout(layout);
 
@@ -36,6 +37,8 @@ public class EstudianteForm extends javax.swing.JPanel {
         menu.setLayout(new BorderLayout());
 
         estudianteDatos = new EstudianteDatosForm(modelo);
+        CalificacionesForm calificaciones = new CalificacionesForm(modelo);
+        
         eventButtonsHeader = new EventButtonsHeader() {
             @Override
             public void onSelectButton(int index) {
@@ -44,7 +47,7 @@ public class EstudianteForm extends javax.swing.JPanel {
                         showForm(estudianteDatos);
                         break;
                     case 1:
-                        showForm(new CalificacionesForm());
+                        showForm(calificaciones);
                         break;
                     case 2:
                         showForm(new AdicionalesForm(modelo));

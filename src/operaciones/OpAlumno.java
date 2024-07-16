@@ -14,9 +14,7 @@ public class OpAlumno {
         ArrayList<EstudianteModelo> lista = new ArrayList<>();
         String sql = "SELECT * FROM Alumnos";
 
-        try (Connection conn = new Conexion().connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
                 EstudianteModelo estudiante = mapResultSetToEstudiante(rs);
@@ -32,8 +30,7 @@ public class OpAlumno {
         ArrayList<EstudianteModelo> resultados = new ArrayList<>();
         String sql = "SELECT * FROM Alumnos WHERE " + where + " LIKE ?";
 
-        try (Connection conn = new Conexion().connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, filtro + "%");
 
@@ -51,6 +48,7 @@ public class OpAlumno {
 
     private EstudianteModelo mapResultSetToEstudiante(ResultSet rs) throws SQLException {
         EstudianteModelo estudiante = new EstudianteModelo();
+        estudiante.setId(rs.getString("IdAlumno"));
         estudiante.setMatricula(rs.getString("Matricula"));
         estudiante.setNombre(rs.getString("Nombre"));
         estudiante.setApPaterno(rs.getString("ApellidoPaterno"));
@@ -69,7 +67,7 @@ public class OpAlumno {
         estudiante.setPasswordTemporal(rs.getString("PasswordTemporal"));
         estudiante.setSexo(rs.getString("Genero"));
         estudiante.setFoto(rs.getString("Foto"));
-        
+
         return estudiante;
     }
 
@@ -80,8 +78,7 @@ public class OpAlumno {
                 + (estudianteModelo.getFoto() != null ? ", Foto = ?" : "")
                 + " WHERE Matricula = ?";
 
-        try (Connection conn = new Conexion().connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, estudianteModelo.getNombre());
             pstmt.setString(2, estudianteModelo.getApPaterno());
@@ -115,8 +112,7 @@ public class OpAlumno {
     public boolean deleteAlumno(String matricula) {
         String sql = "DELETE FROM Alumnos WHERE Matricula = ?";
 
-        try (Connection conn = new Conexion().connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, matricula);
             int affectedRows = pstmt.executeUpdate();
@@ -130,8 +126,7 @@ public class OpAlumno {
         String sql = "SELECT * FROM Alumnos WHERE Matricula = ?";
         EstudianteModelo estudiante = null;
 
-        try (Connection conn = new Conexion().connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, matricula);
 
@@ -147,38 +142,69 @@ public class OpAlumno {
     }
 
     public boolean crearAlumno(EstudianteModelo estudianteModelo) {
-        String sql = "INSERT INTO Alumnos (Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, "
+        String sqlAlumno = "INSERT INTO Alumnos (Matricula, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, "
                 + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, Genero"
                 + (estudianteModelo.getFoto() != null ? ", Foto" : "") + ") "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" + (estudianteModelo.getFoto() != null ? ", ?" : "") + ")";
+        String sqlAlumnoId = "SELECT last_insert_rowid() as nuevo_id_alumno";
+        String sqlCalificaciones = "INSERT INTO Calificaciones (IdAlumno, IdGrupo, IdMateria)"
+                + "SELECT ? , IdGrupo, IdMateria "
+                + "FROM GruposMaterias "
+                + "WHERE IdGrupo = ?";
 
-        try (Connection conn = new Conexion().connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect()) {
+            conn.setAutoCommit(false);
+            int newAlumnoId;
 
-            pstmt.setString(1, estudianteModelo.getMatricula());
-            pstmt.setString(2, estudianteModelo.getNombre());
-            pstmt.setString(3, estudianteModelo.getApPaterno());
-            pstmt.setString(4, estudianteModelo.getApMaterno());
-            pstmt.setString(5, estudianteModelo.getEmailPersonal());
-            pstmt.setString(6, estudianteModelo.getEmailInstitucional());
-            pstmt.setString(7, estudianteModelo.getGeneracion());
-            pstmt.setString(8, estudianteModelo.getNumCelular());
-            pstmt.setString(9, estudianteModelo.getEstado());
-            pstmt.setString(10, estudianteModelo.getMunicipio());
-            pstmt.setString(11, estudianteModelo.getEscProcedencia());
-            pstmt.setString(12, estudianteModelo.getGrado());
-            pstmt.setString(13, estudianteModelo.getGrupo());
-            pstmt.setString(14, estudianteModelo.getStatus());
-            pstmt.setString(15, estudianteModelo.getSexo());
+            try (PreparedStatement pstmtAlumno = conn.prepareStatement(sqlAlumno)) {
+                pstmtAlumno.setString(1, estudianteModelo.getMatricula());
+                pstmtAlumno.setString(2, estudianteModelo.getNombre());
+                pstmtAlumno.setString(3, estudianteModelo.getApPaterno());
+                pstmtAlumno.setString(4, estudianteModelo.getApMaterno());
+                pstmtAlumno.setString(5, estudianteModelo.getEmailPersonal());
+                pstmtAlumno.setString(6, estudianteModelo.getEmailInstitucional());
+                pstmtAlumno.setString(7, estudianteModelo.getGeneracion());
+                pstmtAlumno.setString(8, estudianteModelo.getNumCelular());
+                pstmtAlumno.setString(9, estudianteModelo.getEstado());
+                pstmtAlumno.setString(10, estudianteModelo.getMunicipio());
+                pstmtAlumno.setString(11, estudianteModelo.getEscProcedencia());
+                pstmtAlumno.setString(12, estudianteModelo.getGrado());
+                pstmtAlumno.setString(13, estudianteModelo.getGrupo());
+                pstmtAlumno.setString(14, estudianteModelo.getStatus());
+                pstmtAlumno.setString(15, estudianteModelo.getSexo());
 
-            if (estudianteModelo.getFoto() != null) {
-                pstmt.setString(16, estudianteModelo.getFoto());
+                if (estudianteModelo.getFoto() != null) {
+                    pstmtAlumno.setString(16, estudianteModelo.getFoto());
+                }
+
+                int affectedRows = pstmtAlumno.executeUpdate();
+                if (affectedRows == 0) {
+                    conn.rollback();
+                    throw new SQLException("Error al crear alumno, no se insertó ninguna fila");
+                }
             }
 
-            int affectedRows = pstmt.executeUpdate();
-            return affectedRows > 0;
+            try (PreparedStatement pstmtAlumnoId = conn.prepareStatement(sqlAlumnoId); ResultSet rs = pstmtAlumnoId.executeQuery()) {
+                if (rs.next()) {
+                    newAlumnoId = rs.getInt("nuevo_id_alumno");
+                } else {
+                    conn.rollback();
+                    throw new SQLException("Error al obtener el ID del nuevo alumno");
+                }
+            }
+            
+            System.out.println("Se van a agregar las calificaciones papito");
+            try (PreparedStatement pstmtCalificaciones = conn.prepareStatement(sqlCalificaciones)) {
+                pstmtCalificaciones.setInt(1, newAlumnoId);
+                pstmtCalificaciones.setString(2, estudianteModelo.getGrupo());
+                pstmtCalificaciones.executeUpdate();
+            }
+
+            conn.commit();
+            return true;
         } catch (SQLException e) {
-            throw new RuntimeException("Error al crear estudiante", e);
+            throw new RuntimeException("Error al crear alumno y sus calificaciones", e);
         }
     }
+
 }

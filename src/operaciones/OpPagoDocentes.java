@@ -14,7 +14,7 @@ public class OpPagoDocentes {
     // Obtener todos los pagos
     public ArrayList<PagoDocentesModelo> getPagos() {
         ArrayList<PagoDocentesModelo> lista = new ArrayList<>();
-        String sql = "SELECT IdPago, IdDocente, Fecha, Cantidad, Concepto FROM PagoDocentes";
+        String sql = "SELECT * FROM PagoDocentes";
         try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 PagoDocentesModelo pago = mapResultSetToPago(rs);
@@ -29,7 +29,7 @@ public class OpPagoDocentes {
     // Buscar pagos por filtro
     public ArrayList<PagoDocentesModelo> buscarPagos(String where, String filtro) {
         ArrayList<PagoDocentesModelo> resultados = new ArrayList<>();
-        String sql = "SELECT IdPago, IdDocente, Fecha, Cantidad, Concepto FROM PagoDocentes WHERE " + where + " LIKE ?";
+        String sql = "SELECT * FROM PagoDocentes WHERE " + where + " LIKE ?";
         try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, filtro + "%");
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -46,7 +46,7 @@ public class OpPagoDocentes {
 
     // Actualizar un pago
     public boolean updatePago(PagoDocentesModelo pagoModelo) {
-        String sql = "UPDATE PagoDocentes SET IdDocente = ?, Fecha = ?, Cantidad = ?, Concepto = ? WHERE IdPago = ?";
+        String sql = "UPDATE PagoDocentes SET IdDocente = ?, Fecha = ?, Cantidad = ?, Concepto = ?, Factura = ? WHERE IdPago = ?";
         try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, pagoModelo.getIdMaestro());
             pstmt.setString(2, pagoModelo.getFecha());
@@ -75,7 +75,7 @@ public class OpPagoDocentes {
 
     // Recuperar un pago por ID
     public PagoDocentesModelo retornarPago(String idPago) {
-        String sql = "SELECT IdPago, IdDocente, Fecha, Cantidad, Concepto FROM PagoDocentes WHERE IdPago = ?";
+        String sql = "SELECT * Concepto FROM PagoDocentes WHERE IdPago = ?";
         try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, idPago);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -91,7 +91,7 @@ public class OpPagoDocentes {
 
     // Método para agregar un nuevo pago
     public boolean crearPago(PagoDocentesModelo pagoModelo) {
-        String sql = "INSERT INTO PagoDocentes (IdPago, IdDocente, Fecha, Cantidad, Concepto) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO PagoDocentes (IdPago, IdDocente, Fecha, Cantidad, Concepto, Factura) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, pagoModelo.getIdPago());
             pstmt.setString(2, pagoModelo.getIdMaestro());
@@ -114,6 +114,7 @@ public class OpPagoDocentes {
         pago.setFecha(rs.getString("Fecha"));
         pago.setCantidad(rs.getString("Cantidad"));
         pago.setConcepto(rs.getString("Concepto"));
+        pago.setFactura(rs.getString("Factura"));
 
         // Obtener maestro asociado
         OpMaestro op = new OpMaestro();

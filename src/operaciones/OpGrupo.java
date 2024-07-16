@@ -21,6 +21,8 @@ public class OpGrupo {
     // Método para mapear un ResultSet a un objeto GrupoModelo
     private GrupoModelo mapResultSetToGrupo(ResultSet rs) throws SQLException {
         GrupoModelo grupo = new GrupoModelo();
+        OpMaestro opDocente = new OpMaestro();
+        grupo.setMaestro(opDocente.obtenerDocentePorId(rs.getString("IdDocente")));
         grupo.setId(rs.getString("IdGrupo"));
         grupo.setNombre(rs.getString("Nombre"));
         grupo.setSemestre(rs.getString("Semestre"));
@@ -30,7 +32,7 @@ public class OpGrupo {
     // Método para obtener todos los grupos
     public ArrayList<GrupoModelo> getGrupos() {
         ArrayList<GrupoModelo> listaGrupos = new ArrayList<>();
-        String sql = "SELECT IdGrupo, Nombre, Semestre FROM Grupos";
+        String sql = "SELECT * FROM Grupos";
 
         try (Connection conn = new Conexion().connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -60,7 +62,9 @@ public class OpGrupo {
             while (rs.next()) {
 
                 MateriaModelo materia = new MateriaModelo();
+
                 materia.setNombre(rs.getString("Nombre"));
+
                 materia.setIdMateria(rs.getString("IdMateria"));
                 materia.setHcba(rs.getString("HBCA"));
                 materia.setHti(rs.getString("HTI"));
@@ -85,12 +89,12 @@ public class OpGrupo {
         try {
             conn.setAutoCommit(false);
             //Primero insertamos el grupo
-            String sql = "INSERT INTO Grupos (Nombre, Semestre) VALUES (?, ?)";
+            String sql = "INSERT INTO Grupos (Nombre, Semestre, IdDocente ) VALUES (?, ?, ?)";
 
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, grupo.getNombre());
             pstmt.setString(2, grupo.getSemestre());
-
+            pstmt.setString(3, grupo.getMaestro().getId());
             int filasAfectadas = pstmt.executeUpdate();
 
             System.out.println("Si se puedo agregar un Grupo" + filasAfectadas);
@@ -114,7 +118,7 @@ public class OpGrupo {
 
             System.out.println("Si se pudo obtener el grupoId: " + grupoNuevo);
 
-            sql = "INSERT INTO GruposMaterias (IdGrupo, IdMateria) VALUES (?, ?)";
+            sql = "INSERT INTO GruposMaterias (IdGrupo, IdMateria, IdDocente ) VALUES (?, ?, ?)";
 
             pstmt = conn.prepareStatement(sql);
 
@@ -122,6 +126,7 @@ public class OpGrupo {
                 MateriaModelo materia = grupo.getMaterias().get(i);
                 pstmt.setString(1, grupoNuevo);
                 pstmt.setString(2, materia.getIdMateria());
+                pstmt.setString(3, grupo.getMaestro().getId());
                 pstmt.addBatch();
             }
 
@@ -155,9 +160,9 @@ public class OpGrupo {
     // Método para actualizar un grupo
     public boolean actualizarGrupo(GrupoModelo grupo, boolean mismasMaterias) {
 
-        String sentencia1 = "UPDATE Grupos SET Nombre = ?, Semestre = ? WHERE IdGrupo = ?";
+        String sentencia1 = "UPDATE Grupos SET Nombre = ?, Semestre = ?, IdDocente = ? WHERE IdGrupo = ?";
         String sentencia2 = "DELETE FROM GruposMaterias WHERE IdGrupo = ?";
-        String sentencia3 = "INSERT INTO GruposMaterias (IdGrupo, IdMateria) VALUES (?, ?)";
+        String sentencia3 = "INSERT INTO GruposMaterias ( IdGrupo, IdMateria, IdDocente ) VALUES (?, ?, ? )";
 
         System.out.println("INSERTANDO COSAS PERRONAS");
         try {
@@ -166,7 +171,8 @@ public class OpGrupo {
             PreparedStatement pstmt = conn.prepareStatement(sentencia1);
             pstmt.setString(1, grupo.getNombre());
             pstmt.setString(2, grupo.getSemestre());
-            pstmt.setInt(3, Integer.parseInt(grupo.getId()));
+            pstmt.setString(3, grupo.getMaestro().getId());
+            pstmt.setInt(4, Integer.parseInt(grupo.getId()));
 
             int rowAfected = pstmt.executeUpdate();
 
@@ -186,6 +192,7 @@ public class OpGrupo {
                     MateriaModelo materia = grupo.getMaterias().get(i);
                     pstmt.setString(1, grupo.getId());
                     pstmt.setString(2, materia.getIdMateria());
+                    pstmt.setString(3, grupo.getMaestro().getId());
                     pstmt.addBatch();
                 }
                 System.out.println("SI SE PASO EL INSERT ");
@@ -220,7 +227,7 @@ public class OpGrupo {
 
     // Método para seleccionar un grupo 
     public GrupoModelo seleccionarGrupo(int idGrupo) {
-        String sql = "SELECT IdGrupo, Nombre, Semestre FROM Grupos WHERE IdGrupo = ?";
+        String sql = "SELECT * FROM Grupos WHERE IdGrupo = ?";
         GrupoModelo grupoSeleccionado = null;
 
         try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -235,7 +242,7 @@ public class OpGrupo {
         }
         return grupoSeleccionado;
     }
-    
+
     // Buscar docentes por filtro
     public ArrayList<GrupoModelo> buscarGrupos(String where, String filtro) {
         ArrayList<GrupoModelo> resultados = new ArrayList<>();

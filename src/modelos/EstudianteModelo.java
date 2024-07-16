@@ -6,6 +6,7 @@ import swim.tabla.EventoAccion;
 
 public class EstudianteModelo {
     
+    private String id;
     private String matricula;
     private String nombre;
     private String apPaterno;
@@ -51,6 +52,14 @@ public class EstudianteModelo {
         this.grado = grado;
         this.grupo = grupo;
         this.Status = status;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     
