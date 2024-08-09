@@ -9,17 +9,23 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelos.EstudianteModelo;
 import modelos.GrupoModelo;
+import operaciones.Config;
+import operaciones.OpCarreras;
 import operaciones.OpGrupo;
 
 public class EstudianteDatosForm extends javax.swing.JPanel {
 
     EstudianteModelo modelo;
     private OpGrupo opGrupo;
+    private OpCarreras opCarrera;
+    private Config config;
 
     public EstudianteDatosForm(EstudianteModelo modelo) {
         initComponents();
-   
+
         opGrupo = new OpGrupo();
+        opCarrera = new OpCarreras();
+        config = new Config();
         this.modelo = modelo;
         init();
     }
@@ -44,21 +50,17 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         if (modelo.getFoto() != null) {
 
             String path = modelo.getFoto();
-            ImageIcon foto = new ImageIcon(path);
-            Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(240, 400, Image.SCALE_SMOOTH));
+            ImageIcon foto = new ImageIcon(config.obtenerConfiguracion("03 RUTA IMAGENES ESTUDIANTES")+ "/" + path + ".jpg");
+            Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(280, 450, Image.SCALE_SMOOTH));
             txtFoto.setIcon(iconoBack);
         }
 
-      
-        ArrayList<GrupoModelo> allGrupos = opGrupo.getGrupos();
-        allGrupos.forEach((grupo) -> {
-            comboGrupo.addItem(grupo);
+        opCarrera.getAllCarreras().forEach((carreraModelo) -> {
+            comboCarrera.addItem(carreraModelo);
         });
-        
-        GrupoModelo grupo = opGrupo.seleccionarGrupo(Integer.parseInt(modelo.getGrupo()));
-        System.out.println(grupo);
-        comboGrupo.setSelectedItem(grupo);
-        
+        comboCarrera.setSelectedItem(modelo.getCarrera());
+        comboSemestre.setSelectedItem(modelo.getSemestre());
+
         comboStatus.setSelectedItem(modelo.getStatus());
         comboSexo.setSelectedItem(modelo.getSexo());
     }
@@ -100,8 +102,12 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         if (txtMunicipio.getText().trim().isEmpty()) {
             return false;
         }
-        if (comboGrupo.getSelectedIndex() <= 0) {
+        if (comboSemestre.getSelectedIndex() <= 0) {
             JOptionPane.showMessageDialog(null, "Selecciona el grupo que debe de estar el alumno");
+            return false;
+        }
+        if (comboCarrera.getSelectedIndex() <= 0) {
+            JOptionPane.showMessageDialog(null, "Selecciona la carrera que debe de estar el alumno");
             return false;
         }
         if (comboSexo.getSelectedIndex() <= 0) {
@@ -168,11 +174,13 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
         txtGrado = new javax.swing.JTextField();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
-        comboGrupo = new javax.swing.JComboBox();
+        comboSemestre = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         comboSexo = new javax.swing.JComboBox<>();
         txtGeneracion = new javax.swing.JTextField();
         jSeparator6 = new javax.swing.JSeparator();
+        jLabel18 = new javax.swing.JLabel();
+        comboCarrera = new javax.swing.JComboBox();
         txtFoto = new javax.swing.JLabel();
 
         myPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -313,11 +321,11 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
 
         jLabel3.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel3.setText("Grupo:");
+        jLabel3.setText("Semestre:");
 
-        comboGrupo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "----------------" }));
-        comboGrupo.setToolTipText("");
-        comboGrupo.setEnabled(false);
+        comboSemestre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
+        comboSemestre.setToolTipText("");
+        comboSemestre.setEnabled(false);
 
         jLabel5.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
@@ -334,6 +342,15 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
                 txtGeneracionActionPerformed(evt);
             }
         });
+
+        jLabel18.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel18.setText("Carrera:");
+
+        comboCarrera.setEditable(true);
+        comboCarrera.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-----------------", "Hombre", "Mujer" }));
+        comboCarrera.setToolTipText("");
+        comboCarrera.setEnabled(false);
 
         javax.swing.GroupLayout myPanel1Layout = new javax.swing.GroupLayout(myPanel1);
         myPanel1.setLayout(myPanel1Layout);
@@ -354,14 +371,6 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
             .addGroup(myPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
-                        .addComponent(jLabel13)
-                        .addGap(17, 17, 17)
-                        .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(myPanel1Layout.createSequentialGroup()
                         .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -405,7 +414,7 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
                                 .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(comboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCorreoPer, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -422,6 +431,20 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
                                 .addComponent(jSeparator11, javax.swing.GroupLayout.Alignment.LEADING))))
                     .addComponent(jLabel3))
                 .addContainerGap(205, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel18)
+                .addGap(131, 131, 131)
+                .addComponent(comboCarrera, 0, 213, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel13)
+                .addGap(17, 17, 17)
+                .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57))
         );
         myPanel1Layout.setVerticalGroup(
             myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -450,18 +473,20 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                .addGap(48, 48, 48)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel18)
+                        .addComponent(comboCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel13)
-                        .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(comboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5)
                         .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(30, 30, 30)
+                .addGap(29, 29, 29)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(comboGrupo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboSemestre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -587,7 +612,8 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox comboGrupo;
+    private javax.swing.JComboBox comboCarrera;
+    private javax.swing.JComboBox<String> comboSemestre;
     private javax.swing.JComboBox<String> comboSexo;
     private javax.swing.JComboBox<String> comboStatus;
     private javax.swing.JLabel jLabel10;
@@ -598,6 +624,7 @@ public class EstudianteDatosForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;

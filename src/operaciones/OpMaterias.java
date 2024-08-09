@@ -183,7 +183,7 @@ public class OpMaterias {
             while (rs.next()) {
                 materia = mapResultSetToMateria(rs);
             }
-            
+
             conn.close();
         } catch (SQLException e) {
             System.out.println("Error al obtener la materia " + e.getMessage() + "\n" + e.getSQLState());
@@ -191,6 +191,77 @@ public class OpMaterias {
 
         return materia;
     }
+
+    // Obtener todas las materias por carrera y semestre que no están en la tabla GruposMaterias
+    public ArrayList<MateriaModelo> getMateriasByCarreraSemestreSinElegir(String idCarrera, String semestre) {
+        ArrayList<MateriaModelo> materias = new ArrayList<>();
+        String sentencia = "SELECT * FROM Materias WHERE IdCarrera = ? AND Semestre = ? AND IdMateria NOT IN (SELECT IdMateria FROM GruposMaterias)";
+        try {
+            Connection conn = new Conexion().connect();
+            PreparedStatement pstmt = conn.prepareStatement(sentencia);
+            pstmt.setString(1, idCarrera);
+            pstmt.setString(2, semestre);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                MateriaModelo materia = mapResultSetToMateria(rs);
+                materias.add(materia);
+            }
+
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println("Error al obtener las materias " + e.getMessage() + "\n" + e.getSQLState());
+        }
+
+        return materias;
+    }
+
+    // Obtener todas las materias por IdGrupo en la tabla GruposMaterias
+    public ArrayList<MateriaModelo> getMateriasByIdGrupo(String idGrupo) {
+        ArrayList<MateriaModelo> materias = new ArrayList<>();
+        String sentencia = "SELECT m.* FROM Materias m "
+                + "JOIN GruposMaterias gm ON m.IdMateria = gm.IdMateria "
+                + "WHERE gm.IdGrupo = ?";
+        try {
+            Connection conn = new Conexion().connect();
+            PreparedStatement pstmt = conn.prepareStatement(sentencia);
+            pstmt.setString(1, idGrupo);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                MateriaModelo materia = mapResultSetToMateria(rs);
+                materias.add(materia);
+            }
+
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println("Error al obtener las materias " + e.getMessage() + "\n" + e.getSQLState());
+        }
+
+        return materias;
+    }
+    
+    public boolean insertGrupoMateria(int idGrupo, int idMateria, int idDocente, int idPeriodo, int cursada) {
+    String sentencia = "INSERT INTO GruposMaterias (IdGrupo, IdMateria, IdDocente, idPeriodo, Cursada) "
+            + "VALUES (?, ?, ?, ?, ?)";
+    try (Connection conn = new Conexion().connect();
+         PreparedStatement pstmt = conn.prepareStatement(sentencia)) {
+
+        pstmt.setInt(1, idGrupo);
+        pstmt.setInt(2, idMateria);
+        pstmt.setInt(3, idDocente);
+        pstmt.setInt(4, idPeriodo);
+        pstmt.setInt(5, cursada);
+
+        int affectedRows = pstmt.executeUpdate();
+        return affectedRows > 0;
+
+    } catch (SQLException e) {
+        System.out.println("Error al insertar en GruposMaterias " + e.getMessage() + "\n" + e.getSQLState());
+        return false;
+    }
+}
+
 
     /**
      * public static void main(String[] args) { OpMateria op = new OpMateria();

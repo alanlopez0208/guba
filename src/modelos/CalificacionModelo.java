@@ -17,6 +17,14 @@ public class CalificacionModelo {
     private Float p2U2;
     private Float p3U2;
     private Float p4U2;
+    private Float p1U3;
+    private Float p2U3;
+    private Float p3U3;
+    private Float p4U3;
+    private Float p1U4;
+    private Float p2U4;
+    private Float p3U4;
+    private Float p4U4;
     private Float trabjoFinal;
     private Float promedioU1;
     private Float promedioU2;
@@ -110,6 +118,14 @@ public class CalificacionModelo {
         this.p2U2 = p2U2;
     }
 
+    public Float getP1U3() {
+        return p1U3;
+    }
+
+    public void setP1U3(Float p1U3) {
+        this.p1U3 = p1U3;
+    }
+
     public Float getP3U2() {
         return p3U2;
     }
@@ -124,6 +140,62 @@ public class CalificacionModelo {
 
     public void setP4U2(Float p4U2) {
         this.p4U2 = p4U2;
+    }
+
+    public Float getP2U3() {
+        return p2U3;
+    }
+
+    public void setP2U3(Float p2U3) {
+        this.p2U3 = p2U3;
+    }
+
+    public Float getP3U3() {
+        return p3U3;
+    }
+
+    public void setP3U3(Float p3U3) {
+        this.p3U3 = p3U3;
+    }
+
+    public Float getP4U3() {
+        return p4U3;
+    }
+
+    public void setP4U3(Float p4U3) {
+        this.p4U3 = p4U3;
+    }
+
+    public Float getP1U4() {
+        return p1U4;
+    }
+
+    public void setP1U4(Float p1U4) {
+        this.p1U4 = p1U4;
+    }
+
+    public Float getP2U4() {
+        return p2U4;
+    }
+
+    public void setP2U4(Float p2U4) {
+        this.p2U4 = p2U4;
+    }
+
+    public Float getP3U4() {
+        return p3U4;
+    }
+
+    public void setP3U4(Float p3U4) {
+        this.p3U4 = p3U4;
+    }
+
+    public Float getP4U4() {
+        return p4U4;
+    }
+
+    public void setP4U4(Float p4U4) {
+        this.p4U4 = p4U4;
     }
 
     public Float getTrabjoFinal() {
@@ -247,13 +319,17 @@ public class CalificacionModelo {
     public Object[] toRowTable() {
         Float promedioU1 = obtenerPromedioUnidad(this.getP1U1(), this.getP2U1(), this.getP3U1(), this.getP4U1());
         Float promedioU2 = obtenerPromedioUnidad(this.getP1U2(), this.getP2U2(), this.getP3U2(), this.getP4U2());
-        if (promedioU1 != null && promedioU2 != null && this.getTrabjoFinal() != null) {
-            this.setPromedioFinal((double) (promedioU1 + promedioU2 + this.getTrabjoFinal()) / 3);
+
+        Float promedioU3 = obtenerPromedioUnidad(this.getP1U3(), this.getP2U3(), this.getP3U3(), this.getP4U3());
+        Float promedioU4 = obtenerPromedioUnidad(this.getP1U4(), this.getP2U4(), this.getP3U4(), this.getP4U4());
+
+        if (promedioU1 != null && this.getTrabjoFinal() != null) {
+            this.setPromedioFinal((double) obtenerPromedioUnidad(promedioU1, promedioU2, promedioU3, promedioU4,this.getTrabjoFinal()));
         }
 
         return new Object[]{
-            this.getGrupo().getSemestre(),
-            this.getGrupo().getNombre(),
+            this.getMateria().getSemestre(),
+            "2024A",
             this.getMateria().getNombre(),
             (this.getP1U1() == null) ? "" : this.getP1U1(),
             (this.getP2U1() == null) ? "" : this.getP2U1(),
@@ -265,6 +341,16 @@ public class CalificacionModelo {
             (this.getP3U2() == null) ? "" : this.getP3U2(),
             (this.getP4U2() == null) ? "" : this.getP4U2(),
             (promedioU2 == null) ? "" : String.format("%.2f", promedioU2),
+            (this.getP1U3() == null) ? "" : this.getP1U3(),
+            (this.getP2U3() == null) ? "" : this.getP2U3(),
+            (this.getP3U3() == null) ? "" : this.getP3U3(),
+            (this.getP4U3() == null) ? "" : this.getP4U3(),
+            (promedioU3 == null) ? "" : String.format("%.2f", promedioU3),
+            (this.getP1U4() == null) ? "" : this.getP1U4(),
+            (this.getP2U4() == null) ? "" : this.getP2U4(),
+            (this.getP3U4() == null) ? "" : this.getP3U4(),
+            (this.getP4U4() == null) ? "" : this.getP4U4(),
+            (promedioU4 == null) ? "" : String.format("%.2f", promedioU4),
             (this.getTrabjoFinal() == null) ? "" : this.getTrabjoFinal(),
             (this.getPromedioFinal() == null) ? "" : String.format("%.2f", this.getPromedioFinal())};
     }

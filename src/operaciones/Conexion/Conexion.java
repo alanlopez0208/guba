@@ -10,7 +10,7 @@ public class Conexion {
 
     public Connection connect() {
         Config config = new Config();
-        String rutaBD = config.obtenerRutaBD();
+        String rutaBD = config.obtenerConfiguracion("01 RUTA BD");
         String url = "jdbc:sqlite:" + rutaBD;
         Connection conn = null;
         try {

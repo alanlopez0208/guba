@@ -287,15 +287,36 @@ public class AgregarGrupo extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tabla1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla1MouseClicked
-
-
-    }//GEN-LAST:event_tabla1MouseClicked
-
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
 
         this.eventoCerrar.cerrarForm();
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        if (esValido()) {
+            int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de añadir el grupo : " + txtGrupo.getText() + " ?");
+
+            if (option == JOptionPane.OK_OPTION) {
+                GrupoModelo grupo = new GrupoModelo();
+                grupo.setNombre(txtGrupo.getText().trim());
+                grupo.setSemestre(txtSemestre.getText().trim());
+                grupo.setMaterias(listaDeMaterias);
+                grupo.setMaestro((MaestroModelo) comboProfesor.getSelectedItem());
+                
+                opGrupo = new OpGrupo();
+
+                boolean estaAgregado = opGrupo.agregarGrupo(grupo);
+
+                if (estaAgregado) {
+                    JOptionPane.showMessageDialog(null, "Grupo Agregado Correctamente");
+                    this.actualizarTabla();
+                    this.eventoCerrar.cerrarForm();
+                    return;
+                }
+                JOptionPane.showMessageDialog(null, "No se pudo agregar");
+            }
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void buttonRounded2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRounded2ActionPerformed
         JComboBox comboCarreras = new JComboBox();
@@ -335,13 +356,13 @@ public class AgregarGrupo extends javax.swing.JPanel {
         });
         // comboSemestre.addItemListener((ItemEvent e) -> {
 
-        //materias.setEnabled(true);
-        //materias.setEnabled(false);
-        //  });
-        opCarrera = new OpCarreras();
-        ArrayList<CarrerasModelo> allCarreras = opCarrera.getAllCarreras();
-        allCarreras.forEach((carrera) -> {
-            comboCarreras.addItem(carrera);
+            //materias.setEnabled(true);
+            //materias.setEnabled(false);
+            //  });
+    opCarrera = new OpCarreras();
+    ArrayList<CarrerasModelo> allCarreras = opCarrera.getAllCarreras();
+    allCarreras.forEach((carrera) -> {
+        comboCarreras.addItem(carrera);
         });
         Object[] message = {
             "Ingrese la carrera:", comboCarreras,
@@ -366,32 +387,6 @@ public class AgregarGrupo extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_buttonRounded2ActionPerformed
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (esValido()) {
-            int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de añadir el grupo : " + txtGrupo.getText() + " ?");
-
-            if (option == JOptionPane.OK_OPTION) {
-                GrupoModelo grupo = new GrupoModelo();
-                grupo.setNombre(txtGrupo.getText().trim());
-                grupo.setSemestre(txtSemestre.getText().trim());
-                grupo.setMaterias(listaDeMaterias);
-                grupo.setMaestro((MaestroModelo) comboProfesor.getSelectedItem());
-                
-                opGrupo = new OpGrupo();
-
-                boolean estaAgregado = opGrupo.agregarGrupo(grupo);
-
-                if (estaAgregado) {
-                    JOptionPane.showMessageDialog(null, "Grupo Agregado Correctamente");
-                    this.actualizarTabla();
-                    this.eventoCerrar.cerrarForm();
-                    return;
-                }
-                JOptionPane.showMessageDialog(null, "No se pudo agregar");
-            }
-        }
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
     private void buttonRounded3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRounded3ActionPerformed
 
         if (!listaDeMaterias.isEmpty()) {
@@ -400,6 +395,10 @@ public class AgregarGrupo extends javax.swing.JPanel {
 
         this.actualizarTabla();
     }//GEN-LAST:event_buttonRounded3ActionPerformed
+
+    private void tabla1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla1MouseClicked
+
+    }//GEN-LAST:event_tabla1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

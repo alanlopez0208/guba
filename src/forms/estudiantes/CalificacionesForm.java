@@ -46,12 +46,19 @@ public class CalificacionesForm extends javax.swing.JPanel {
                 } else if (column <= 12 && column >= 8) {
                     c.setBackground(new Color(104, 108, 133));
                     c.setForeground(Color.WHITE);
+                } else if (column <= 17 && column >= 13) {
+                    c.setBackground(new Color(20, 90, 95));
+                    c.setForeground(Color.WHITE);
+                } else if (column <= 22 && column >= 18) {
+                    c.setBackground(new Color(104, 108, 133));
+                    c.setForeground(Color.WHITE);
                 } else {
                     c.setBackground(Color.WHITE);
+                    c.setForeground(Color.BLACK);
                 }
 
-                if (c instanceof JLabel) {
-                    ((JLabel) c).setBorder(new EmptyBorder(10, 5, 10, 5));
+                if (c instanceof JLabel jLabel) {
+                    jLabel.setBorder(new EmptyBorder(10, 5, 10, 5));
                 }
 
                 return c;
@@ -89,6 +96,7 @@ public class CalificacionesForm extends javax.swing.JPanel {
                                 case 6 -> {
                                     calificacion.setP4U1(calUnidad);
                                 }
+
                                 case 8 -> {
                                     calificacion.setP1U2(calUnidad);
                                 }
@@ -101,7 +109,34 @@ public class CalificacionesForm extends javax.swing.JPanel {
                                 case 11 -> {
                                     calificacion.setP4U2(calUnidad);
                                 }
+
                                 case 13 -> {
+                                    calificacion.setP1U3(calUnidad);
+                                }
+                                case 14 -> {
+                                    calificacion.setP2U3(calUnidad);
+                                }
+                                case 15 -> {
+                                    calificacion.setP3U3(calUnidad);
+                                }
+                                case 16 -> {
+                                    calificacion.setP4U3(calUnidad);
+                                }
+
+                                case 18 -> {
+                                    calificacion.setP1U4(calUnidad);
+                                }
+                                case 19 -> {
+                                    calificacion.setP2U4(calUnidad);
+                                }
+                                case 20 -> {
+                                    calificacion.setP3U4(calUnidad);
+                                }
+                                case 21 -> {
+                                    calificacion.setP4U4(calUnidad);
+                                }
+
+                                case 23 -> {
                                     calificacion.setTrabjoFinal(calUnidad);
                                 }
                             }
@@ -149,6 +184,32 @@ public class CalificacionesForm extends javax.swing.JPanel {
                                     calificacion.setP4U2(null);
                                 }
                                 case 13 -> {
+                                    calificacion.setP1U3(null);
+                                }
+                                case 14 -> {
+                                    calificacion.setP2U3(null);
+                                }
+                                case 15 -> {
+                                    calificacion.setP3U3(null);
+                                }
+                                case 16 -> {
+                                    calificacion.setP4U3(null);
+                                }
+
+                                case 18 -> {
+                                    calificacion.setP1U4(null);
+                                }
+                                case 19 -> {
+                                    calificacion.setP2U4(null);
+                                }
+                                case 20 -> {
+                                    calificacion.setP3U4(null);
+                                }
+                                case 21 -> {
+                                    calificacion.setP4U4(null);
+                                }
+
+                                case 23 -> {
                                     calificacion.setTrabjoFinal(null);
                                 }
                             }
@@ -188,6 +249,32 @@ public class CalificacionesForm extends javax.swing.JPanel {
                                 calificacionAnterior = calificacion.getP4U2();
                             }
                             case 13 -> {
+                                calificacionAnterior = calificacion.getP1U3();
+                            }
+                            case 14 -> {
+                                calificacionAnterior = calificacion.getP2U3();
+                            }
+                            case 15 -> {
+                                calificacionAnterior = calificacion.getP3U3();
+                            }
+                            case 16 -> {
+                                calificacionAnterior = calificacion.getP4U3();
+                            }
+
+                            case 18 -> {
+                                calificacionAnterior = calificacion.getP1U4();
+                            }
+                            case 19 -> {
+                                calificacionAnterior = calificacion.getP2U4();
+                            }
+                            case 20 -> {
+                                calificacionAnterior = calificacion.getP3U4();
+                            }
+                            case 21 -> {
+                                calificacionAnterior = calificacion.getP4U4();
+                            }
+
+                            case 23 -> {
                                 calificacionAnterior = calificacion.getTrabjoFinal();
                             }
                         }
@@ -206,13 +293,8 @@ public class CalificacionesForm extends javax.swing.JPanel {
             tabla1.addRow(calificacion.toRowTable());
         });
 
-        List<GrupoModelo> listaGrupos = lista.stream().map((caliificacion) -> {
-            return caliificacion.getGrupo();
-        }).distinct().collect(Collectors.toList());
-
-        listaGrupos.forEach((grupo) -> {
-            comboGrupo.addItem(grupo);
-        });
+    
+      
 
         txtAsignaturas.setText(Integer.toString(lista.size()));
         obtenerPromedioCertificado();
@@ -317,7 +399,7 @@ public class CalificacionesForm extends javax.swing.JPanel {
 
         jLabel5.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel5.setText("Grupo:");
+        jLabel5.setText("Semestre:");
 
         comboGrupo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos" }));
         comboGrupo.addItemListener(new java.awt.event.ItemListener() {
@@ -333,7 +415,7 @@ public class CalificacionesForm extends javax.swing.JPanel {
             .addGroup(myPanel1Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(45, 45, 45)
                 .addComponent(comboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -376,32 +458,70 @@ public class CalificacionesForm extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Semestre", "Grupo", "Materia", "U I Parcial I", "U I Parcial II", "U I Parcial III", "U 1 Parcial IV", "Promedio UI", "U II Parcial I", "U II Parcial II", "U II Parcial III", "U II Parcial IV", "Promedio UII", "Trabajo Final", "Promedio"
+                "Semestre", "Ciclo", "Materia", "U I Parcial I", "U I Parcial II", "U I Parcial III", "U 1 Parcial IV", "Promedio UI", "U II Parcial I", "U II Parcial II", "U II Parcial III", "U II Parcial IV", "Promedio UII", "U III Parcial I", "U III Parcial II", "U III Parcial III", "U III Parcial IV", "Promedio U III", "U I Parcial IV", "U II Parcial IV", "U III Parcial IV", "U IV Parical IV", "Promedio U IV", "Trabajo Final", "Promedio"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true, true, true, false, true, true, true, true, false, true, false
+                false, false, false, true, true, true, true, false, true, true, true, true, false, true, true, true, true, false, true, true, true, true, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tabla1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
+        tabla1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jScrollPane1.setViewportView(tabla1);
         if (tabla1.getColumnModel().getColumnCount() > 0) {
-            tabla1.getColumnModel().getColumn(0).setMinWidth(150);
-            tabla1.getColumnModel().getColumn(2).setMinWidth(200);
-            tabla1.getColumnModel().getColumn(3).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(4).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(5).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(6).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(7).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(8).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(9).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(10).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(11).setMinWidth(90);
-            tabla1.getColumnModel().getColumn(12).setMinWidth(90);
+            tabla1.getColumnModel().getColumn(0).setResizable(false);
+            tabla1.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(1).setResizable(false);
+            tabla1.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(2).setResizable(false);
+            tabla1.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tabla1.getColumnModel().getColumn(3).setResizable(false);
+            tabla1.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(4).setResizable(false);
+            tabla1.getColumnModel().getColumn(4).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(5).setResizable(false);
+            tabla1.getColumnModel().getColumn(5).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(6).setResizable(false);
+            tabla1.getColumnModel().getColumn(6).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(7).setResizable(false);
+            tabla1.getColumnModel().getColumn(7).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(8).setResizable(false);
+            tabla1.getColumnModel().getColumn(8).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(9).setResizable(false);
+            tabla1.getColumnModel().getColumn(9).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(10).setResizable(false);
+            tabla1.getColumnModel().getColumn(10).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(11).setResizable(false);
+            tabla1.getColumnModel().getColumn(11).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(12).setResizable(false);
+            tabla1.getColumnModel().getColumn(12).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(13).setResizable(false);
+            tabla1.getColumnModel().getColumn(13).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(14).setResizable(false);
+            tabla1.getColumnModel().getColumn(14).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(15).setResizable(false);
+            tabla1.getColumnModel().getColumn(15).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(16).setResizable(false);
+            tabla1.getColumnModel().getColumn(16).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(17).setResizable(false);
+            tabla1.getColumnModel().getColumn(17).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(18).setResizable(false);
+            tabla1.getColumnModel().getColumn(18).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(19).setResizable(false);
+            tabla1.getColumnModel().getColumn(19).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(20).setResizable(false);
+            tabla1.getColumnModel().getColumn(20).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(21).setResizable(false);
+            tabla1.getColumnModel().getColumn(21).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(22).setResizable(false);
+            tabla1.getColumnModel().getColumn(22).setPreferredWidth(100);
+            tabla1.getColumnModel().getColumn(23).setResizable(false);
+            tabla1.getColumnModel().getColumn(23).setPreferredWidth(150);
+            tabla1.getColumnModel().getColumn(24).setResizable(false);
+            tabla1.getColumnModel().getColumn(24).setPreferredWidth(150);
         }
 
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);

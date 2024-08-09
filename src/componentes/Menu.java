@@ -42,6 +42,8 @@ public class Menu extends javax.swing.JPanel {
         sp.getViewport().setOpaque(false);
         sp.setVerticalScrollBar(new ScrollBarCustom());
         layout = new MigLayout("wrap, fillx, insets 0", "[fill]", "[]0[]");
+        panel.setOpaque(false);
+        panel.setBackground(new Color(0,0,0,0));
         panel.setLayout(layout);
 
     }
@@ -50,15 +52,15 @@ public class Menu extends javax.swing.JPanel {
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/1.png")), "Inicio"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/6.png")), "Estudiantes", "Ver Estudiantes", "Agregar Alumno"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/5.png")), "Maestros", "Ver Docentes", "Agregar Docentes"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/grupo.png")), "Grupos", "Ver Grupos", "Añadir Grupos"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/grupo.png")), "Grupos", "Ver Grupos"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/materia.png")), "Materias", "Ver Materias", "Añadir Materias"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/9.png")), "Carreras", "Ver Carreras", "Añadir Carreras"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Calificaciones"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/5.png")), "Personal","Ver Personal", "Añadir Personal"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Pagos Alumnos", "Ver Pagos", "Añadir Pago"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Pagos Maestros", "Ver Pagos", "Añadir Pago"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/2.png")), "Web"));
-
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/2.png")), "Sistema Web","Subir información"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/settings.png")), "Configuracion"));
     }
 
     private void addMenu(ModelMenu modelMenu) {
@@ -106,6 +108,7 @@ public class Menu extends javax.swing.JPanel {
         sp.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         sp.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
+        panel.setBackground(new java.awt.Color(255, 102, 102));
         panel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         panel.setFocusable(false);
         panel.setOpaque(false);
@@ -114,7 +117,7 @@ public class Menu extends javax.swing.JPanel {
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 239, Short.MAX_VALUE)
+            .addGap(0, 267, Short.MAX_VALUE)
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,13 +136,8 @@ public class Menu extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+            .addComponent(sp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

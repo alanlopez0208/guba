@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelos.GrupoModelo;
 import modelos.MaestroModelo;
+import operaciones.Config;
 import operaciones.OpMaestro;
 import swim.Imagen;
 
@@ -36,14 +37,15 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
     private BufferedImage img;
     private String path;
     private File pdf;
-    private ArrayList<GrupoModelo> grupos;
-    
-    
+    private Config config;
+ 
+
     public AgregarMaestroForm(EventoCerrarForm evento) {
         initComponents();
         this.evento = evento;
         init();
         opMaestro = new OpMaestro();
+        config = new Config();
     }
 
     private void init() {
@@ -115,10 +117,7 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Selecciona el sexo del maestro");
             return false;
         }
-        if(grupos == null){
-             JOptionPane.showMessageDialog(null, "Debe de seleccionar las materias que impartira el profesor");
-            return false;
-        }
+ 
         return true;
     }
 
@@ -184,7 +183,6 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
         jSeparator13 = new javax.swing.JSeparator();
         txtDomicilio = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
-        btnAgregarGrupos = new swim.botones.ButtonRounded();
         btnCamara = new swim.botones.ButtonRounded();
         btnArchivos = new swim.botones.ButtonRounded();
         buttonRounded2 = new swim.botones.ButtonRounded();
@@ -340,17 +338,6 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
         jLabel18.setForeground(new java.awt.Color(51, 51, 51));
         jLabel18.setText("Domicilio:");
 
-        btnAgregarGrupos.setBackground(new java.awt.Color(20, 90, 95));
-        btnAgregarGrupos.setForeground(new java.awt.Color(255, 255, 255));
-        btnAgregarGrupos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/grupo.png"))); // NOI18N
-        btnAgregarGrupos.setText("Agregar Grupos");
-        btnAgregarGrupos.setToolTipText("");
-        btnAgregarGrupos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarGruposActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);
         myPanel2.setLayout(myPanel2Layout);
         myPanel2Layout.setHorizontalGroup(
@@ -434,10 +421,6 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
                                 .addComponent(txtApMat)
                                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(175, 175, 175))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAgregarGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(236, 236, 236))
         );
         myPanel2Layout.setVerticalGroup(
             myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -475,40 +458,34 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
                                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(myPanel2Layout.createSequentialGroup()
-                        .addGap(143, 143, 143)
-                        .addComponent(btnAgregarGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(myPanel2Layout.createSequentialGroup()
-                        .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(myPanel2Layout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(myPanel2Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(buscarCv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(40, 40, 40)
-                        .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                        .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCurp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
+                        .addGap(32, 32, 32)
                         .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel18))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator13, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(myPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(buscarCv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(40, 40, 40)
+                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(txtGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCurp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDomicilio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator13, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCorreoPer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
@@ -751,7 +728,7 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
     }//GEN-LAST:event_btnArchivosActionPerformed
 
     private void buttonRounded2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRounded2ActionPerformed
-       if (esValido()) {
+        if (esValido()) {
             int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de añadir al docente : " + txtNombre.getText() + " con RFC: " + txtRfc.getText() + " ?");
 
             if (option == JOptionPane.OK_OPTION) {
@@ -771,10 +748,10 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
                 modelo.setGrado(txtGrado.getText().trim());
                 modelo.setPasswordTemp(txtRfc.getText().trim());
                 modelo.setGenero(comboSexo.getSelectedItem().toString());
-                modelo.setGrupos(grupos);
+          
                 if (img != null) {
                     try {
-                        File outputFile = new File("C:\\Guba\\Docentes\\Fotos" + txtRfc.getText() + ".jpg");
+                        File outputFile = new File(config.obtenerConfiguracion("04 RUTA IMAGENES PROFESORES") + "/" + txtRfc.getText() + ".jpg");
                         ImageIO.write(img, "jpg", outputFile);
                         modelo.setFoto(outputFile.getPath());
                     } catch (IOException ex) {
@@ -782,7 +759,7 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
                     }
                 }
                 if (pdf != null) {
-                    String destino = "C:\\Guba\\CV\\" + modelo.getRfc() + ".pdf";
+                    String destino = config.obtenerConfiguracion("05 RUTA PDF PROFESORES") + "/" + modelo.getRfc() + ".pdf";
                     Path pathDestino = Paths.get(destino);
 
                     String origen = pdf.getPath();
@@ -810,26 +787,8 @@ public class AgregarMaestroForm extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_buttonRounded2ActionPerformed
 
-    private void btnAgregarGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarGruposActionPerformed
-        AgregarGruposProfesorDialog dialogo = new AgregarGruposProfesorDialog(null, true);
-
-        if(this.grupos != null){
-            System.out.println("NO ES IGUAL A NULL");
-            HashSet<GrupoModelo> hashSet = new HashSet<>(this.grupos);
-            dialogo.setGrupos(hashSet);
-        }
-
-        dialogo.setVisible(true);
-
-        if(dialogo.getGrupos() != null){
-            this.grupos = new ArrayList<>(dialogo.getGrupos());
-            System.out.println("Se agrego un grupito papi");
-        }
-    }//GEN-LAST:event_btnAgregarGruposActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private swim.botones.ButtonRounded btnAgregarGrupos;
     private swim.botones.ButtonRounded btnArchivos;
     private swim.botones.ButtonRounded btnCamara;
     private swim.botones.ButtonRounded buscarCv;

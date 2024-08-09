@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import modelos.CarrerasModelo;
 import modelos.MateriaModelo;
 
 public class OpGrupo {
@@ -21,11 +22,15 @@ public class OpGrupo {
     // Método para mapear un ResultSet a un objeto GrupoModelo
     private GrupoModelo mapResultSetToGrupo(ResultSet rs) throws SQLException {
         GrupoModelo grupo = new GrupoModelo();
-        OpMaestro opDocente = new OpMaestro();
-        grupo.setMaestro(opDocente.obtenerDocentePorId(rs.getString("IdDocente")));
+
+        OpCarreras opCarrera = new OpCarreras();
+        CarrerasModelo carrera = opCarrera.getCarreraByd(rs.getString("IdCarrera"));
+
         grupo.setId(rs.getString("IdGrupo"));
         grupo.setNombre(rs.getString("Nombre"));
         grupo.setSemestre(rs.getString("Semestre"));
+
+        grupo.setCarrera(carrera);
         return grupo;
     }
 
@@ -85,57 +90,21 @@ public class OpGrupo {
 
     // método para agregar un grupo
     public boolean agregarGrupo(GrupoModelo grupo) {
-
         try {
-            conn.setAutoCommit(false);
+            //   conn.setAutoCommit(false);
             //Primero insertamos el grupo
-            String sql = "INSERT INTO Grupos (Nombre, Semestre, IdDocente ) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO Grupos (Nombre, Semestre, IdCarrera ) VALUES (?, ?, ?)";
 
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, grupo.getNombre());
             pstmt.setString(2, grupo.getSemestre());
-            pstmt.setString(3, grupo.getMaestro().getId());
-            int filasAfectadas = pstmt.executeUpdate();
+            pstmt.setString(3, grupo.getCarrera().getIdCarrera());
 
-            System.out.println("Si se puedo agregar un Grupo" + filasAfectadas);
-
-            if (filasAfectadas < 0) {
-                return false;
-            }
-
-            //Ahora obtenemos el id del grupo creado:
-            String grupoNuevo = "";
-            sql = "SELECT last_insert_rowid() as nuevo_grupo;";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-
-            if (!rs.next()) {
-                return false;
-
-            }
-
-            grupoNuevo = rs.getString("nuevo_grupo");
-
-            System.out.println("Si se pudo obtener el grupoId: " + grupoNuevo);
-
-            sql = "INSERT INTO GruposMaterias (IdGrupo, IdMateria, IdDocente ) VALUES (?, ?, ?)";
-
-            pstmt = conn.prepareStatement(sql);
-
-            for (int i = 0; i < grupo.getMaterias().size(); i++) {
-                MateriaModelo materia = grupo.getMaterias().get(i);
-                pstmt.setString(1, grupoNuevo);
-                pstmt.setString(2, materia.getIdMateria());
-                pstmt.setString(3, grupo.getMaestro().getId());
-                pstmt.addBatch();
-            }
-
-            pstmt.executeBatch();
-            conn.commit();
+            int rowAfecteds = pstmt.executeUpdate();
             conn.close();
+            return rowAfecteds > 0;
 
-            return true;
-
+        
         } catch (SQLException e) {
             System.out.println("Error al agregar grupo: " + e.getMessage());
             return false;
@@ -158,51 +127,21 @@ public class OpGrupo {
     }
 
     // Método para actualizar un grupo
-    public boolean actualizarGrupo(GrupoModelo grupo, boolean mismasMaterias) {
-
-        String sentencia1 = "UPDATE Grupos SET Nombre = ?, Semestre = ?, IdDocente = ? WHERE IdGrupo = ?";
-        String sentencia2 = "DELETE FROM GruposMaterias WHERE IdGrupo = ?";
-        String sentencia3 = "INSERT INTO GruposMaterias ( IdGrupo, IdMateria, IdDocente ) VALUES (?, ?, ? )";
-
-        System.out.println("INSERTANDO COSAS PERRONAS");
+    public boolean actualizarGrupo(GrupoModelo grupo) {
+        String sentencia1 = "UPDATE Grupos SET Nombre = ?, Semestre = ?, IdCarrera = ? WHERE IdGrupo = ?";
+        
+        //System.out.println("INSERTANDO COSAS PERRONAS");
         try {
-            conn.setAutoCommit(false);
+            //conn.setAutoCommit(false);
 
             PreparedStatement pstmt = conn.prepareStatement(sentencia1);
             pstmt.setString(1, grupo.getNombre());
             pstmt.setString(2, grupo.getSemestre());
-            pstmt.setString(3, grupo.getMaestro().getId());
+            pstmt.setString(3, grupo.getCarrera().getIdCarrera());
             pstmt.setInt(4, Integer.parseInt(grupo.getId()));
 
-            int rowAfected = pstmt.executeUpdate();
-
-            if (!(rowAfected > 0)) {
-                return false;
-            }
-
-            if (!mismasMaterias) {
-                pstmt = conn.prepareStatement(sentencia2);
-                pstmt.setInt(1, Integer.parseInt(grupo.getId()));
-                rowAfected = pstmt.executeUpdate();
-                if (!(rowAfected > 0)) {
-                    return false;
-                }
-                pstmt = conn.prepareStatement(sentencia3);
-                for (int i = 0; i < grupo.getMaterias().size(); i++) {
-                    MateriaModelo materia = grupo.getMaterias().get(i);
-                    pstmt.setString(1, grupo.getId());
-                    pstmt.setString(2, materia.getIdMateria());
-                    pstmt.setString(3, grupo.getMaestro().getId());
-                    pstmt.addBatch();
-                }
-                System.out.println("SI SE PASO EL INSERT ");
-                pstmt.executeBatch();
-            }
-
-            conn.commit();
-            conn.close();
-
-            return true;
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
 
         } catch (SQLException e) {
             System.out.println("Error al actualizar grupo: " + e.getMessage());
@@ -263,6 +202,27 @@ public class OpGrupo {
             throw new RuntimeException("Error al buscar docentes", e);
         }
         return resultados;
+    }
+
+    public GrupoModelo getGruposByCarreraAndSemestre(String idCarreras, String semestre) {
+        GrupoModelo grupo = new GrupoModelo();
+        String sql = "SELECT * FROM Grupos WHERE IdCarrera = ? AND Semestre = ?";
+
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, idCarreras);
+            pstmt.setString(2, semestre);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    grupo = mapResultSetToGrupo(rs);
+
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al recuperar el grupo por carrera y semestre: " + e.getMessage());
+        }
+        return grupo;
     }
 
 }

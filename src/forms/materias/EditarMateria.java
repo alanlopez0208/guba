@@ -47,7 +47,7 @@ public class EditarMateria extends javax.swing.JPanel {
         txtCreditos.setText(materiaModelo.getCreditos());
         txtClave.setText(materiaModelo.getClave());
              txtModalidad.setText(materiaModelo.getModalidad());
-        CarrerasModelo carrera = opCarrera.getMateriaById(materiaModelo.getCarrera());
+        CarrerasModelo carrera = opCarrera.getCarreraByd(materiaModelo.getCarrera());
 
         ArrayList<CarrerasModelo> carreras = opCarrera.getAllCarreras();
         comboCarrera.addItem("----------");

@@ -105,5 +105,4 @@ public class Tabla extends JTable {
         DefaultTableModel mod = (DefaultTableModel) getModel();
         return mod;
     }
-
 }

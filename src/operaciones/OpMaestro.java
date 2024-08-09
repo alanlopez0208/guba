@@ -68,7 +68,6 @@ public class OpMaestro {
         maestro.setGrado(rs.getString("GradoEstudios"));
         maestro.setPasswordTemp(rs.getString("PasswordTemporal"));
         maestro.setFoto(rs.getString("Foto"));
-        maestro.setGrupos(obtenerGruposPorRFC(rs.getString("RFC")));
         maestro.setId(rs.getString("IdDocente"));
         return maestro;
     }
@@ -78,8 +77,6 @@ public class OpMaestro {
                 + "CorreoPersonal = ?, CorreoInstitucional = ?, Domicilio = ?, Celular = ?, Estado = ?, Municipio = ?, CV = ?, GradoEstudios = ?"
                 + (docenteModelo.getFoto() != null ? ", Foto = ? " : "")
                 + " WHERE RFC = ?";
-        String sqlDeleteDocenteGrupos = "DELETE FROM DocentesGrupos WHERE IdDocente = ?";
-        String sqlInsertDocenteGrupos = "INSERT INTO DocentesGrupos (IdDocente, IdGrupo) VALUES (?, ?)";
 
         try (Connection conn = new Conexion().connect()) {
             conn.setAutoCommit(false);
@@ -110,20 +107,6 @@ public class OpMaestro {
                     conn.rollback();
                     throw new SQLException("Error al actualizar el docente, no se actualizó ninguna fila");
                 }
-            }
-
-            try (PreparedStatement pstmtDeleteDocenteGrupos = conn.prepareStatement(sqlDeleteDocenteGrupos)) {
-                pstmtDeleteDocenteGrupos.setString(1, docenteModelo.getRfc());
-                pstmtDeleteDocenteGrupos.executeUpdate();
-            }
-
-            try (PreparedStatement pstmtInsertDocenteGrupos = conn.prepareStatement(sqlInsertDocenteGrupos)) {
-                for (GrupoModelo grupo : docenteModelo.getGrupos()) {
-                    pstmtInsertDocenteGrupos.setString(1, docenteModelo.getRfc());
-                    pstmtInsertDocenteGrupos.setString(2, grupo.getId());
-                    pstmtInsertDocenteGrupos.addBatch();
-                }
-                pstmtInsertDocenteGrupos.executeBatch();
             }
 
             conn.commit();
@@ -165,9 +148,8 @@ public class OpMaestro {
         }
         return docente;
     }
-    
-    
-      // Recuperar un docente por RFC
+
+    // Recuperar un docente por RFC
     public MaestroModelo obtenerDocentePorId(String rfc) {
         String sql = "SELECT * FROM Docentes WHERE IdDocente = ?";
         MaestroModelo docente = null;
@@ -186,7 +168,6 @@ public class OpMaestro {
         return docente;
     }
 
-
     public boolean crearDocente(MaestroModelo docenteModelo) {
         String sqlDocente = "INSERT INTO Docentes (RFC, CURP, Nombre, ApellidoPaterno, ApellidoMaterno, Genero, CorreoPersonal, "
                 + "CorreoInstitucional, Domicilio, Celular, Estado, Municipio, CV, GradoEstudios, PasswordTemporal"
@@ -194,8 +175,6 @@ public class OpMaestro {
                 + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?"
                 + (docenteModelo.getFoto() != null ? ", ?" : "")
                 + ")";
-        String sqlDocenteId = "SELECT last_insert_rowid() as nuevo_id_docente";
-        String sqlDocenteGrupos = "INSERT INTO DocentesGrupos (IdDocente, IdGrupo) VALUES (?, ?)";
 
         try (Connection conn = new Conexion().connect()) {
             conn.setAutoCommit(false);
@@ -228,25 +207,6 @@ public class OpMaestro {
                 }
             }
 
-            try (PreparedStatement pstmtDocenteId = conn.prepareStatement(sqlDocenteId); ResultSet rs = pstmtDocenteId.executeQuery()) {
-
-                if (rs.next()) {
-                    newDocenteId = rs.getInt("nuevo_id_docente");
-                } else {
-                    conn.rollback();
-                    throw new SQLException("Error al obtener el ID del nuevo docente");
-                }
-            }
-
-            try (PreparedStatement pstmtDocenteGrupos = conn.prepareStatement(sqlDocenteGrupos)) {
-                for (GrupoModelo grupo : docenteModelo.getGrupos()) {
-                    pstmtDocenteGrupos.setInt(1, newDocenteId);
-                    pstmtDocenteGrupos.setString(2, grupo.getId());
-                    pstmtDocenteGrupos.addBatch();
-                }
-                pstmtDocenteGrupos.executeBatch();
-            }
-
             conn.commit();
             return true;
         } catch (SQLException e) {
@@ -254,6 +214,29 @@ public class OpMaestro {
         }
     }
 
+    // Recuperar un docente por IdDocente en GruposMaterias
+    public MaestroModelo obtenerDocentePorGrupoYMateria(String idGrupo, String idMateria) {
+        String sql = "SELECT d.* FROM Docentes d "
+                + "JOIN GruposMaterias gm ON d.IdDocente = gm.IdDocente "
+                + "WHERE gm.IdGrupo = ? AND gm.IdMateria = ?";
+        MaestroModelo docente = null;
+
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, idGrupo);
+            pstmt.setString(2, idMateria);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    docente = mapResultSetToDocente(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al recuperar docente", e);
+        }
+        return docente;
+    }
+
+    /*
     // Método para obtener grupos por RFC
     public ArrayList<GrupoModelo> obtenerGruposPorRFC(String rfc) {
         ArrayList<GrupoModelo> grupos = new ArrayList<>();
@@ -278,11 +261,5 @@ public class OpMaestro {
             throw new RuntimeException("Error al obtener grupos por RFC", e);
         }
         return grupos;
-    }
-
-    // Método para seleccionar un grupo por IdGrupo
-    private GrupoModelo seleccionarGrupo(int idGrupo) throws SQLException {
-        OpGrupo opGrupo = new OpGrupo();
-        return opGrupo.seleccionarGrupo(idGrupo);
-    }
+    }*/
 }

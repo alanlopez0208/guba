@@ -13,6 +13,7 @@ public class GrupoModelo {
     String semestre;
     MaestroModelo maestro;
     ArrayList<MateriaModelo> materias;
+    CarrerasModelo carrera;
 
     public GrupoModelo() {
     }
@@ -62,10 +63,17 @@ public class GrupoModelo {
     public void setMaestro(MaestroModelo maestro) {
         this.maestro = maestro;
     }
+
+    public CarrerasModelo getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(CarrerasModelo carrera) {
+        this.carrera = carrera;
+    }
    
      public Object[] toRowTable(EventoAccion evento){
              return new Object[]{this.getId(), this.getNombre(), this.semestre, new AccionModelo(this, evento)};
-   
     }
 
     @Override

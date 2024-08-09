@@ -9,14 +9,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelos.MaestroModelo;
+import operaciones.Config;
 
 public class MaestroDatosForm extends javax.swing.JPanel {
 
     MaestroModelo modelo;
+    private Config config;
 
     public MaestroDatosForm(MaestroModelo modelo) {
         initComponents();
         this.modelo = modelo;
+        config = new Config();
         init();
     }
 
@@ -41,9 +44,9 @@ public class MaestroDatosForm extends javax.swing.JPanel {
 
             String path = modelo.getFoto();
 
-            ImageIcon foto = new ImageIcon(path);
+            ImageIcon foto = new ImageIcon(config.obtenerConfiguracion("04 RUTA IMAGENES PROFESORES") + "/" + path + ".jpg");
 
-            Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(200, 240, Image.SCALE_REPLICATE));
+            Icon iconoBack = new ImageIcon(foto.getImage().getScaledInstance(240, 480, Image.SCALE_REPLICATE));
             txtFoto.setIcon(iconoBack);
         }
         txtCv.setText(modelo.getCv());
@@ -532,9 +535,10 @@ public class MaestroDatosForm extends javax.swing.JPanel {
         if (modelo.getCv().equals("------")) {
             return;
         }
+        String ruta = config.obtenerConfiguracion("05 RUTA PDF PROFESORES") + "/" + modelo.getRfc() + ".pdf";
         ProcessBuilder p = new ProcessBuilder();
         try {
-            p.command("cmd.exe", "/c", "start", modelo.getCv());
+            p.command("cmd.exe", "/c", "start", ruta);
             p.start();
             System.out.println("ABRIENDOOO");
         } catch (IOException e) {

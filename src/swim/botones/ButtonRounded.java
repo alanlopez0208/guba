@@ -28,7 +28,7 @@ public class ButtonRounded extends JButton {
         g2.setPaint(this.getBackground());
         g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 35, 35);
 
-        super.paintComponent(g); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        super.paintComponent(g);
     }
 
 }

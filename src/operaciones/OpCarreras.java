@@ -109,7 +109,7 @@ public class OpCarreras {
     }
 
     //Obtener la carrera de acuerdo a su Id
-    public CarrerasModelo getMateriaById(String id) {
+    public CarrerasModelo getCarreraByd(String id) {
         CarrerasModelo carreras = new CarrerasModelo();
         String sql = "SELECT * FROM Carreras WHERE IdCarrera = ?";
 
@@ -134,7 +134,6 @@ public class OpCarreras {
     // Método para mapear un ResultSet a un objeto GrupoModelo
     private CarrerasModelo mapResultSetToCarrera(ResultSet rs) throws SQLException {
         CarrerasModelo carrera = new CarrerasModelo();
-
         carrera.setCreditos(rs.getString("Creditos"));
         carrera.setIdCarrera(rs.getString("IdCarrera"));
         carrera.setIdClave(rs.getString("Clave"));
@@ -145,7 +144,6 @@ public class OpCarreras {
         carrera.setTotalHoras(rs.getString("TotalHoras"));
         carrera.setModalidad(rs.getString("Modalidad"));
         carrera.setTotalAsignaturas(rs.getString("TotalAsignaturas"));
-
         return carrera;
     }
 

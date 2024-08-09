@@ -25,6 +25,8 @@ public class EstudianteModelo {
     private String passwordTemporal;
     private String foto;
     private String sexo;
+    private String semestre;
+    private CarrerasModelo carrera;
     
 
     public EstudianteModelo() {
@@ -207,9 +209,23 @@ public class EstudianteModelo {
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
-    
-    
 
+    public String getSemestre() {
+        return semestre;
+    }
+
+    public void setSemestre(String semestre) {
+        this.semestre = semestre;
+    }
+
+    public CarrerasModelo getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(CarrerasModelo carrera) {
+        this.carrera = carrera;
+    }
+    
     public Object[] toRowTable(EventoAccion evento) {
         return new Object[]{this.getMatricula(), this.getNombre(),this.getApPaterno(),this.getApMaterno(), new AccionModelo(this, evento)};
     }

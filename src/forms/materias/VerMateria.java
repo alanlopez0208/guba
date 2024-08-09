@@ -34,7 +34,7 @@ public class VerMateria extends javax.swing.JPanel {
         txtHti.setText(materiaModelo.getHti());
         txtSemestre.setText(materiaModelo.getSemestre());
         txtCreditos.setText(materiaModelo.getCreditos());
-        CarrerasModelo carrera = opCarrera.getMateriaById(materiaModelo.getCarrera());
+        CarrerasModelo carrera = opCarrera.getCarreraByd(materiaModelo.getCarrera());
         txtClave.setText(materiaModelo.getClave());
         txtModalidad.setText(materiaModelo.getModalidad());
         comboCarrera.addItem(carrera);

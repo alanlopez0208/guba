@@ -15,6 +15,7 @@ import net.miginfocom.swing.MigLayout;
 import event.EventoAbrirForm;
 import event.EventoCerrarForm;
 import forms.carreras.*;
+import forms.configuraciones.ConfiguracionesForm;
 import forms.grupos.AgregarGrupo;
 import forms.grupos.EditarGrupo;
 import forms.grupos.VerGrupo;
@@ -46,6 +47,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 import modelos.*;
+import operaciones.FTPUploader;
 
 public class Main extends javax.swing.JFrame {
 
@@ -60,6 +62,7 @@ public class Main extends javax.swing.JFrame {
     private VerPersonalForm verPersonal;
     private VerPagosAlumnosForm verPagosAlumnos;
     private VerPagosDocentesForm verPagosDocentes;
+    private ConfiguracionesForm configuraciones;
 
     public Main() {
         initComponents();
@@ -465,13 +468,30 @@ public class Main extends javax.swing.JFrame {
                         }
                     }
                     case 10 -> {
-                        main.showForm(webForm);
+                        if (subMenuIndex == 2) {
+                            FTPUploader loader = new FTPUploader();
+                            Thread hilo = new Thread() {
+                                @Override
+                                public void run() {
+
+                                    loader.uploadFile();
+                                }
+
+                            };
+
+                            hilo.start();
+                        }
+                    }
+                    case 11 -> {
+                        main.showForm(configuraciones);
                     }
                     default -> {
                     }
                 }
             }
         });
+
+        configuraciones = new ConfiguracionesForm();
 
         menu.initMenuItem();
         bg.add(menu, "w 240!, spany 2");
@@ -501,18 +521,21 @@ public class Main extends javax.swing.JFrame {
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
+            .addGap(0, 1600, Short.MAX_VALUE)
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 522, Short.MAX_VALUE)
+            .addGap(0, 900, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(bg)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -570,4 +593,3 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLayeredPane bg;
     // End of variables declaration//GEN-END:variables
 }
-
