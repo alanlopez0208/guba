@@ -770,7 +770,6 @@ public class AdicionalesForm extends javax.swing.JPanel {
                     horaDuracion + ":" + minutoDuracion,
                     horaFinalizacion + ":" + minutoFinalizacion,
                     presidente, secretario, vocal, acta, libro, hoja, nombreTesis);
-
         } else {
             // Mostrar mensaje de error si algún campo está vacío
             JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos antes de continuar.");
