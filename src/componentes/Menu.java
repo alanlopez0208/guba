@@ -7,16 +7,27 @@ import java.awt.Component;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import modelos.ModelMenu;
 
 import net.miginfocom.swing.MigLayout;
+import operaciones.Config;
 import swim.MenuAnimation;
 import swim.MenuItem;
 import swim.scrollbar.ScrollBarCustom;
 
 public class Menu extends javax.swing.JPanel {
+
+    private Config config;
 
     public void addEventMenuSelected(EventMenuSelected eventMenuSelected) {
         this.eventMenuSelected = eventMenuSelected;
@@ -38,13 +49,23 @@ public class Menu extends javax.swing.JPanel {
 
     public Menu() {
         initComponents();
+        config = new Config();
         this.setOpaque(false);
         sp.getViewport().setOpaque(false);
         sp.setVerticalScrollBar(new ScrollBarCustom());
         layout = new MigLayout("wrap, fillx, insets 0", "[fill]", "[]0[]");
         panel.setOpaque(false);
-        panel.setBackground(new Color(0,0,0,0));
+        panel.setBackground(new Color(0, 0, 0, 0));
         panel.setLayout(layout);
+
+        BufferedImage imagenOriginal;
+        try {
+            imagenOriginal = ImageIO.read(new File(config.obtenerConfiguracion("07 RUTA Logo")));
+            Icon iconoBack = new ImageIcon(imagenOriginal.getScaledInstance(220, 150, Image.SCALE_SMOOTH));
+            jLabel1.setIcon(iconoBack);
+        } catch (IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -55,11 +76,10 @@ public class Menu extends javax.swing.JPanel {
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/grupo.png")), "Grupos", "Ver Grupos"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/materia.png")), "Materias", "Ver Materias", "Añadir Materias"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/9.png")), "Carreras", "Ver Carreras", "Añadir Carreras"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Calificaciones"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/5.png")), "Personal","Ver Personal", "Añadir Personal"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/5.png")), "Personal", "Ver Personal", "Añadir Personal"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Pagos Alumnos", "Ver Pagos", "Añadir Pago"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/3.png")), "Pagos Maestros", "Ver Pagos", "Añadir Pago"));
-        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/2.png")), "Sistema Web","Subir información"));
+        addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/2.png")), "Sistema Web", "Subir información", "Bajar Información"));
         addMenu(new ModelMenu(new ImageIcon(getClass().getResource("/icon/settings.png")), "Configuracion"));
     }
 
@@ -117,34 +137,32 @@ public class Menu extends javax.swing.JPanel {
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 267, Short.MAX_VALUE)
+            .addGap(0, 293, Short.MAX_VALUE)
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 542, Short.MAX_VALUE)
+            .addGap(0, 1149, Short.MAX_VALUE)
         );
 
         sp.setViewportView(panel);
 
         jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logo.png"))); // NOI18N
-        jLabel1.setText("School Sync");
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(sp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(sp, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sp, javax.swing.GroupLayout.DEFAULT_SIZE, 1063, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

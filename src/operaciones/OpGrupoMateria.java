@@ -84,10 +84,10 @@ public class OpGrupoMateria {
 
         try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, grupoMateria.getIdGrupo());
-            pstmt.setString(2, grupoMateria.getMateria().getId());
+            pstmt.setString(2, grupoMateria.getMateria().getIdMateria());
             pstmt.setString(3, grupoMateria.getMaestro().getId());
-            pstmt.setInt(5, grupoMateria.getCursada());
-            pstmt.setString(6, grupoMateria.getIdGrupoMateria());
+            pstmt.setInt(4, grupoMateria.getCursada());
+            pstmt.setString(5, grupoMateria.getIdGrupoMateria());
 
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;

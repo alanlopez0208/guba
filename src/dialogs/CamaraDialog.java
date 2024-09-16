@@ -280,7 +280,7 @@ public class CamaraDialog extends javax.swing.JDialog {
 
         if (pregunta == JOptionPane.OK_OPTION) {
 
-            img = webcam.getImage();
+            
                 dispose();
             // File outputFile = new File("D:\\Alan Lopez\\Imagenes\\probando\\"+matricula+".jpg");
 

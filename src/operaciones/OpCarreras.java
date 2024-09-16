@@ -32,11 +32,8 @@ public class OpCarreras {
             conn.close();
         } catch (SQLException e) {
             System.out.println("Error al obtener carreras " + e.getMessage() + "\n" + e.getSQLState());
-
         }
-
         return carreras;
-
     }
 
     //Insertar Carrera

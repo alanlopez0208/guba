@@ -2,6 +2,8 @@ package swim.tabla;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -14,8 +16,10 @@ import javax.swing.table.TableCellEditor;
 public class Tabla extends JTable {
 
     private int columnEditor = -1;
+    private Set<Integer> triggerRows;
 
     public Tabla() {
+        triggerRows = new HashSet<>();
         this.setShowHorizontalLines(true);
         this.setGridColor(new Color(230, 230, 230));
         this.setRowHeight(40);
@@ -40,6 +44,11 @@ public class Tabla extends JTable {
                     return componente;
                 } else {
                     Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    if (triggerRows.contains(row)) {
+                        component.setForeground(Color.BLACK);
+                        component.setBackground(new Color(207, 255, 255));
+                        return component;
+                    }
                     setBorder(noFocusBorder);
                     component.setForeground(new Color(102, 102, 102));
                     if (isSelected) {
@@ -101,8 +110,19 @@ public class Tabla extends JTable {
         this.columnEditor = columnEditor;
     }
 
+    public Set<Integer> getTriggerRows() {
+        return triggerRows;
+    }
+
     public DefaultTableModel getModelo() {
         DefaultTableModel mod = (DefaultTableModel) getModel();
         return mod;
     }
+
+    @Override
+    public boolean isCellEditable(int row, int column) {
+
+        return !triggerRows.contains(row) && column > 2;
+    }
+
 }

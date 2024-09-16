@@ -96,7 +96,6 @@ public class VerMateriasForm extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla1 = new swim.tabla.Tabla();
-        btnAgregarGrupo = new swim.botones.ButtonRounded();
         myPanel2 = new swim.panel.MyPanel();
         jSeparator1 = new javax.swing.JSeparator();
         txtBuscar = new javax.swing.JTextField();
@@ -144,17 +143,6 @@ public class VerMateriasForm extends javax.swing.JPanel {
             tabla1.getColumnModel().getColumn(5).setMinWidth(200);
         }
 
-        btnAgregarGrupo.setBackground(new java.awt.Color(51, 153, 255));
-        btnAgregarGrupo.setForeground(new java.awt.Color(255, 255, 255));
-        btnAgregarGrupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/anadir.png"))); // NOI18N
-        btnAgregarGrupo.setText("Añadir Materia");
-        btnAgregarGrupo.setFont(new java.awt.Font("Malgun Gothic", 1, 12)); // NOI18N
-        btnAgregarGrupo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarGrupoActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout myPanel1Layout = new javax.swing.GroupLayout(myPanel1);
         myPanel1.setLayout(myPanel1Layout);
         myPanel1Layout.setHorizontalGroup(
@@ -164,27 +152,20 @@ public class VerMateriasForm extends javax.swing.JPanel {
                     .addGroup(myPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAgregarGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(myPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1591, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         myPanel1Layout.setVerticalGroup(
             myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(myPanel1Layout.createSequentialGroup()
-                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel1)
-                        .addGap(62, 62, 62))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnAgregarGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)))
+                .addGap(19, 19, 19)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         myPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -281,94 +262,8 @@ public class VerMateriasForm extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtBuscarKeyReleased
 
-    private void btnAgregarGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarGrupoActionPerformed
-
-
-        /*   JTextField txtNombreGrupo = new JTextField();
-        JComboBox comboCarreras = new JComboBox();
-        JComboBox comboSemestre = new JComboBox();
-        JComboBox comboProfesores = new JComboBox();
-
-        //JComboBox materias = new JComboBox();
-        comboCarreras.addItem("--------");
-        comboSemestre.addItem("1");
-        comboSemestre.addItem("2");
-        comboSemestre.addItem("3");
-        comboSemestre.addItem("4");
-        comboSemestre.addItem("5");
-        comboSemestre.addItem("6");
-        comboSemestre.addItem("7");
-        comboSemestre.addItem("8");
-        comboSemestre.addItem("9");
-        comboSemestre.addItem("10");
-        comboSemestre.setEnabled(false);
-        //materias.setEnabled(false);
-
-        comboCarreras.addItemListener((ItemEvent e) -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                int itemIndex = comboCarreras.getSelectedIndex();
-                if (itemIndex > 0) {
-
-                    comboSemestre.setEnabled(true);
-                    comboSemestre.setSelectedIndex(0);
-                    //materias.removeAll();
-                    //materias.setEnabled(false);
-                    return;
-                }
-                comboSemestre.setEnabled(false);
-                //materias.setEnabled(false);
-                comboSemestre.setSelectedIndex(0);
-
-            }
-        });
-        // comboSemestre.addItemListener((ItemEvent e) -> {
-
-            //materias.setEnabled(true);
-            //materias.setEnabled(false);
-            //  });
-    ArrayList<CarrerasModelo> allCarreras = opCarrera.getAllCarreras();
-    allCarreras.forEach((carrera) -> {
-        comboCarreras.addItem(carrera);
-        });
-
-        comboProfesores.addItem("--------");
-        opMaestro.getDocentes().forEach((maestro) -> {
-            comboProfesores.addItem(maestro);
-        });
-
-        Object[] message = {
-            "Ingrese el nombre del Grupo:", txtNombreGrupo,
-            "Ingrese el profesor a Impartir : ", comboProfesores,
-            "Ingrese la carrera:", comboCarreras,
-            "Ingrese el semestre:", comboSemestre,};
-
-        int option = JOptionPane.showConfirmDialog(null, message, "Ingresa los datos", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            if (!txtNombreGrupo.getText().trim().isEmpty() && comboCarreras.getSelectedIndex() > 0 && comboProfesores.getSelectedIndex() > 0) {
-                GrupoModelo grupo = new GrupoModelo();
-
-                grupo.setNombre(txtNombreGrupo.getText().trim());
-                grupo.setCarrera((CarrerasModelo) comboCarreras.getSelectedItem());
-                grupo.setMaestro((MaestroModelo) comboProfesores.getSelectedItem());
-                grupo.setSemestre((String) comboSemestre.getSelectedItem());
-
-                boolean agregado = opGrupo.agregarGrupo(grupo);
-
-                if (agregado) {
-                    this.actualizarTabla();
-                    JOptionPane.showMessageDialog(null, "Se agrego correctamente el grupo para agregar el grupo");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Hubo un error al agregar el grupo");
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Debe de Ingresar el Nombre y la carrera para agregar el grupo");
-            }
-        }*/
-    }//GEN-LAST:event_btnAgregarGrupoActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private swim.botones.ButtonRounded btnAgregarGrupo;
     private javax.swing.JComboBox<String> comboFiltro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

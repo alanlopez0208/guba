@@ -1,4 +1,3 @@
-
 package forms.maestros;
 
 import javax.swing.ImageIcon;
@@ -6,25 +5,28 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import modelos.MaestroModelo;
+import operaciones.web.InsertWebpass;
 
 
 public class AdicionalesForm extends javax.swing.JPanel {
+
     private boolean bandera;
     private MaestroModelo modelo;
-    
+
+
     public AdicionalesForm(MaestroModelo modelo) {
         initComponents();
         bandera = false;
-
+       
         this.modelo = modelo;
         init();
     }
 
-    private void init(){
+    private void init() {
         this.txtUsuario.setText(modelo.getRfc());
         this.txtPass.setText(modelo.getPasswordTemp());
     }
-  
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -208,6 +210,11 @@ public class AdicionalesForm extends javax.swing.JPanel {
                 btnPass.setIcon(new ImageIcon((getClass().getResource("/icon/abierto.png"))));
                 txtPass.setEchoChar('\0');
                 bandera = true;
+
+                InsertWebpass pass = new InsertWebpass();
+
+               
+
             } else {
                 JOptionPane.showInternalMessageDialog(null, "Contraseña Incorrecta");
             }

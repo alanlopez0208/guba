@@ -4,8 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -16,23 +15,31 @@ import javax.swing.table.DefaultTableCellRenderer;
 import modelos.CalificacionModelo;
 import modelos.EstudianteModelo;
 import modelos.GrupoModelo;
+import modelos.Periodo;
+import swim.tabla.AccionModelo;
+import swim.tabla.EventoAccion;
 import operaciones.OpCalificaciones;
+import operaciones.OpPeriodo;
+import swim.tabla.EventoEditar;
 
 public class CalificacionesForm extends javax.swing.JPanel {
 
     private OpCalificaciones opCalificacion;
     private EstudianteModelo estudiante;
     private ArrayList<CalificacionModelo> lista;
+    private Periodo periodo;
+    private OpPeriodo opPeriodo;
 
     public CalificacionesForm(EstudianteModelo estudiante) {
         initComponents();
         this.estudiante = estudiante;
+        opCalificacion = new OpCalificaciones();
+        opPeriodo = new OpPeriodo();
         init();
     }
 
     private void init() {
-
-        opCalificacion = new OpCalificaciones();
+        periodo = opPeriodo.getUltimoPeriodo();
         tabla1.getTableHeader().setReorderingAllowed(false);
         tabla1.getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
@@ -288,13 +295,15 @@ public class CalificacionesForm extends javax.swing.JPanel {
         });
 
         lista = opCalificacion.obtenerCalificaciones(estudiante.getId());
-        System.out.println("-------------------" + lista.size());
-        lista.forEach((calificacion) -> {
-            tabla1.addRow(calificacion.toRowTable());
-        });
 
-    
-      
+        for (int i = 0; i < lista.size(); i++) {
+            CalificacionModelo calificacion = lista.get(i);
+            String idPeriodo = calificacion.getPeriodo().getId();
+            if (!idPeriodo.equals(periodo.getId())) {
+                tabla1.getTriggerRows().add(i);
+            }
+            tabla1.addRow(calificacion.toRowTable());
+        }
 
         txtAsignaturas.setText(Integer.toString(lista.size()));
         obtenerPromedioCertificado();
@@ -303,10 +312,15 @@ public class CalificacionesForm extends javax.swing.JPanel {
     private void actualizarTabla() {
         tabla1.clear();
         lista = opCalificacion.obtenerCalificaciones(estudiante.getId());
-        System.out.println("-------------------" + lista.size());
-        lista.forEach((calificacion) -> {
+
+        for (int i = 0; i < lista.size(); i++) {
+            CalificacionModelo calificacion = lista.get(i);
+            String idPeriodo = calificacion.getPeriodo().getId();
+            if (!idPeriodo.equals(periodo.getId())) {
+                tabla1.getTriggerRows().add(i);
+            }
             tabla1.addRow(calificacion.toRowTable());
-        });
+        }
 
         obtenerPromedioCertificado();
     }
@@ -384,7 +398,7 @@ public class CalificacionesForm extends javax.swing.JPanel {
 
         myPanel1 = new swim.panel.MyPanel();
         jLabel5 = new javax.swing.JLabel();
-        comboGrupo = new javax.swing.JComboBox();
+        comboSemestre = new javax.swing.JComboBox();
         myPanel2 = new swim.panel.MyPanel();
         txtAsignaturas = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -401,10 +415,15 @@ public class CalificacionesForm extends javax.swing.JPanel {
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("Semestre:");
 
-        comboGrupo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos" }));
-        comboGrupo.addItemListener(new java.awt.event.ItemListener() {
+        comboSemestre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos", "1", "2", "3", "4", "5", "6", "7", "8" }));
+        comboSemestre.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                comboGrupoItemStateChanged(evt);
+                comboSemestreItemStateChanged(evt);
+            }
+        });
+        comboSemestre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboSemestreActionPerformed(evt);
             }
         });
 
@@ -416,7 +435,7 @@ public class CalificacionesForm extends javax.swing.JPanel {
                 .addGap(42, 42, 42)
                 .addComponent(jLabel5)
                 .addGap(45, 45, 45)
-                .addComponent(comboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         myPanel1Layout.setVerticalGroup(
@@ -425,7 +444,7 @@ public class CalificacionesForm extends javax.swing.JPanel {
                 .addContainerGap(16, Short.MAX_VALUE)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(comboGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24))
         );
 
@@ -529,30 +548,32 @@ public class CalificacionesForm extends javax.swing.JPanel {
         myPanel2Layout.setHorizontalGroup(
             myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(myPanel2Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jSeparator3)
-                    .addComponent(txtPromedio, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jSeparator1)
-                    .addComponent(txtAsignaturas, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE))
-                .addContainerGap(1025, Short.MAX_VALUE))
-            .addGroup(myPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(myPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1428, Short.MAX_VALUE))
+                    .addGroup(myPanel2Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jSeparator3)
+                            .addComponent(txtPromedio, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jSeparator1)
+                            .addComponent(txtAsignaturas, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         myPanel2Layout.setVerticalGroup(
             myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(myPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(myPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPromedio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
@@ -583,31 +604,36 @@ public class CalificacionesForm extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void comboGrupoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboGrupoItemStateChanged
+    private void comboSemestreItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboSemestreItemStateChanged
 
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            int itemIndex = comboGrupo.getSelectedIndex();
+            int itemIndex = comboSemestre.getSelectedIndex();
 
             if (itemIndex == 0) {
                 actualizarTabla();
             } else {
 
-                GrupoModelo grupoSeleccionado = (GrupoModelo) comboGrupo.getSelectedItem();
 
                 tabla1.clear();
+                
+                
                 lista.stream().filter((calificaciones) -> {
-                    return calificaciones.getGrupo().equals(grupoSeleccionado);
+                    return calificaciones.getMateria().getSemestre().equals(comboSemestre.getSelectedItem());
                 }).forEach((calificacion) -> {
                     System.out.println(calificacion);
                     tabla1.addRow(calificacion.toRowTable());
                 });
             }
         }
-    }//GEN-LAST:event_comboGrupoItemStateChanged
+    }//GEN-LAST:event_comboSemestreItemStateChanged
+
+    private void comboSemestreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSemestreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboSemestreActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox comboGrupo;
+    private javax.swing.JComboBox comboSemestre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;

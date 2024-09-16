@@ -1,6 +1,5 @@
 package operaciones;
 
-
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
@@ -21,10 +20,13 @@ public class FTPUploader {
     private String user = "subir@gubaescolares.com";
     private String password = "p_WyU)p}&shG";
     private String remoteDir = "";
-    private File localFile = new File("D:\\Alan Lopez\\Documentos\\NetBeansProjects\\guba\\BD\\BDGUBA.db");
+    Config config = new Config();
+    String rutaBD = config.obtenerConfiguracion("01 RUTA BD");
+    private File localFile = new File(rutaBD);
     private boolean useBinary = true;
 
     public FTPUploader() {
+
     }
 
     public void uploadFile() {

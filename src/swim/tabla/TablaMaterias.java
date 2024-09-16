@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.DefaultCellEditor;
+import javax.swing.Icon;
 import javax.swing.JCheckBox;
 
 import javax.swing.JPanel;
@@ -51,7 +52,7 @@ public class TablaMaterias extends JTable {
                     Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                     if (triggerRows.contains(row)) {
                         component.setForeground(Color.WHITE);
-                        component.setBackground(Color.RED);
+                        component.setBackground(Color.GRAY);
                         return component;
                     }
                     setBorder(noFocusBorder);
@@ -69,7 +70,7 @@ public class TablaMaterias extends JTable {
 
     @Override
     public TableCellEditor getCellEditor(int row, int column) {
-        if (column == columnEditor) {
+        if (column == columnEditor && !triggerRows.contains(row)) {
             return new DefaultCellEditor(new JCheckBox()) {
                 private AccionModelo data;
 
@@ -137,6 +138,12 @@ public class TablaMaterias extends JTable {
 
     public Set<Integer> getTriggerRows() {
         return triggerRows;
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int column) {
+
+        return !triggerRows.contains(row) && column == getColumnEditor() ;
     }
 
 }

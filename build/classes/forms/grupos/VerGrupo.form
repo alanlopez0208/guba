@@ -68,8 +68,7 @@
                                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="comboCarrera" pref="352" max="32767" attributes="0"/>
-                                  <EmptySpace min="-2" pref="423" max="-2" attributes="0"/>
-                                  <Component id="buttonRounded2" min="-2" pref="178" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="601" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -84,18 +83,15 @@
                   <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   <Component id="btnCerrar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="buttonRounded2" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="comboCarrera" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtSemestre" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtGrupo" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="comboCarrera" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtSemestre" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtGrupo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnMaterias" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnAlumnos" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -169,7 +165,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/icon/9.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Materias"/>
+            <Property name="text" type="java.lang.String" value="Ver materias"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Malgun Gothic" size="12" style="1"/>
             </Property>
@@ -189,7 +185,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/icon/5.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Alumnos"/>
+            <Property name="text" type="java.lang.String" value="Ver alumnos"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Malgun Gothic" size="12" style="1"/>
             </Property>
@@ -222,23 +218,6 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
           </AuxValues>
-        </Component>
-        <Component class="swim.botones.ButtonRounded" name="buttonRounded2">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="66" green="66" red="0" type="rgb"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/icon/impresora.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Imprimir"/>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Malgun Gothic" size="12" style="1"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="swim.text.TextField" name="txtSemestre">
           <Properties>

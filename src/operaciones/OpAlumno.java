@@ -168,18 +168,11 @@ public class OpAlumno {
 
     public boolean crearAlumno(EstudianteModelo estudianteModelo) {
         String sqlAlumno = "INSERT INTO Alumnos (Matricula, IdCarrera, Semestre, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, "
-                + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, Genero"
+                + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, Genero, PasswordTemporal"
                 + (estudianteModelo.getFoto() != null ? ", Foto" : "") + ") "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" + (estudianteModelo.getFoto() != null ? ", ?" : "") + ")";
-        String sqlAlumnoId = "SELECT last_insert_rowid() as nuevo_id_alumno";
-        String sqlCalificaciones = "INSERT INTO Calificaciones (IdAlumno, IdMateria)"
-                + "SELECT ?, IdMateria "
-                + "FROM Materias "
-                + "WHERE IdCarrera = ? AND Semestre = ?";
 
         try (Connection conn = new Conexion().connect()) {
-            conn.setAutoCommit(false);
-            int newAlumnoId;
 
             try (PreparedStatement pstmtAlumno = conn.prepareStatement(sqlAlumno)) {
                 pstmtAlumno.setString(1, estudianteModelo.getMatricula());
@@ -199,36 +192,16 @@ public class OpAlumno {
                 pstmtAlumno.setString(15, estudianteModelo.getGrupo());
                 pstmtAlumno.setString(16, estudianteModelo.getStatus());
                 pstmtAlumno.setString(17, estudianteModelo.getSexo());
+                pstmtAlumno.setString(18, estudianteModelo.getMatricula());
 
                 if (estudianteModelo.getFoto() != null) {
-                    pstmtAlumno.setString(18, estudianteModelo.getFoto());
+                    pstmtAlumno.setString(19, estudianteModelo.getFoto());
                 }
 
                 int affectedRows = pstmtAlumno.executeUpdate();
-                if (affectedRows == 0) {
-                    conn.rollback();
-                    throw new SQLException("Error al crear alumno, no se insertó ninguna fila");
-                }
+                return affectedRows > 0;
             }
 
-            try (PreparedStatement pstmtAlumnoId = conn.prepareStatement(sqlAlumnoId); ResultSet rs = pstmtAlumnoId.executeQuery()) {
-                if (rs.next()) {
-                    newAlumnoId = rs.getInt("nuevo_id_alumno");
-                } else {
-                    conn.rollback();
-                    throw new SQLException("Error al obtener el ID del nuevo alumno");
-                }
-            }
-
-            try (PreparedStatement pstmtCalificaciones = conn.prepareStatement(sqlCalificaciones)) {
-                pstmtCalificaciones.setInt(1, newAlumnoId);
-                pstmtCalificaciones.setString(2, estudianteModelo.getCarrera().getIdCarrera());
-                pstmtCalificaciones.setString(3, estudianteModelo.getSemestre());
-                pstmtCalificaciones.executeUpdate();
-            }
-
-            conn.commit();
-            return true;
         } catch (SQLException e) {
             throw new RuntimeException("Error al crear alumno y sus calificaciones", e);
         }
@@ -258,7 +231,7 @@ public class OpAlumno {
         String sql = "UPDATE Alumnos "
                 + "SET Semestre = CASE "
                 + "    WHEN Semestre < 8 THEN Semestre + 1 "
-                + "    WHEN Semestre = 8 THEN 0 "
+                + "    WHEN Semestre = 8 THEN 9 "
                 + "    ELSE Semestre "
                 + "END, IdGrupo = SELECT idGrupo FROM Grupos WHERE Semestre = semestre";
 
@@ -391,7 +364,6 @@ public class OpAlumno {
             int[] rowsAffected = pstmtInsercion.executeBatch();
             conn.commit();
 
-            
             for (int rows : rowsAffected) {
                 if (rows == PreparedStatement.EXECUTE_FAILED) {
                     // Si alguna inserción falló, revertir la transacción
@@ -407,29 +379,17 @@ public class OpAlumno {
     }
 
     public boolean eliminarCalificaciones(String idAlumno, String idMateria) {
-        // Consulta SQL para eliminar los registros en la tabla Calificaciones
+
         String sql = "DELETE FROM Calificaciones WHERE IdAlumno = ? AND IdMateria = ?";
 
         try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            // Desactivar el modo de auto-commit para manejar la transacción manualmente
-            conn.setAutoCommit(false);
 
-            // Establecer los parámetros para la consulta de eliminación
             pstmt.setString(1, idAlumno); // IdAlumno
             pstmt.setString(2, idMateria); // IdMateria
 
-            // Ejecutar la eliminación
             int rowsAffected = pstmt.executeUpdate();
-            conn.commit();
 
-            // Verificar si la fila se ha eliminado correctamente
-            if (rowsAffected > 0) {
-                return true;
-            } else {
-                // Si no se eliminó ninguna fila, revertir la transacción
-                conn.rollback();
-                return false;
-            }
+            return rowsAffected > 0;
         } catch (SQLException e) {
             System.out.println("Error al eliminar calificaciones: " + e.getMessage());
             return false;

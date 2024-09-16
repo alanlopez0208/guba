@@ -39,7 +39,4 @@ public class AccionModelo {
     public void setAccionEditar(EventoEditar accionEditar) {
         this.accionEditar = accionEditar;
     }
-    
-    
-
 }

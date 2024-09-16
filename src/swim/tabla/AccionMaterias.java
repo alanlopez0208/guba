@@ -6,8 +6,9 @@ public class AccionMaterias extends javax.swing.JPanel {
 
     public AccionMaterias(AccionModelo accionModelo) {
         initComponents();
-         this.accionModelo = accionModelo;
-         btnEditar.setContentAreaFilled(false);
+        this.accionModelo = accionModelo;
+        btnEditar.setContentAreaFilled(false);
+        btnFinalizar.setContentAreaFilled(false);
     }
 
     /**
@@ -20,6 +21,7 @@ public class AccionMaterias extends javax.swing.JPanel {
     private void initComponents() {
 
         btnEditar = new javax.swing.JButton();
+        btnFinalizar = new javax.swing.JButton();
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/editar.png"))); // NOI18N
         btnEditar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -30,32 +32,49 @@ public class AccionMaterias extends javax.swing.JPanel {
             }
         });
 
+        btnFinalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/check.png"))); // NOI18N
+        btnFinalizar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnFinalizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addContainerGap()
                 .addComponent(btnEditar)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(btnFinalizar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnEditar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnFinalizar)
+                    .addComponent(btnEditar))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        System.out.println("EDITANDO MODELO");
-        
+
         this.accionModelo.getAccionEditar().editar(this.accionModelo.getModelo());
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
+        this.accionModelo.getAccionEditar().terminar(this.accionModelo.getModelo());
+    }//GEN-LAST:event_btnFinalizarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnFinalizar;
     // End of variables declaration//GEN-END:variables
 }

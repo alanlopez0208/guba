@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import modelos.CalificacionModelo;
-import modelos.GrupoModelo;
+import modelos.Periodo;
 import modelos.MateriaModelo;
 import operaciones.conexion.Conexion;
 
@@ -39,7 +39,7 @@ public class OpCalificaciones {
                 + "P1U2 = ?, P2U2 = ?, P3U2 = ?, P4U2 = ?, "
                 + "P1U3 = ?, P2U3 = ?, P3U3 = ?, P4U3 = ?, "
                 + "P1U4 = ?, P2U4 = ?, P3U4 = ?, P4U4 = ?, "
-                + "TB = ? "
+                + "TB = ?, idPeriodo = ?"
                 + "WHERE IdCalificacion = ?";
         try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setInt(1, calificacion.getIdAlumno());
@@ -141,8 +141,8 @@ public class OpCalificaciones {
             } else {
                 pstmt.setNull(19, java.sql.Types.FLOAT);
             }
-
-            pstmt.setInt(20, calificacion.getIdCalificacion());
+            pstmt.setString(20, calificacion.getPeriodo().getId());
+            pstmt.setInt(21, calificacion.getIdCalificacion());
 
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
@@ -165,6 +165,9 @@ public class OpCalificaciones {
         //     GrupoModelo grupo = opGrupo.seleccionarGrupo(rs.getInt("IdGrupo"));
         OpMaterias opMateria = new OpMaterias();
         MateriaModelo materia = opMateria.getMateria(rs.getString("IdMateria"));
+        OpPeriodo opPeriodo = new OpPeriodo();
+        Periodo periodo = opPeriodo.getPeriodoById(rs.getString("idPeriodo"));
+        calificacion.setPeriodo(periodo);
         calificacion.setIdCalificacion(rs.getInt("IdCalificacion"));
         calificacion.setIdAlumno(rs.getInt("IdAlumno"));
         calificacion.setIdDocente(rs.getInt("IdDocente"));

@@ -71,7 +71,6 @@ public class VerGrupo extends javax.swing.JPanel {
         btnAlumnos = new swim.botones.ButtonRounded();
         jLabel5 = new javax.swing.JLabel();
         comboCarrera = new javax.swing.JComboBox();
-        buttonRounded2 = new swim.botones.ButtonRounded();
         txtSemestre = new swim.text.TextField();
         txtGrupo = new swim.text.TextField();
 
@@ -101,7 +100,7 @@ public class VerGrupo extends javax.swing.JPanel {
         btnMaterias.setBackground(new java.awt.Color(0, 102, 102));
         btnMaterias.setForeground(new java.awt.Color(255, 255, 255));
         btnMaterias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/9.png"))); // NOI18N
-        btnMaterias.setText("Materias");
+        btnMaterias.setText("Ver materias");
         btnMaterias.setFont(new java.awt.Font("Malgun Gothic", 1, 12)); // NOI18N
         btnMaterias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,7 +111,7 @@ public class VerGrupo extends javax.swing.JPanel {
         btnAlumnos.setBackground(new java.awt.Color(104, 108, 133));
         btnAlumnos.setForeground(new java.awt.Color(255, 255, 255));
         btnAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/5.png"))); // NOI18N
-        btnAlumnos.setText("Alumnos");
+        btnAlumnos.setText("Ver alumnos");
         btnAlumnos.setFont(new java.awt.Font("Malgun Gothic", 1, 12)); // NOI18N
         btnAlumnos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,12 +125,6 @@ public class VerGrupo extends javax.swing.JPanel {
         jLabel5.setText("Carrera:");
 
         comboCarrera.setEnabled(false);
-
-        buttonRounded2.setBackground(new java.awt.Color(0, 102, 102));
-        buttonRounded2.setForeground(new java.awt.Color(255, 255, 255));
-        buttonRounded2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/impresora.png"))); // NOI18N
-        buttonRounded2.setText("Imprimir");
-        buttonRounded2.setFont(new java.awt.Font("Malgun Gothic", 1, 12)); // NOI18N
 
         txtSemestre.setEditable(false);
 
@@ -168,8 +161,7 @@ public class VerGrupo extends javax.swing.JPanel {
                                 .addComponent(jLabel5)
                                 .addGap(18, 18, 18)
                                 .addComponent(comboCarrera, 0, 352, Short.MAX_VALUE)
-                                .addGap(423, 423, 423)
-                                .addComponent(buttonRounded2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(601, 601, 601)))))
                 .addContainerGap())
         );
         myPanel1Layout.setVerticalGroup(
@@ -178,16 +170,14 @@ public class VerGrupo extends javax.swing.JPanel {
                 .addGap(14, 14, 14)
                 .addComponent(btnCerrar)
                 .addGap(17, 17, 17)
-                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonRounded2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel5)
-                        .addComponent(comboCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(27, 27, 27)
+                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel5)
+                    .addComponent(comboCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -236,7 +226,6 @@ public class VerGrupo extends javax.swing.JPanel {
     private swim.botones.ButtonRounded btnAlumnos;
     private javax.swing.JButton btnCerrar;
     private swim.botones.ButtonRounded btnMaterias;
-    private swim.botones.ButtonRounded buttonRounded2;
     private javax.swing.JComboBox comboCarrera;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

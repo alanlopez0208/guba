@@ -40,14 +40,17 @@ import forms.personal.AgregarPersonalForm;
 import forms.personal.EditarPersonalForm;
 import forms.personal.PersonalDatosForm;
 import forms.personal.VerPersonalForm;
-import forms.web.WebForm;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
-
+import javax.swing.JOptionPane;
 import modelos.*;
 import operaciones.FTPUploader;
+import operaciones.web.ApiClient;
+import operaciones.web.InsertWeb;
+import org.json.JSONArray;
+
 
 public class Main extends javax.swing.JFrame {
 
@@ -329,8 +332,6 @@ public class Main extends javax.swing.JFrame {
 
         });
 
-        WebForm webForm = new WebForm();
-
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void menuSelected(int menuIndex, int subMenuIndex) {
@@ -420,7 +421,7 @@ public class Main extends javax.swing.JFrame {
                         }
                     }
 
-                    case 7 -> {
+                    case 6 -> {
                         if (subMenuIndex == 2) {
                             main.showForm(verPersonal);
                         } else if (subMenuIndex == 3) {
@@ -435,7 +436,7 @@ public class Main extends javax.swing.JFrame {
                         }
                     }
 
-                    case 8 -> {
+                    case 7 -> {
                         if (subMenuIndex == 2) {
                             main.showForm(verPagosAlumnos);
                         } else if (subMenuIndex == 3) {
@@ -451,7 +452,7 @@ public class Main extends javax.swing.JFrame {
                             main.showForm(agregarPago);
                         }
                     }
-                    case 9 -> {
+                    case 8 -> {
                         if (subMenuIndex == 2) {
                             main.showForm(verPagosDocentes);
                         } else if (subMenuIndex == 3) {
@@ -467,22 +468,37 @@ public class Main extends javax.swing.JFrame {
                             main.showForm(agregarPago);
                         }
                     }
-                    case 10 -> {
+                    case 9 -> {
                         if (subMenuIndex == 2) {
                             FTPUploader loader = new FTPUploader();
                             Thread hilo = new Thread() {
                                 @Override
                                 public void run() {
-
                                     loader.uploadFile();
                                 }
 
                             };
 
                             hilo.start();
+                        } else if (subMenuIndex == 3) {
+                            Thread hilo = new Thread() {
+                                @Override
+                                public void run() {
+                                    JSONArray calificaciones = ApiClient.getCalificaciones();
+                                    if (calificaciones != null) {
+                                        InsertWeb iw = new InsertWeb();
+                                        iw.insertOrUpdateCalificaciones(calificaciones);
+                                    }
+
+                                    JOptionPane.showMessageDialog(null, "Se ha descargado la información con exito");
+                                }
+
+                            };
+                            hilo.start();
+
                         }
                     }
-                    case 11 -> {
+                    case 10 -> {
                         main.showForm(configuraciones);
                     }
                     default -> {
@@ -521,29 +537,25 @@ public class Main extends javax.swing.JFrame {
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1600, Short.MAX_VALUE)
+            .addGap(0, 1198, Short.MAX_VALUE)
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
+            .addGap(0, 521, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(bg)
-                .addContainerGap())
+            .addComponent(bg)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(bg)
         );
 
-        setSize(new java.awt.Dimension(1214, 529));
-        setLocationRelativeTo(null);
+        setLocation(new java.awt.Point(0, 0));
     }// </editor-fold>//GEN-END:initComponents
 
     /**

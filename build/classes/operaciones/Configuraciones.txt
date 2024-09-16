@@ -2,3 +2,5 @@
 03 RUTA IMAGENES ESTUDIANTES = C:\Guba\img\estudiantes
 04 RUTA IMAGENES PROFESORES = C:\Guba\img\maestros
 05 RUTA PDF PROFESORES = C:\Guba\CV
+06 RUTA Documentos = C:\Guba\Doc\Alumnos
+07 RUTA Logo = C:\Guba\logo.png

@@ -29,6 +29,7 @@ public class CalificacionModelo {
     private Float promedioU1;
     private Float promedioU2;
     private Double promedioFinal;
+    private Periodo periodo;
 
     public int getIdCalificacion() {
         return idCalificacion;
@@ -230,26 +231,43 @@ public class CalificacionModelo {
         this.promedioFinal = promedioFinal;
     }
 
+    public Periodo getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(Periodo periodo) {
+        this.periodo = periodo;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 47 * hash + this.idCalificacion;
-        hash = 47 * hash + this.idAlumno;
-        hash = 47 * hash + this.idDocente;
-        hash = 47 * hash + Objects.hashCode(this.materia);
-        hash = 47 * hash + Objects.hashCode(this.grupo);
-        hash = 47 * hash + Objects.hashCode(this.p1U1);
-        hash = 47 * hash + Objects.hashCode(this.p2U1);
-        hash = 47 * hash + Objects.hashCode(this.p3U1);
-        hash = 47 * hash + Objects.hashCode(this.p4U1);
-        hash = 47 * hash + Objects.hashCode(this.p1U2);
-        hash = 47 * hash + Objects.hashCode(this.p2U2);
-        hash = 47 * hash + Objects.hashCode(this.p3U2);
-        hash = 47 * hash + Objects.hashCode(this.p4U2);
-        hash = 47 * hash + Objects.hashCode(this.trabjoFinal);
-        hash = 47 * hash + Objects.hashCode(this.promedioU1);
-        hash = 47 * hash + Objects.hashCode(this.promedioU2);
-        hash = 47 * hash + Objects.hashCode(this.promedioFinal);
+        int hash = 7;
+        hash = 83 * hash + this.idCalificacion;
+        hash = 83 * hash + this.idAlumno;
+        hash = 83 * hash + this.idDocente;
+        hash = 83 * hash + Objects.hashCode(this.materia);
+        hash = 83 * hash + Objects.hashCode(this.grupo);
+        hash = 83 * hash + Objects.hashCode(this.p1U1);
+        hash = 83 * hash + Objects.hashCode(this.p2U1);
+        hash = 83 * hash + Objects.hashCode(this.p3U1);
+        hash = 83 * hash + Objects.hashCode(this.p4U1);
+        hash = 83 * hash + Objects.hashCode(this.p1U2);
+        hash = 83 * hash + Objects.hashCode(this.p2U2);
+        hash = 83 * hash + Objects.hashCode(this.p3U2);
+        hash = 83 * hash + Objects.hashCode(this.p4U2);
+        hash = 83 * hash + Objects.hashCode(this.p1U3);
+        hash = 83 * hash + Objects.hashCode(this.p2U3);
+        hash = 83 * hash + Objects.hashCode(this.p3U3);
+        hash = 83 * hash + Objects.hashCode(this.p4U3);
+        hash = 83 * hash + Objects.hashCode(this.p1U4);
+        hash = 83 * hash + Objects.hashCode(this.p2U4);
+        hash = 83 * hash + Objects.hashCode(this.p3U4);
+        hash = 83 * hash + Objects.hashCode(this.p4U4);
+        hash = 83 * hash + Objects.hashCode(this.trabjoFinal);
+        hash = 83 * hash + Objects.hashCode(this.promedioU1);
+        hash = 83 * hash + Objects.hashCode(this.promedioU2);
+        hash = 83 * hash + Objects.hashCode(this.promedioFinal);
+        hash = 83 * hash + Objects.hashCode(this.periodo);
         return hash;
     }
 
@@ -304,6 +322,30 @@ public class CalificacionModelo {
         if (!Objects.equals(this.p4U2, other.p4U2)) {
             return false;
         }
+        if (!Objects.equals(this.p1U3, other.p1U3)) {
+            return false;
+        }
+        if (!Objects.equals(this.p2U3, other.p2U3)) {
+            return false;
+        }
+        if (!Objects.equals(this.p3U3, other.p3U3)) {
+            return false;
+        }
+        if (!Objects.equals(this.p4U3, other.p4U3)) {
+            return false;
+        }
+        if (!Objects.equals(this.p1U4, other.p1U4)) {
+            return false;
+        }
+        if (!Objects.equals(this.p2U4, other.p2U4)) {
+            return false;
+        }
+        if (!Objects.equals(this.p3U4, other.p3U4)) {
+            return false;
+        }
+        if (!Objects.equals(this.p4U4, other.p4U4)) {
+            return false;
+        }
         if (!Objects.equals(this.trabjoFinal, other.trabjoFinal)) {
             return false;
         }
@@ -313,7 +355,10 @@ public class CalificacionModelo {
         if (!Objects.equals(this.promedioU2, other.promedioU2)) {
             return false;
         }
-        return Objects.equals(this.promedioFinal, other.promedioFinal);
+        if (!Objects.equals(this.promedioFinal, other.promedioFinal)) {
+            return false;
+        }
+        return Objects.equals(this.periodo, other.periodo);
     }
 
     public Object[] toRowTable() {
@@ -324,12 +369,12 @@ public class CalificacionModelo {
         Float promedioU4 = obtenerPromedioUnidad(this.getP1U4(), this.getP2U4(), this.getP3U4(), this.getP4U4());
 
         if (promedioU1 != null && this.getTrabjoFinal() != null) {
-            this.setPromedioFinal((double) obtenerPromedioUnidad(promedioU1, promedioU2, promedioU3, promedioU4,this.getTrabjoFinal()));
+            this.setPromedioFinal((double) obtenerPromedioUnidad(promedioU1, promedioU2, promedioU3, promedioU4, this.getTrabjoFinal()));
         }
 
         return new Object[]{
             this.getMateria().getSemestre(),
-            "2024A",
+            this.periodo.getNombre(),
             this.getMateria().getNombre(),
             (this.getP1U1() == null) ? "" : this.getP1U1(),
             (this.getP2U1() == null) ? "" : this.getP2U1(),
@@ -369,6 +414,18 @@ public class CalificacionModelo {
         }
 
         return unidadesConPromedio == 0 ? null : promedio / unidadesConPromedio;
+    }
+
+    public void establecerPromedioFinal() {
+        Float promedioU1 = obtenerPromedioUnidad(this.getP1U1(), this.getP2U1(), this.getP3U1(), this.getP4U1());
+        Float promedioU2 = obtenerPromedioUnidad(this.getP1U2(), this.getP2U2(), this.getP3U2(), this.getP4U2());
+
+        Float promedioU3 = obtenerPromedioUnidad(this.getP1U3(), this.getP2U3(), this.getP3U3(), this.getP4U3());
+        Float promedioU4 = obtenerPromedioUnidad(this.getP1U4(), this.getP2U4(), this.getP3U4(), this.getP4U4());
+
+        if (promedioU1 != null && this.getTrabjoFinal() != null) {
+            this.setPromedioFinal((double) obtenerPromedioUnidad(promedioU1, promedioU2, promedioU3, promedioU4, this.getTrabjoFinal()));
+        }
     }
 
 }

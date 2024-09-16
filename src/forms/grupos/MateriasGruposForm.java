@@ -73,13 +73,27 @@ public class MateriasGruposForm extends javax.swing.JPanel {
                 }
             }
 
+            @Override
+            public void terminar(Object model) {
+
+                GrupoMateriaModelo grupoMateria = (GrupoMateriaModelo) model;
+                int option = JOptionPane.showConfirmDialog(null, "¿Desea terminar la materia?", "Terminar Materia", JOptionPane.OK_CANCEL_OPTION);
+
+                if (option == JOptionPane.OK_OPTION) {
+                    grupoMateria.setCursada(1);
+                    boolean terminarMateria = opGrupoMateria.actualizarGrupoMateria(grupoMateria);
+                    actualizarTabla();
+                    JOptionPane.showMessageDialog(null, "Se ha establecido la materia como termianda");
+                }
+            }
+
         };
         actualizarTabla();
 
     }
 
     public void actualizarTabla() {
-        
+
         tablaMaterias1.clear();
 
         ArrayList<GrupoMateriaModelo> lista = opGrupoMateria.obtenerGruposMateriasPorIdGrupo(grupoModelo.getId());
@@ -91,6 +105,7 @@ public class MateriasGruposForm extends javax.swing.JPanel {
 
             if (grupoMateria.getCursada() == 1) {
                 tablaMaterias1.getTriggerRows().add(i);
+
                 tablaMaterias1.addRow(new Object[]{
                     grupoMateria.getMateria().getClave(), grupoMateria.getMateria().getNombre(), grupoMateria.getMateria().getSemestre(), grupoMateria.getMaestro()
                 });

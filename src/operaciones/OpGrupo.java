@@ -10,14 +10,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import modelos.CarrerasModelo;
 import modelos.MateriaModelo;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class OpGrupo {
-
-    private Connection conn;
-
-    public OpGrupo() {
-        conn = new Conexion().connect();
-    }
 
     // Método para mapear un ResultSet a un objeto GrupoModelo
     private GrupoModelo mapResultSetToGrupo(ResultSet rs) throws SQLException {
@@ -29,7 +25,6 @@ public class OpGrupo {
         grupo.setId(rs.getString("IdGrupo"));
         grupo.setNombre(rs.getString("Nombre"));
         grupo.setSemestre(rs.getString("Semestre"));
-
         grupo.setCarrera(carrera);
         return grupo;
     }
@@ -39,72 +34,69 @@ public class OpGrupo {
         ArrayList<GrupoModelo> listaGrupos = new ArrayList<>();
         String sql = "SELECT * FROM Grupos";
 
-        try (Connection conn = new Conexion().connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = new Conexion().connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 GrupoModelo grupo = mapResultSetToGrupo(rs);
                 listaGrupos.add(grupo);
             }
         } catch (SQLException e) {
-            System.out.println("Error al recuperar todos grupos: " + e.getMessage());
+            System.out.println("Error al recuperar todos los grupos: " + e.getMessage());
         }
         return listaGrupos;
     }
 
-    //Metodo para obtener las material del Grupo
+    // Método para obtener las materias del grupo
     public ArrayList<MateriaModelo> getMateriasByGrupo(String idGrupo) {
         ArrayList<MateriaModelo> materias = new ArrayList<>();
-        try {
-            String sql = """
-                        SELECT m.IdMateria , m.IdCarrera,m.Nombre, m.HBCA, m.HTI, m.Semestre, m.Creditos, m.Clave FROM GruposMaterias as gm JOIN Materias as m ON m.IdMateria = gm.IdMateria
-                        JOIN Grupos as g ON g.IdGrupo = gm.IdGrupo WHERE g.IdGrupo = ?""";
+        String sql = """
+                SELECT m.IdMateria, m.IdCarrera, m.Nombre, m.HBCA, m.HTI, m.Semestre, m.Creditos, m.Clave 
+                FROM GruposMaterias as gm 
+                JOIN Materias as m ON m.IdMateria = gm.IdMateria
+                JOIN Grupos as g ON g.IdGrupo = gm.IdGrupo 
+                WHERE g.IdGrupo = ?""";
 
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, idGrupo);
 
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-
-                MateriaModelo materia = new MateriaModelo();
-
-                materia.setNombre(rs.getString("Nombre"));
-
-                materia.setIdMateria(rs.getString("IdMateria"));
-                materia.setHcba(rs.getString("HBCA"));
-                materia.setHti(rs.getString("HTI"));
-                materia.setSemestre(rs.getString("Semestre"));
-                materia.setCreditos(rs.getString("Creditos"));
-                materia.setCarrera(rs.getString("IdCarrera"));
-                materia.setClave(rs.getString("Clave"));
-                materias.add(materia);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    MateriaModelo materia = new MateriaModelo();
+                    materia.setNombre(rs.getString("Nombre"));
+                    materia.setIdMateria(rs.getString("IdMateria"));
+                    materia.setHcba(rs.getString("HBCA"));
+                    materia.setHti(rs.getString("HTI"));
+                    materia.setSemestre(rs.getString("Semestre"));
+                    materia.setCreditos(rs.getString("Creditos"));
+                    materia.setCarrera(rs.getString("IdCarrera"));
+                    materia.setClave(rs.getString("Clave"));
+                    materias.add(materia);
+                }
             }
-
         } catch (SQLException e) {
             System.out.println("Error al obtener las materias del grupo: " + e.getMessage());
-
         }
         return materias;
-
     }
 
-    // método para agregar un grupo
+    // Método para agregar un grupo
     public boolean agregarGrupo(GrupoModelo grupo) {
-        try {
-            //   conn.setAutoCommit(false);
-            //Primero insertamos el grupo
-            String sql = "INSERT INTO Grupos (Nombre, Semestre, IdCarrera ) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Grupos (Nombre, Semestre, IdCarrera) VALUES (?, ?, ?)";
 
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, grupo.getNombre());
             pstmt.setString(2, grupo.getSemestre());
             pstmt.setString(3, grupo.getCarrera().getIdCarrera());
 
             int rowAfecteds = pstmt.executeUpdate();
-            conn.close();
             return rowAfecteds > 0;
 
-        
         } catch (SQLException e) {
             System.out.println("Error al agregar grupo: " + e.getMessage());
             return false;
@@ -115,9 +107,10 @@ public class OpGrupo {
     public boolean eliminarGrupo(int idGrupo) {
         String sql = "DELETE FROM Grupos WHERE IdGrupo = ?";
 
-        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idGrupo);
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+            pstmt.setInt(1, idGrupo);
             int filasAfectadas = pstmt.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -128,13 +121,11 @@ public class OpGrupo {
 
     // Método para actualizar un grupo
     public boolean actualizarGrupo(GrupoModelo grupo) {
-        String sentencia1 = "UPDATE Grupos SET Nombre = ?, Semestre = ?, IdCarrera = ? WHERE IdGrupo = ?";
-        
-        //System.out.println("INSERTANDO COSAS PERRONAS");
-        try {
-            //conn.setAutoCommit(false);
+        String sql = "UPDATE Grupos SET Nombre = ?, Semestre = ?, IdCarrera = ? WHERE IdGrupo = ?";
 
-            PreparedStatement pstmt = conn.prepareStatement(sentencia1);
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, grupo.getNombre());
             pstmt.setString(2, grupo.getSemestre());
             pstmt.setString(3, grupo.getCarrera().getIdCarrera());
@@ -147,14 +138,15 @@ public class OpGrupo {
             System.out.println("Error al actualizar grupo: " + e.getMessage());
             return false;
         }
-
     }
 
-    //Metodo para eliminar todas materias del grupo
+    // Método para eliminar todas las materias del grupo
     public boolean eliminarMaterias(String idGrupo) {
-        String sql = "DELETE FROM GruposMateria WHERE IdGrupo = ?";
+        String sql = "DELETE FROM GruposMaterias WHERE IdGrupo = ?";
 
-        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setInt(1, Integer.parseInt(idGrupo));
             int filasAfectadas = pstmt.executeUpdate();
             return filasAfectadas > 0;
@@ -164,17 +156,19 @@ public class OpGrupo {
         }
     }
 
-    // Método para seleccionar un grupo 
+    // Método para seleccionar un grupo
     public GrupoModelo seleccionarGrupo(int idGrupo) {
         String sql = "SELECT * FROM Grupos WHERE IdGrupo = ?";
         GrupoModelo grupoSeleccionado = null;
 
-        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, idGrupo);
-            ResultSet rs = pstmt.executeQuery();
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            if (rs.next()) {
-                grupoSeleccionado = mapResultSetToGrupo(rs);
+            pstmt.setInt(1, idGrupo);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    grupoSeleccionado = mapResultSetToGrupo(rs);
+                }
             }
         } catch (SQLException e) {
             System.out.println("Error al seleccionar grupo: " + e.getMessage());
@@ -182,41 +176,42 @@ public class OpGrupo {
         return grupoSeleccionado;
     }
 
-    // Buscar docentes por filtro
+    // Buscar grupos por filtro
     public ArrayList<GrupoModelo> buscarGrupos(String where, String filtro) {
         ArrayList<GrupoModelo> resultados = new ArrayList<>();
-        String sql = "SELECT * "
-                + "FROM Grupos WHERE " + where + " LIKE ? ";
+        String sql = "SELECT * FROM Grupos WHERE " + where + " LIKE ? ";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, filtro + "%");
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    GrupoModelo docente = mapResultSetToGrupo(rs);
-                    resultados.add(docente);
+                    GrupoModelo grupo = mapResultSetToGrupo(rs);
+                    resultados.add(grupo);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error al buscar docentes", e);
+            throw new RuntimeException("Error al buscar grupos", e);
         }
         return resultados;
     }
 
-    public GrupoModelo getGruposByCarreraAndSemestre(String idCarreras, String semestre) {
-        GrupoModelo grupo = new GrupoModelo();
+    // Obtener grupo por carrera y semestre
+    public GrupoModelo getGrupoByCarreraAndSemestre(String idCarrera, String semestre) {
+        GrupoModelo grupo = null;
         String sql = "SELECT * FROM Grupos WHERE IdCarrera = ? AND Semestre = ?";
 
-        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new Conexion().connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, idCarreras);
+            pstmt.setString(1, idCarrera);
             pstmt.setString(2, semestre);
 
             try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
+                if (rs.next()) {
                     grupo = mapResultSetToGrupo(rs);
-
                 }
             }
         } catch (SQLException e) {
@@ -224,5 +219,4 @@ public class OpGrupo {
         }
         return grupo;
     }
-
 }

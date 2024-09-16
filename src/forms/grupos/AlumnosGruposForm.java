@@ -1,6 +1,8 @@
 package forms.grupos;
 
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -27,6 +29,7 @@ public class AlumnosGruposForm extends javax.swing.JPanel {
     private OpGrupoMateria opGrupoMateria;
     private ArrayList<EstudianteModelo> alumnos;
     private ArrayList<GrupoMateriaModelo> gruposMateria;
+    private MouseAdapter mouseAdapter;
 
     public AlumnosGruposForm(GrupoModelo grupoModelo) {
         initComponents();
@@ -46,6 +49,32 @@ public class AlumnosGruposForm extends javax.swing.JPanel {
             comboMaterias.addItem(grupoMateria.getMateria());
         });
 
+        mouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+
+                    int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de retirar al alumno?");
+
+                    if (option == JOptionPane.OK_OPTION) {
+                        EstudianteModelo estudiante = alumnos.get(tabla1.getSelectedRow());
+                        MateriaModelo materia = (MateriaModelo) comboMaterias.getSelectedItem();
+
+                        boolean eliminado = opAlumno.eliminarCalificaciones(estudiante.getId(), materia.getIdMateria());
+                        if (eliminado) {
+                            JOptionPane.showMessageDialog(null, "Alumno retirado con exito");
+                            alumnos = opAlumno.getEstudiantesByMateria(materia.getIdMateria(), opPeriodo.getUltimoPeriodo().getId());
+
+                            actualizarTabla();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Hubo un error al eliminar el gurpo");
+                        }
+                    }
+                }
+            }
+        };
+
+        tabla1.addMouseListener(mouseAdapter);
     }
 
     public void actualizarTabla() {
@@ -58,6 +87,7 @@ public class AlumnosGruposForm extends javax.swing.JPanel {
             tabla1.addRow(new Object[]{
                 estudiante.getMatricula(), estudiante.getNombre(), estudiante.getApPaterno(), estudiante.getApMaterno()});
         }
+
     }
 
     public void modoVer() {
@@ -161,6 +191,12 @@ public class AlumnosGruposForm extends javax.swing.JPanel {
 
     private void btnAgregarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAlumnosActionPerformed
         if (comboMaterias.getSelectedIndex() > 0) {
+
+            if (opAlumno.getEstudiantesByCarreraAndSemestre(grupoModelo.getCarrera().getIdCarrera(), grupoModelo.getSemestre()).isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No hay alumnos registrados para este semestre");
+                return;
+            }
+
             MateriaModelo materia = gruposMateria.get(comboMaterias.getSelectedIndex() - 1).getMateria();
             ArrayList<EstudianteModelo> estudiantesSinMaterias = opAlumno.getEstudiantesByCarreraAndSemestreSinCalificaciones(grupoModelo.getCarrera().getIdCarrera(), grupoModelo.getSemestre(), materia.getIdMateria());
 
@@ -172,15 +208,10 @@ public class AlumnosGruposForm extends javax.swing.JPanel {
                 boolean seAgregaron = opAlumno.insertarCalificaciones(estudiantesSinMaterias, maestro.getId(), materia.getIdMateria(), periodo.getId());
 
                 if (seAgregaron) {
-                    alumnos = opAlumno.getEstudiantesByMateria(materia.getIdMateria(), opPeriodo.getUltimoPeriodo().getId());
+                    alumnos = opAlumno.getEstudiantesByMateria(materia.getIdMateria(), periodo.getId());
+                    JOptionPane.showMessageDialog(null, "Se les asigno la materia a el alumno correctamente");
+                    actualizarTabla();
 
-                    if (alumnos.size() < 0) {
-                        JOptionPane.showMessageDialog(null, "Se les asigno la materia a el alumno correctamente");
-
-                        actualizarTabla();
-                        return;
-                    }
-                    JOptionPane.showMessageDialog(null, "No hay alumnos a registrar en este semestre");
                 } else {
                     JOptionPane.showMessageDialog(null, "Hubo un error al asignar la materia");
                 }
@@ -197,6 +228,11 @@ public class AlumnosGruposForm extends javax.swing.JPanel {
 
     private void btnAgregarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAlumnoActionPerformed
         if (comboMaterias.getSelectedIndex() > 0) {
+
+            if (opAlumno.getEstudiantesByCarreraAndSemestre(grupoModelo.getCarrera().getIdCarrera(), grupoModelo.getSemestre()).isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No hay alumnos registrados para este semestre");
+                return;
+            }
 
             JComboBox comoboEstudiantes = new JComboBox();
             MateriaModelo materia = (MateriaModelo) comboMaterias.getSelectedItem();
@@ -222,12 +258,9 @@ public class AlumnosGruposForm extends javax.swing.JPanel {
                     boolean insertaCalificacion = opAlumno.insertarCalificacion(estudiante, maestro.getId(), materia.getIdMateria(), periodo.getId());
 
                     if (insertaCalificacion) {
-
+                        alumnos = opAlumno.getEstudiantesByMateria(materia.getIdMateria(), periodo.getId());
                         JOptionPane.showMessageDialog(null, "Se les asigno la materia a el alumno correctamente");
-
                         actualizarTabla();
-                        return;
-
                     } else {
                         JOptionPane.showMessageDialog(null, "Hubo un error al asignar la materia");
                     }
@@ -249,7 +282,17 @@ public class AlumnosGruposForm extends javax.swing.JPanel {
 
             if (comboMaterias.getSelectedIndex() > 0) {
                 System.out.println("SE VAN A VER LOS ALUMNOSSS");
-                MateriaModelo materia = gruposMateria.get(comboMaterias.getSelectedIndex() - 1).getMateria();
+                GrupoMateriaModelo grupoMateria = gruposMateria.get(comboMaterias.getSelectedIndex() - 1);
+
+                btnAgregarAlumnos.setVisible(grupoMateria.getCursada() != 1);
+                btnAgregarAlumno.setVisible(grupoMateria.getCursada() != 1);
+
+                if (grupoMateria.getCursada() == 1) {
+                    tabla1.removeMouseListener(this.mouseAdapter);
+                } else if (grupoMateria.getCursada() == 0 && tabla1.getMouseListeners().length > 0) {
+                    tabla1.addMouseListener(this.mouseAdapter);
+                }
+                MateriaModelo materia = grupoMateria.getMateria();
 
                 alumnos = opAlumno.getEstudiantesByMateria(materia.getIdMateria(), opPeriodo.getUltimoPeriodo().getId());
                 actualizarTabla();
@@ -261,25 +304,7 @@ public class AlumnosGruposForm extends javax.swing.JPanel {
     }//GEN-LAST:event_comboMateriasItemStateChanged
 
     private void tabla1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla1MouseClicked
-        if (evt.getClickCount() == 2) {
-
-            int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de retirar al alumno?");
-
-            if (option == JOptionPane.OK_OPTION) {
-                EstudianteModelo estudiante = alumnos.get(tabla1.getSelectedRow());
-                MateriaModelo materia = (MateriaModelo) comboMaterias.getSelectedItem();
-                boolean eliminado = opAlumno.eliminarCalificaciones(estudiante.getId(), materia.getIdMateria());
-
-                if (eliminado) {
-                    JOptionPane.showMessageDialog(null, "Alumno retirado con exito");
-                    alumnos = opAlumno.getEstudiantesByMateria(materia.getIdMateria(), opPeriodo.getUltimoPeriodo().getId());
-
-                    actualizarTabla();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Hubo un error al eliminar el gurpo");
-                }
-            }
-        }
+        // TODO add your handling code here:
     }//GEN-LAST:event_tabla1MouseClicked
 
 

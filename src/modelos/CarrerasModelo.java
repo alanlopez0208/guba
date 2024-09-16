@@ -93,7 +93,7 @@ public class CarrerasModelo {
 
     @Override
     public String toString() {
-        return nombre;
+        return nombre + ": " + modalidad;
     }
 
     @Override
@@ -149,12 +149,10 @@ public class CarrerasModelo {
         }
         return Objects.equals(this.hti, other.hti);
     }
-    
-    
+
     public Object[] toRowTable(EventoAccion eventoAccion) {
         return new Object[]{
-        this.getIdClave(), this.getNombre(), this.getCreditos(),this.getModalidad(), new AccionModelo(this, eventoAccion),
-        };
+            this.getIdClave(), this.getNombre(), this.getCreditos(), this.getModalidad(), new AccionModelo(this, eventoAccion),};
     }
 
 }
