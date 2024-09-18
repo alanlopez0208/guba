@@ -23,6 +23,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelos.PersonalModelo;
+import operaciones.Config;
 import operaciones.OpPersonal;
 import swim.Imagen;
 
@@ -35,11 +36,14 @@ public class AgregarPersonalForm extends javax.swing.JPanel {
     private String path;
     private File pdf;
 
+    private Config config;
+
     public AgregarPersonalForm(EventoCerrarForm evento) {
         initComponents();
         this.evento = evento;
         init();
         opPersonal = new OpPersonal();
+        config = new Config();
     }
 
     private void init() {
@@ -504,14 +508,13 @@ public class AgregarPersonalForm extends javax.swing.JPanel {
                 modelo.setGenero(comboSexo.getSelectedItem().toString());
                 if (img != null) {
                     try {
-                        File outputFile = new File("C:\\Guba\\Personal\\Fotos" + txtRfc.getText() + ".jpg");
+                        File outputFile = new File(config.obtenerConfiguracion("05 RUTA IMAGENES PERSONAL") + "/" + txtRfc.getText() + ".jpg");
                         ImageIO.write(img, "jpg", outputFile);
                         modelo.setFoto(outputFile.getPath());
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(null, "Error al querer insertar Imagen: " + ex.getMessage());
                     }
                 }
-               
 
                 boolean agregar = opPersonal.crearPersonal(modelo);
 

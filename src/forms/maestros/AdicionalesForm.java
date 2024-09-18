@@ -5,19 +5,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import modelos.MaestroModelo;
+import operaciones.OpMaestro;
+import operaciones.web.ApiClient;
 import operaciones.web.InsertWebpass;
-
+import org.json.JSONArray;
 
 public class AdicionalesForm extends javax.swing.JPanel {
 
     private boolean bandera;
     private MaestroModelo modelo;
-
+    private OpMaestro opMaestro;
 
     public AdicionalesForm(MaestroModelo modelo) {
         initComponents();
         bandera = false;
-       
+
         this.modelo = modelo;
         init();
     }
@@ -25,6 +27,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
     private void init() {
         this.txtUsuario.setText(modelo.getRfc());
         this.txtPass.setText(modelo.getPasswordTemp());
+        opMaestro = new OpMaestro();
     }
 
     @SuppressWarnings("unchecked")
@@ -32,11 +35,6 @@ public class AdicionalesForm extends javax.swing.JPanel {
     private void initComponents() {
 
         myPanel1 = new swim.panel.MyPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel2 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        buttonRounded1 = new swim.botones.ButtonRounded();
         myPanel2 = new swim.panel.MyPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -46,20 +44,6 @@ public class AdicionalesForm extends javax.swing.JPanel {
         txtPass = new javax.swing.JPasswordField();
 
         myPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel1.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Reporte: ");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel2.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel2.setText("Fecha: ");
-
-        buttonRounded1.setBackground(new java.awt.Color(20, 90, 95));
-        buttonRounded1.setForeground(new java.awt.Color(255, 255, 255));
-        buttonRounded1.setText("Crear Reporte");
 
         jLabel3.setText("Usuario: ");
 
@@ -77,8 +61,6 @@ public class AdicionalesForm extends javax.swing.JPanel {
                 btnPassActionPerformed(evt);
             }
         });
-
-        txtPass.setText("jPasswordField1");
 
         javax.swing.GroupLayout myPanel2Layout = new javax.swing.GroupLayout(myPanel2);
         myPanel2.setLayout(myPanel2Layout);
@@ -125,22 +107,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
         myPanel1Layout.setHorizontalGroup(
             myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel1Layout.createSequentialGroup()
-                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(myPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(myPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGap(123, 123, 123)
-                        .addComponent(buttonRounded1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 949, Short.MAX_VALUE)
+                .addContainerGap(1255, Short.MAX_VALUE)
                 .addComponent(myPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(47, 47, 47))
         );
@@ -148,18 +115,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
             myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(myPanel1Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(myPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(myPanel1Layout.createSequentialGroup()
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(myPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(buttonRounded1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(myPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(196, Short.MAX_VALUE))
         );
 
@@ -206,15 +162,16 @@ public class AdicionalesForm extends javax.swing.JPanel {
 
             String contraseña = new String(charPassword);
 
-            if (usuario.equals("user") && contraseña.equals("user")) {
+            if (usuario.equals("subir@gubaescolares.com") && contraseña.equals("p_WyU)p}&shG")) {
                 btnPass.setIcon(new ImageIcon((getClass().getResource("/icon/abierto.png"))));
                 txtPass.setEchoChar('\0');
                 bandera = true;
 
                 InsertWebpass pass = new InsertWebpass();
 
-               
-
+                JSONArray alumnos = ApiClient.getAlumnos();
+                pass.upsertDataToLocalDB("Docentes", alumnos, "IdDocente ", "Password");
+                txtPass.setText(   opMaestro.obtenerDocente(modelo.getRfc()).getPassword());
             } else {
                 JOptionPane.showInternalMessageDialog(null, "Contraseña Incorrecta");
             }
@@ -224,11 +181,6 @@ public class AdicionalesForm extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPass;
-    private swim.botones.ButtonRounded buttonRounded1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

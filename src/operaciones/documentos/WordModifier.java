@@ -290,6 +290,7 @@ public class WordModifier {
         String genero = modelo.getSexo().equals("Hombre") ? "el alumno" : "la alumna";
         String[] fechaArray = fecha.split("de");
 
+        replaceInDocument(document, "peter", promedioFinal);
         replaceInDocument(document, "name", modelo.toString().toUpperCase());
         replaceInDocument(document, "date", fecha);
         replaceInDocument(document, "birth", modelo.getNacimiento());
@@ -297,7 +298,7 @@ public class WordModifier {
         replaceInDocument(document, "tuition", modelo.getMatricula().toLowerCase());
         replaceInDocument(document, "career", modelo.getCarrera().getNombre().toUpperCase());
         replaceInDocument(document, "totalAsignaturas", Integer.toString(calificaciones.size()));
-        replaceInDocument(document, "averaje", promedioFinal);
+
         replaceInDocument(document, "origin", modelo.getEscProcedencia());
         replaceInDocument(document, "phone", modelo.getNumCelular());
         replaceInDocument(document, "credits", Integer.toString(totalCredtios));

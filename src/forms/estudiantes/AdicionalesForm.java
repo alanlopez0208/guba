@@ -47,11 +47,11 @@ public class AdicionalesForm extends javax.swing.JPanel {
     private void init() {
         modificador = new WordModifier();
         pptModifacador = new PPTModifier();
-        txtFechaAcuerdo.setDateFormatString("dd MMMM yyyy");
-        txtFechaAplicacion.setDateFormatString("dd MMMM yyyy");
-        txtFechaGenerado.setDateFormatString("dd MMMM yyyy");
-        txtFechaInicio.setDateFormatString("dd MMMM yyy");
-        txtFechaFinalizacion.setDateFormatString("dd MMMM yyy");
+        txtFechaAcuerdo.setDateFormatString("dd/MMMM/yyyy");
+        txtFechaAplicacion.setDateFormatString("dd/MMMM/yyyy");
+        txtFechaGenerado.setDateFormatString("dd/MMMM/yyyy");
+        txtFechaInicio.setDateFormatString("dd/MMMM/yyyy");
+        txtFechaFinalizacion.setDateFormatString("dd/MMMM/yyyy");
         txtUsuario.setText(estudiante.getMatricula());
         txtPass.setText(estudiante.getPasswordTemporal());
 
@@ -63,15 +63,34 @@ public class AdicionalesForm extends javax.swing.JPanel {
 
         if (titulacion != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            
-            
-            Date fechaSeleccionada = null;
+            Date fechaAcuerdo = null;
+            Date fechaAplicacion = null;
             try {
-                txtFechaAcuerdo.setDate(sdf.parse(titulacion.getFechaAcuerdo()));
-                txtFechaAplicacion.setDate(sdf.parse(titulacion.getFechaAplicacion()));
+                System.out.println(titulacion.getFechaAcuerdo());
+                System.out.println(titulacion.getFechaAplicacion());
+                fechaAcuerdo = sdf.parse(titulacion.getFechaAcuerdo());
+                fechaAplicacion = sdf.parse(titulacion.getFechaAplicacion());
+                txtFechaAcuerdo.setDate(fechaAcuerdo);
+                txtFechaAplicacion.setDate(fechaAplicacion);
             } catch (ParseException ex) {
                 System.out.println("Error ");
             }
+
+            String[] aplicacion = titulacion.getHoraAplicacion().split(":");
+            int horaAplicacion = Integer.parseInt(aplicacion[0]);
+            int minutoAplicacion = Integer.parseInt(aplicacion[1]);
+
+            String[] finalizacion = titulacion.getHoraFinalizacion().split(":");
+            int horaFinalizacion = Integer.parseInt(finalizacion[0]);
+            int minutoFinalizacion = Integer.parseInt(finalizacion[1]);
+
+            txtHoraAplicacion.setValue(horaAplicacion);
+            txtMinutoAplicacion.setValue(minutoAplicacion);
+
+            txtHoraFinalizacion.setValue(horaFinalizacion);
+            txtMinutoFinalizacion.setValue(minutoFinalizacion);
+
+            txtMinutoDuracion.setValue(Integer.parseInt(titulacion.getDuracion()));
 
             txtPresidente.setText(String.valueOf(titulacion.getPresidente()));
             txtSecretario.setText(String.valueOf(titulacion.getSecretario()));
@@ -636,12 +655,13 @@ public class AdicionalesForm extends javax.swing.JPanel {
                     .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel17)
                         .addComponent(txtTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel20)
+                    .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel24)))
+                            .addComponent(jLabel24))
+                        .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel20)))
                     .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel40)
                         .addComponent(txtHorasDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -894,9 +914,13 @@ public class AdicionalesForm extends javax.swing.JPanel {
                 titulacion.setFoja(hoja);
                 titulacion.setNombre(nombreTesis);
                 titulacion.setIdAlumno(estudiante.getMatricula());
+                titulacion.setActa(txtActa.getText());
                 opTitulacion.crearTitulacion(titulacion);
-            } else {
 
+            } else {
+                SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
+                fechaAcuerdo = s.format(txtFechaAcuerdo.getDate());
+                fechaAplicacion = s.format(txtFechaAplicacion.getDate());
                 titulacion.setAcuerdo(acuerdo);
                 titulacion.setTipoExamen(tipoExamen);
                 titulacion.setFechaAcuerdo(fechaAcuerdo);
@@ -914,7 +938,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
                 titulacion.setLibro(libro);
                 titulacion.setFoja(hoja);
                 titulacion.setNombre(nombreTesis);
-
+              
                 opTitulacion.updateTitulacionByIdAlumno(titulacion);
             }
 

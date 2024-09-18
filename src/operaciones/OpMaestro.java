@@ -69,6 +69,7 @@ public class OpMaestro {
         maestro.setPasswordTemp(rs.getString("PasswordTemporal"));
         maestro.setFoto(rs.getString("Foto"));
         maestro.setId(rs.getString("IdDocente"));
+        maestro.setPassword(rs.getString("Password"));
         return maestro;
     }
 

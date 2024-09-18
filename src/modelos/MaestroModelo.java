@@ -23,47 +23,12 @@ public class MaestroModelo {
     private String cv;
     private String grado;
     private String passwordTemp;
+    private String password;
     private String foto;
 
     ArrayList<GrupoModelo> grupos;
 
-    public MaestroModelo() {
-    }
-
-    public MaestroModelo(String rfc, String curp, String apPat, String nombre, String apMat, String genero, String correoPer, String correoIns, String domicilio, String celular, String estado, String municipio, String cv, String grado) {
-        this.rfc = rfc;
-        this.curp = curp;
-        this.apPat = apPat;
-        this.nombre = nombre;
-        this.apMat = apMat;
-        this.genero = genero;
-        this.correoPer = correoPer;
-        this.correoIns = correoIns;
-        this.domicilio = domicilio;
-        this.celular = celular;
-        this.estado = estado;
-        this.municipio = municipio;
-        this.cv = cv;
-        this.grado = grado;
-    }
-
-    public MaestroModelo(String rfc, String curp, String apPat, String nombre, String apMat, String genero, String correoPer, String correoIns, String domicilio, String celular, String estado, String municipio, String cv, String grado, ArrayList<GrupoModelo> grupos) {
-        this.rfc = rfc;
-        this.curp = curp;
-        this.apPat = apPat;
-        this.nombre = nombre;
-        this.apMat = apMat;
-        this.genero = genero;
-        this.correoPer = correoPer;
-        this.correoIns = correoIns;
-        this.domicilio = domicilio;
-        this.celular = celular;
-        this.estado = estado;
-        this.municipio = municipio;
-        this.cv = cv;
-        this.grado = grado;
-        this.grupos = grupos;
-    }
+   
 
     public String getId() {
         return id;
@@ -209,27 +174,36 @@ public class MaestroModelo {
         this.grupos = grupos;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.id);
-        hash = 53 * hash + Objects.hashCode(this.rfc);
-        hash = 53 * hash + Objects.hashCode(this.curp);
-        hash = 53 * hash + Objects.hashCode(this.apPat);
-        hash = 53 * hash + Objects.hashCode(this.nombre);
-        hash = 53 * hash + Objects.hashCode(this.apMat);
-        hash = 53 * hash + Objects.hashCode(this.genero);
-        hash = 53 * hash + Objects.hashCode(this.correoPer);
-        hash = 53 * hash + Objects.hashCode(this.correoIns);
-        hash = 53 * hash + Objects.hashCode(this.domicilio);
-        hash = 53 * hash + Objects.hashCode(this.celular);
-        hash = 53 * hash + Objects.hashCode(this.estado);
-        hash = 53 * hash + Objects.hashCode(this.municipio);
-        hash = 53 * hash + Objects.hashCode(this.cv);
-        hash = 53 * hash + Objects.hashCode(this.grado);
-        hash = 53 * hash + Objects.hashCode(this.passwordTemp);
-        hash = 53 * hash + Objects.hashCode(this.foto);
-        hash = 53 * hash + Objects.hashCode(this.grupos);
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.id);
+        hash = 89 * hash + Objects.hashCode(this.rfc);
+        hash = 89 * hash + Objects.hashCode(this.curp);
+        hash = 89 * hash + Objects.hashCode(this.apPat);
+        hash = 89 * hash + Objects.hashCode(this.nombre);
+        hash = 89 * hash + Objects.hashCode(this.apMat);
+        hash = 89 * hash + Objects.hashCode(this.genero);
+        hash = 89 * hash + Objects.hashCode(this.correoPer);
+        hash = 89 * hash + Objects.hashCode(this.correoIns);
+        hash = 89 * hash + Objects.hashCode(this.domicilio);
+        hash = 89 * hash + Objects.hashCode(this.celular);
+        hash = 89 * hash + Objects.hashCode(this.estado);
+        hash = 89 * hash + Objects.hashCode(this.municipio);
+        hash = 89 * hash + Objects.hashCode(this.cv);
+        hash = 89 * hash + Objects.hashCode(this.grado);
+        hash = 89 * hash + Objects.hashCode(this.passwordTemp);
+        hash = 89 * hash + Objects.hashCode(this.password);
+        hash = 89 * hash + Objects.hashCode(this.foto);
+        hash = 89 * hash + Objects.hashCode(this.grupos);
         return hash;
     }
 
@@ -293,13 +267,16 @@ public class MaestroModelo {
         if (!Objects.equals(this.passwordTemp, other.passwordTemp)) {
             return false;
         }
+        if (!Objects.equals(this.password, other.password)) {
+            return false;
+        }
         if (!Objects.equals(this.foto, other.foto)) {
             return false;
         }
         return Objects.equals(this.grupos, other.grupos);
     }
 
-
+ 
 
     @Override
     public String toString() {

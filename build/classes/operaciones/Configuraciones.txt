@@ -1,6 +1,7 @@
 01 RUTA BD = D:\Alan Lopez\Documentos\NetBeansProjects\guba\BD\BDGUBA.db
 03 RUTA IMAGENES ESTUDIANTES = C:\Guba\img\estudiantes
 04 RUTA IMAGENES PROFESORES = C:\Guba\img\maestros
+05 RUTA IMAGENES PERSONAL = C:\Guba\img\personal
 05 RUTA PDF PROFESORES = C:\Guba\CV
 06 RUTA Documentos = C:\Guba\Doc\Alumnos
 07 RUTA Logo = C:\Guba\logo.png

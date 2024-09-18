@@ -30,11 +30,11 @@ public class MaestroForm extends javax.swing.JPanel {
         this.setLayout(layout);
 
         header = new ButtonsHeader();
-        header.getBtn2().setText("Materias");
+        header.getBtn2().setVisible(false);
         JPanel menu = new JPanel();
         menu.setOpaque(false);
         menu.setLayout(new BorderLayout());
-
+      
         maestroDatos = new MaestroDatosForm(modelo);
 
         eventButtonsHeader = new EventButtonsHeader() {

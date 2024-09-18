@@ -21,7 +21,7 @@
               <Component id="txtFoto" min="-2" pref="280" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="144" max="-2" attributes="0"/>
               <Component id="myPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="279" max="32767" attributes="0"/>
+              <EmptySpace pref="157" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -78,23 +78,6 @@
                       </Group>
                   </Group>
               </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="253" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtEstado" alignment="0" min="-2" pref="223" max="-2" attributes="0"/>
-                              <Component id="txtMunicipio" alignment="0" min="-2" pref="223" max="-2" attributes="0"/>
-                              <Component id="txtDireccion" alignment="0" min="-2" pref="223" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
-                  <EmptySpace min="-2" pref="380" max="-2" attributes="0"/>
-              </Group>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -127,7 +110,7 @@
                               <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="txtApPat" alignment="0" min="-2" pref="177" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="37" max="32767" attributes="0"/>
+                          <EmptySpace pref="159" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel17" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="txtApMat" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
@@ -144,13 +127,13 @@
                           </Group>
                           <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="txtGrado" alignment="0" pref="223" max="32767" attributes="0"/>
-                              <Component id="txtGeneracion" alignment="0" pref="223" max="32767" attributes="0"/>
-                              <Component id="txtCorreoPer" alignment="0" pref="223" max="32767" attributes="0"/>
-                              <Component id="txtEscuelaProc" alignment="0" pref="223" max="32767" attributes="0"/>
-                              <Component id="txtCorreoInst" alignment="0" pref="223" max="32767" attributes="0"/>
-                              <Component id="txtCelular" alignment="0" pref="223" max="32767" attributes="0"/>
-                              <Component id="nacimiento" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtGrado" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtGeneracion" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtCorreoPer" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtEscuelaProc" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtCorreoInst" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtCelular" alignment="0" max="32767" attributes="0"/>
+                              <Component id="nacimiento" alignment="0" pref="223" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="jLabel21" min="-2" max="-2" attributes="0"/>
@@ -159,6 +142,23 @@
                           <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="253" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtEstado" alignment="0" min="-2" pref="223" max="-2" attributes="0"/>
+                              <Component id="txtMunicipio" alignment="0" min="-2" pref="223" max="-2" attributes="0"/>
+                              <Component id="txtDireccion" alignment="0" min="-2" pref="223" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="502" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

@@ -28,7 +28,7 @@ public class OpTitulacion {
                 titulacion = new TitulacionModelo();
                 titulacion.setIdTitulacion(rs.getString("IdTitulacion"));
                 titulacion.setIdAlumno(rs.getString("IdAlumno"));
-                titulacion.setNumero(rs.getString("Numero"));
+                titulacion.setNombre(rs.getString("Nombre"));
                 titulacion.setRegistro(rs.getString("Registro"));
                 titulacion.setLibro(rs.getString("Libro"));
                 titulacion.setFoja(rs.getString("Foja"));
@@ -36,6 +36,7 @@ public class OpTitulacion {
                 titulacion.setAcuerdo(rs.getString("Acuerdo"));
                 titulacion.setTipoExamen(rs.getString("TipoExamen"));
                 titulacion.setFechaAcuerdo(rs.getString("FechaAcuerdo"));
+                titulacion.setFechaAplicacion(rs.getString("FechaAplicacion"));
                 titulacion.setHoraAplicacion(rs.getString("HoraAplicacion"));
                 titulacion.setDuracion(rs.getString("Duracion"));
                 titulacion.setHoraFinalizacion(rs.getString("HoraFinalizacion"));
@@ -43,6 +44,7 @@ public class OpTitulacion {
                 titulacion.setSecretario(rs.getString("Secretario"));
                 titulacion.setVocal(rs.getString("Vocal"));
                 titulacion.setNombre(rs.getString("Nombre"));
+                titulacion.setActa(rs.getString("Acta"));
             }
 
         } catch (SQLException e) {
@@ -54,14 +56,14 @@ public class OpTitulacion {
 
     // Actualizar un registro por IdAlumno
     public boolean updateTitulacionByIdAlumno(TitulacionModelo titulacionModelo) {
-        String sql = "UPDATE Titulacion SET Numero = ?, Registro = ?, Libro = ?, Foja = ?, Folio = ?, "
+        String sql = "UPDATE Titulacion SET Nombre = ?, Registro = ?, Libro = ?, Foja = ?, Folio = ?, "
                 + "Acuerdo = ?, TipoExamen = ?, FechaAcuerdo = ?, FechaAplicacion = ?, HoraAplicacion = ?, "
                 + "Duracion = ?, HoraFinalizacion = ?, Presidente = ?, Secretario = ?, Vocal = ?, Nombre = ? "
                 + "WHERE IdAlumno = ?";
 
         try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, titulacionModelo.getNumero());
+            pstmt.setString(1, titulacionModelo.getNombre());
             pstmt.setString(2, titulacionModelo.getRegistro());
             pstmt.setString(3, titulacionModelo.getLibro());
             pstmt.setString(4, titulacionModelo.getFoja());
