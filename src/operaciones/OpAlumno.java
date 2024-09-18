@@ -70,6 +70,8 @@ public class OpAlumno {
         OpCarreras opCarrera = new OpCarreras();
         estudiante.setCarrera(opCarrera.getCarreraByd(rs.getString("IdCarrera")));
         estudiante.setSemestre(rs.getString("Semestre"));
+        estudiante.setDireccion(rs.getString("Direccion"));
+        estudiante.setNacimiento(rs.getString("Nacimiento"));
 
         return estudiante;
     }
@@ -77,7 +79,8 @@ public class OpAlumno {
     public boolean updateAlumno(EstudianteModelo estudianteModelo) {
         String sql = "UPDATE Alumnos SET Nombre = ?, IdCarrera = ?, Semestre = ?, ApellidoPaterno = ?, ApellidoMaterno = ?, CorreoPersonal = ?, "
                 + "CorreoInstitucional = ?, Generacion = ?, Celular = ?, Estado = ?, Municipio = ?, "
-                + "EscuelaProcedencia = ?, GradoEstudios = ?, IdGrupo = ?, Status = ?, Genero = ? "
+                + "EscuelaProcedencia = ?, GradoEstudios = ?, IdGrupo = ?, Status = ?, Genero = ?, "
+                + "Password = ?, Direccion = ?, Nacimiento = ? "
                 + (estudianteModelo.getFoto() != null ? ", Foto = ?" : "")
                 + " WHERE Matricula = ?";
 
@@ -99,12 +102,15 @@ public class OpAlumno {
             pstmt.setString(14, estudianteModelo.getGrupo());
             pstmt.setString(15, estudianteModelo.getStatus());
             pstmt.setString(16, estudianteModelo.getSexo());
+            pstmt.setString(17, estudianteModelo.getPassword());
+            pstmt.setString(18, estudianteModelo.getDireccion());
+            pstmt.setString(19, estudianteModelo.getNacimiento());
 
             if (estudianteModelo.getFoto() != null) {
-                pstmt.setString(17, estudianteModelo.getFoto());
-                pstmt.setString(18, estudianteModelo.getMatricula());
+                pstmt.setString(20, estudianteModelo.getFoto());
+                pstmt.setString(21, estudianteModelo.getMatricula());
             } else {
-                pstmt.setString(17, estudianteModelo.getMatricula());
+                pstmt.setString(20, estudianteModelo.getMatricula());
             }
 
             int affectedRows = pstmt.executeUpdate();
@@ -167,37 +173,46 @@ public class OpAlumno {
     }
 
     public boolean crearAlumno(EstudianteModelo estudianteModelo) {
-        String sqlAlumno = "INSERT INTO Alumnos (Matricula, IdCarrera, Semestre, Nombre, ApellidoPaterno, ApellidoMaterno, CorreoPersonal, "
-                + "CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, IdGrupo, Status, Genero, PasswordTemporal"
+        // SQL para insertar los datos en la tabla Alumnos
+        String sqlAlumno = "INSERT INTO Alumnos (Matricula, IdCarrera, Semestre, Nombre, ApellidoPaterno, ApellidoMaterno, Genero, "
+                + "CorreoPersonal, CorreoInstitucional, Generacion, Celular, Estado, Municipio, EscuelaProcedencia, GradoEstudios, "
+                + "PasswordTemporal, IdGrupo, Password, Status, Direccion, Nacimiento"
                 + (estudianteModelo.getFoto() != null ? ", Foto" : "") + ") "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" + (estudianteModelo.getFoto() != null ? ", ?" : "") + ")";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?"
+                + (estudianteModelo.getFoto() != null ? ", ?" : "") + ")";
 
         try (Connection conn = new Conexion().connect()) {
 
             try (PreparedStatement pstmtAlumno = conn.prepareStatement(sqlAlumno)) {
+                // Asignar los valores de cada campo
                 pstmtAlumno.setString(1, estudianteModelo.getMatricula());
                 pstmtAlumno.setString(2, estudianteModelo.getCarrera().getIdCarrera());
                 pstmtAlumno.setString(3, estudianteModelo.getSemestre());
                 pstmtAlumno.setString(4, estudianteModelo.getNombre());
                 pstmtAlumno.setString(5, estudianteModelo.getApPaterno());
                 pstmtAlumno.setString(6, estudianteModelo.getApMaterno());
-                pstmtAlumno.setString(7, estudianteModelo.getEmailPersonal());
-                pstmtAlumno.setString(8, estudianteModelo.getEmailInstitucional());
-                pstmtAlumno.setString(9, estudianteModelo.getGeneracion());
-                pstmtAlumno.setString(10, estudianteModelo.getNumCelular());
-                pstmtAlumno.setString(11, estudianteModelo.getEstado());
-                pstmtAlumno.setString(12, estudianteModelo.getMunicipio());
-                pstmtAlumno.setString(13, estudianteModelo.getEscProcedencia());
-                pstmtAlumno.setString(14, estudianteModelo.getGrado());
-                pstmtAlumno.setString(15, estudianteModelo.getGrupo());
-                pstmtAlumno.setString(16, estudianteModelo.getStatus());
-                pstmtAlumno.setString(17, estudianteModelo.getSexo());
-                pstmtAlumno.setString(18, estudianteModelo.getMatricula());
+                pstmtAlumno.setString(7, estudianteModelo.getSexo()); // Género
+                pstmtAlumno.setString(8, estudianteModelo.getEmailPersonal());
+                pstmtAlumno.setString(9, estudianteModelo.getEmailInstitucional());
+                pstmtAlumno.setString(10, estudianteModelo.getGeneracion());
+                pstmtAlumno.setString(11, estudianteModelo.getNumCelular());
+                pstmtAlumno.setString(12, estudianteModelo.getEstado());
+                pstmtAlumno.setString(13, estudianteModelo.getMunicipio());
+                pstmtAlumno.setString(14, estudianteModelo.getEscProcedencia());
+                pstmtAlumno.setString(15, estudianteModelo.getGrado());
+                pstmtAlumno.setString(16, estudianteModelo.getPasswordTemporal());
+                pstmtAlumno.setString(17, estudianteModelo.getGrupo());
+                pstmtAlumno.setString(18, estudianteModelo.getPassword());
+                pstmtAlumno.setString(19, estudianteModelo.getStatus());
+                pstmtAlumno.setString(20, estudianteModelo.getDireccion());
+                pstmtAlumno.setString(21, estudianteModelo.getNacimiento());
 
+                // Verificar si hay foto, en caso afirmativo, asignarla
                 if (estudianteModelo.getFoto() != null) {
-                    pstmtAlumno.setString(19, estudianteModelo.getFoto());
+                    pstmtAlumno.setString(22, estudianteModelo.getFoto());
                 }
 
+                // Ejecutar la sentencia de inserción
                 int affectedRows = pstmtAlumno.executeUpdate();
                 return affectedRows > 0;
             }
@@ -393,6 +408,47 @@ public class OpAlumno {
         } catch (SQLException e) {
             System.out.println("Error al eliminar calificaciones: " + e.getMessage());
             return false;
+        }
+    }
+
+    public boolean actualizarGrupoEstudiantes(String idGrupo, ArrayList<EstudianteModelo> estudiantes) {
+        // Consulta SQL para actualizar el IdGrupo basado en la matrícula
+        String sql = "UPDATE Alumnos SET IdGrupo = ? WHERE Matricula = ?";
+
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Iterar sobre la lista de estudiantes y actualizar el IdGrupo
+            for (EstudianteModelo estudiante : estudiantes) {
+                pstmt.setString(1, idGrupo); // Nuevo IdGrupo que se pasa como parámetro
+                pstmt.setString(2, estudiante.getMatricula()); // La matrícula del estudiante a actualizar
+                pstmt.addBatch(); // Añadir a batch para ejecutar en bloque
+            }
+
+            // Ejecutar todas las actualizaciones en un solo batch
+            int[] affectedRows = pstmt.executeBatch();
+            return affectedRows.length > 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al actualizar IdGrupo de los estudiantes", e);
+        }
+    }
+
+public boolean actualizarIdGrupoEstudiante(String idGrupo, EstudianteModelo estudiante) {
+        // Consulta SQL para actualizar el IdGrupo de un solo estudiante basado en su matrícula
+        String sql = "UPDATE Alumnos SET IdGrupo = ? WHERE Matricula = ?";
+
+        try (Connection conn = new Conexion().connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Asignar los valores al PreparedStatement
+            pstmt.setString(1, idGrupo); // Nuevo IdGrupo que se pasa como parámetro
+            pstmt.setString(2, estudiante.getMatricula()); // La matrícula del estudiante a actualizar
+
+            // Ejecutar la actualización
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al actualizar IdGrupo del estudiante", e);
         }
     }
 

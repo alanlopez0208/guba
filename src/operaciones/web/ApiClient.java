@@ -23,29 +23,36 @@ public class ApiClient {
         Integer p1u3, p2u3, p3u3, p4u3, p1u4, p2u4, p3u4, p4u4;
         Integer tb;
 
+        // Constructor que respeta campos vacíos
         Calificacion(JSONObject json) {
             this.idCalificacion = json.getInt("IdCalificacion");
             this.idAlumno = json.getInt("IdAlumno");
             this.idDocente = json.getInt("IdDocente");
             this.idMateria = json.getInt("IdMateria");
             this.idPeriodo = json.getInt("IdPeriodo");
-            this.p1u1 = json.optInt("P1U1", 0);
-            this.p2u1 = json.optInt("P2U1", 0);
-            this.p3u1 = json.optInt("P3U1", 0);
-            this.p4u1 = json.optInt("P4U1", 0);
-            this.p1u2 = json.optInt("P1U2", 0);
-            this.p2u2 = json.optInt("P2U2", 0);
-            this.p3u2 = json.optInt("P3U2", 0);
-            this.p4u2 = json.optInt("P4U2", 0);
-            this.p1u3 = json.optInt("P1U3", 0);
-            this.p2u3 = json.optInt("P2U3", 0);
-            this.p3u3 = json.optInt("P3U3", 0);
-            this.p4u3 = json.optInt("P4U3", 0);
-            this.p1u4 = json.optInt("P1U4", 0);
-            this.p2u4 = json.optInt("P2U4", 0);
-            this.p3u4 = json.optInt("P3U4", 0);
-            this.p4u4 = json.optInt("P4U4", 0);
-            this.tb = json.optInt("TB", 0);
+
+            // Se usa opt() para evitar sobreescribir campos vacíos
+            this.p1u1 = json.opt("P1U1") instanceof Integer ? json.getInt("P1U1") : null;
+            this.p2u1 = json.opt("P2U1") instanceof Integer ? json.getInt("P2U1") : null;
+            this.p3u1 = json.opt("P3U1") instanceof Integer ? json.getInt("P3U1") : null;
+            this.p4u1 = json.opt("P4U1") instanceof Integer ? json.getInt("P4U1") : null;
+
+            this.p1u2 = json.opt("P1U2") instanceof Integer ? json.getInt("P1U2") : null;
+            this.p2u2 = json.opt("P2U2") instanceof Integer ? json.getInt("P2U2") : null;
+            this.p3u2 = json.opt("P3U2") instanceof Integer ? json.getInt("P3U2") : null;
+            this.p4u2 = json.opt("P4U2") instanceof Integer ? json.getInt("P4U2") : null;
+
+            this.p1u3 = json.opt("P1U3") instanceof Integer ? json.getInt("P1U3") : null;
+            this.p2u3 = json.opt("P2U3") instanceof Integer ? json.getInt("P2U3") : null;
+            this.p3u3 = json.opt("P3U3") instanceof Integer ? json.getInt("P3U3") : null;
+            this.p4u3 = json.opt("P4U3") instanceof Integer ? json.getInt("P4U3") : null;
+
+            this.p1u4 = json.opt("P1U4") instanceof Integer ? json.getInt("P1U4") : null;
+            this.p2u4 = json.opt("P2U4") instanceof Integer ? json.getInt("P2U4") : null;
+            this.p3u4 = json.opt("P3U4") instanceof Integer ? json.getInt("P3U4") : null;
+            this.p4u4 = json.opt("P4U4") instanceof Integer ? json.getInt("P4U4") : null;
+
+            this.tb = json.opt("TB") instanceof Integer ? json.getInt("TB") : null;
         }
 
         @Override
@@ -160,7 +167,4 @@ public class ApiClient {
     public static JSONArray getDocentes() {
         return getData("SELECT IdDocente, Password FROM Docentes");
     }
-    
-    
-    
 }

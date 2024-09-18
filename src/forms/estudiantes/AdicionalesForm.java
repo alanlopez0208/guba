@@ -1,8 +1,10 @@
 package forms.estudiantes;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -10,6 +12,8 @@ import javax.swing.JTextField;
 import operaciones.web.InsertWebpass;
 import operaciones.OpAlumno;
 import modelos.EstudianteModelo;
+import modelos.TitulacionModelo;
+import operaciones.OpTitulacion;
 import operaciones.documentos.FileOpener;
 import operaciones.documentos.Documentos;
 import operaciones.documentos.PPTModifier;
@@ -27,6 +31,8 @@ public class AdicionalesForm extends javax.swing.JPanel {
     private FileOpener fileOpener;
     private WordModifier modificador;
     private PPTModifier pptModifacador;
+    private OpTitulacion opTitulacion;
+    private TitulacionModelo titulacion;
 
     public AdicionalesForm(EstudianteModelo estudiante) {
         initComponents();
@@ -34,7 +40,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
         bandera = false;
         opAlumno = new OpAlumno();
         fileOpener = new FileOpener();
-
+        opTitulacion = new OpTitulacion();
         init();
     }
 
@@ -52,6 +58,33 @@ public class AdicionalesForm extends javax.swing.JPanel {
         for (Documentos documento : Documentos.values()) {
             comboReporte.addItem(documento);
         }
+
+        titulacion = opTitulacion.getTitulacionByIdAlumno(estudiante.getMatricula());
+
+        if (titulacion != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            
+            
+            Date fechaSeleccionada = null;
+            try {
+                txtFechaAcuerdo.setDate(sdf.parse(titulacion.getFechaAcuerdo()));
+                txtFechaAplicacion.setDate(sdf.parse(titulacion.getFechaAplicacion()));
+            } catch (ParseException ex) {
+                System.out.println("Error ");
+            }
+
+            txtPresidente.setText(String.valueOf(titulacion.getPresidente()));
+            txtSecretario.setText(String.valueOf(titulacion.getSecretario()));
+            txtVocal.setText(String.valueOf(titulacion.getVocal()));
+
+            txtActa.setText(String.valueOf(titulacion.getRegistro()));
+            txtLibro.setText(String.valueOf(titulacion.getLibro()));
+            txtHoja.setText(String.valueOf(titulacion.getFoja()));
+            txtAcuerdo.setText(titulacion.getAcuerdo());
+            txtTipoExamen.setText(titulacion.getTipoExamen());
+            txtNombreTesis.setText(String.valueOf(titulacion.getNombre()));
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -98,9 +131,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
         txtHoja = new swim.text.TextField();
         jLabel32 = new javax.swing.JLabel();
         txtNombreTesis = new swim.text.TextField();
-        jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
-        txtHoraDuracion = new com.toedter.components.JSpinField();
         txtMinutoDuracion = new com.toedter.components.JSpinField();
         jLabel35 = new javax.swing.JLabel();
         txtHoraFinalizacion = new com.toedter.components.JSpinField();
@@ -119,6 +150,17 @@ public class AdicionalesForm extends javax.swing.JPanel {
         txtFechaFinalizacion = new com.toedter.calendar.JDateChooser();
         jLabel40 = new javax.swing.JLabel();
         txtHorasDuracion = new com.toedter.components.JSpinField();
+        jLabel41 = new javax.swing.JLabel();
+        fechaCreacion = new com.toedter.calendar.JDateChooser();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        txtNombreImpartidor = new swim.text.TextField();
+        jLabel22 = new javax.swing.JLabel();
+        txtPuestoImpartidor = new swim.text.TextField();
+        txtEscuelaProcRepartidor = new swim.text.TextField();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        txtModalidad = new swim.text.TextField();
         myPanel5 = new swim.panel.MyPanel();
         jLabel39 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -266,9 +308,6 @@ public class AdicionalesForm extends javax.swing.JPanel {
 
         txtNombreTesis.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
 
-        jLabel33.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel33.setText(":");
-
         jLabel34.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel34.setText("Duración:");
 
@@ -286,23 +325,18 @@ public class AdicionalesForm extends javax.swing.JPanel {
                 .addGap(0, 63, Short.MAX_VALUE)
                 .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(myPanel3Layout.createSequentialGroup()
-                        .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel34)
-                            .addComponent(jLabel35))
+                        .addComponent(jLabel35)
                         .addGap(21, 21, 21)
                         .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(myPanel3Layout.createSequentialGroup()
-                                .addComponent(txtHoraFinalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel34)
+                            .addComponent(txtHoraFinalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtMinutoFinalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(myPanel3Layout.createSequentialGroup()
-                                .addComponent(txtHoraDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtMinutoDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtMinutoDuracion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(myPanel3Layout.createSequentialGroup()
                         .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtPresidente, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -354,13 +388,16 @@ public class AdicionalesForm extends javax.swing.JPanel {
                                 .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNombreTesis, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(myPanel3Layout.createSequentialGroup()
-                                        .addComponent(txtActa, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(37, 37, 37)
-                                        .addComponent(jLabel30)
-                                        .addGap(51, 51, 51)
-                                        .addComponent(txtLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(40, 40, 40)
-                                        .addComponent(jLabel31)
+                                        .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel16)
+                                            .addGroup(myPanel3Layout.createSequentialGroup()
+                                                .addComponent(txtActa, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(37, 37, 37)
+                                                .addComponent(jLabel30)
+                                                .addGap(51, 51, 51)
+                                                .addComponent(txtLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(40, 40, 40)
+                                                .addComponent(jLabel31)))
                                         .addGap(51, 51, 51)
                                         .addComponent(txtHoja, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, myPanel3Layout.createSequentialGroup()
@@ -368,11 +405,9 @@ public class AdicionalesForm extends javax.swing.JPanel {
                         .addComponent(jLabel28)))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, myPanel3Layout.createSequentialGroup()
-                .addGap(267, 267, 267)
+                .addGap(243, 243, 243)
                 .addComponent(jLabel14)
-                .addGap(340, 340, 340)
-                .addComponent(jLabel16)
-                .addGap(86, 86, 86)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(myPanel3Layout.createSequentialGroup()
                         .addComponent(txtVocal, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -425,10 +460,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
                 .addGap(16, 16, 16)
                 .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel34)
-                    .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtHoraDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtMinutoDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtMinutoDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel35)
@@ -443,12 +475,16 @@ public class AdicionalesForm extends javax.swing.JPanel {
                     .addComponent(txtPresidente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSecretario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtVocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel15)
-                    .addComponent(jLabel16))
-                .addGap(32, 32, 32)
+                .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(myPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14)
+                            .addComponent(jLabel15)))
+                    .addGroup(myPanel3Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel16)))
+                .addGap(20, 20, 20)
                 .addComponent(jLabel13)
                 .addGap(29, 29, 29)
                 .addGroup(myPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -466,6 +502,8 @@ public class AdicionalesForm extends javax.swing.JPanel {
                 .addComponent(buttonRounded2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
         );
+
+        myPanel4.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel17.setText("Tipo del Curso:");
@@ -498,6 +536,32 @@ public class AdicionalesForm extends javax.swing.JPanel {
         jLabel40.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel40.setText("Horas de Duración:");
 
+        jLabel41.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel41.setText("Fecha de Creación:");
+
+        jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel19.setText("Datos de quien impartio el Curso");
+
+        jLabel21.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel21.setText("Nombre:");
+
+        txtNombreImpartidor.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+
+        jLabel22.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel22.setText("Puesto:");
+
+        txtPuestoImpartidor.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+
+        txtEscuelaProcRepartidor.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+
+        jLabel23.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel23.setText("Escuela Procedencia:");
+
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel24.setText(" Modalidad;");
+
+        txtModalidad.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout myPanel4Layout = new javax.swing.GroupLayout(myPanel4);
         myPanel4.setLayout(myPanel4Layout);
         myPanel4Layout.setHorizontalGroup(
@@ -505,37 +569,62 @@ public class AdicionalesForm extends javax.swing.JPanel {
             .addGroup(myPanel4Layout.createSequentialGroup()
                 .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(myPanel4Layout.createSequentialGroup()
-                        .addGap(598, 598, 598)
-                        .addComponent(buttonRounded3, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(myPanel4Layout.createSequentialGroup()
                         .addGap(671, 671, 671)
-                        .addComponent(jLabel18)))
+                        .addComponent(jLabel18))
+                    .addGroup(myPanel4Layout.createSequentialGroup()
+                        .addGap(624, 624, 624)
+                        .addComponent(buttonRounded3, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(myPanel4Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(myPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel40)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtHorasDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel37)
-                        .addGap(23, 23, 23)
-                        .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel38)
-                        .addGap(23, 23, 23)
-                        .addComponent(txtFechaFinalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51))
+                        .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(myPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addGap(22, 22, 22)
+                                .addComponent(txtTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel24)
+                                .addGap(21, 21, 21)
+                                .addComponent(txtModalidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel20)
+                                .addGap(21, 21, 21)
+                                .addComponent(txtNombreCurso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(58, 58, 58)
+                                .addComponent(jLabel40)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtHorasDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(myPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel37)
+                                .addGap(23, 23, 23)
+                                .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel38)
+                                .addGap(23, 23, 23)
+                                .addComponent(txtFechaFinalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel41)
+                                .addGap(23, 23, 23)
+                                .addComponent(fechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(60, Short.MAX_VALUE))
                     .addGroup(myPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addGap(22, 22, 22)
-                        .addComponent(txtTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(121, 121, 121)
-                        .addComponent(jLabel20)
-                        .addGap(21, 21, 21)
-                        .addComponent(txtNombreCurso, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
-                        .addGap(563, 563, 563))))
+                        .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(myPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel21)
+                                .addGap(22, 22, 22)
+                                .addComponent(txtNombreImpartidor, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(jLabel22)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtPuestoImpartidor, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(66, 66, 66)
+                                .addComponent(jLabel23)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtEscuelaProcRepartidor, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel19))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         myPanel4Layout.setVerticalGroup(
             myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -543,26 +632,43 @@ public class AdicionalesForm extends javax.swing.JPanel {
                 .addGap(23, 23, 23)
                 .addComponent(jLabel18)
                 .addGap(18, 18, 18)
-                .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20)
-                    .addComponent(jLabel17)
-                    .addComponent(txtTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(69, 69, 69)
+                .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel17)
+                        .addComponent(txtTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel20)
+                        .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel24)))
+                    .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel40)
+                        .addComponent(txtHorasDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(70, 70, 70)
                 .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel37)
-                            .addComponent(txtFechaFinalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel38))
-                        .addGroup(myPanel4Layout.createSequentialGroup()
-                            .addComponent(jLabel40)
-                            .addGap(2, 2, 2)))
-                    .addComponent(txtHorasDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
+                    .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel37)
+                    .addComponent(txtFechaFinalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel38)
+                    .addComponent(fechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel41))
+                .addGap(41, 41, 41)
+                .addComponent(jLabel19)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel23)
+                        .addComponent(txtEscuelaProcRepartidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel22)
+                        .addComponent(txtPuestoImpartidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(myPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel21)
+                        .addComponent(txtNombreImpartidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addComponent(buttonRounded3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
 
         jLabel39.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -660,7 +766,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
                 .addComponent(myPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(myPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(myPanel1);
@@ -743,7 +849,6 @@ public class AdicionalesForm extends javax.swing.JPanel {
         String fechaAplicacion = sdf.format(txtFechaAplicacion.getDate());
         String horaAplicacion = Integer.toString(txtHoraAplicacion.getValue());
         String minutoAplicacion = Integer.toString(txtMinutoAplicacion.getValue());
-        String horaDuracion = Integer.toString(txtHoraDuracion.getValue());
         String minutoDuracion = Integer.toString(txtMinutoDuracion.getValue());
         String horaFinalizacion = Integer.toString(txtHoraFinalizacion.getValue());
         String minutoFinalizacion = Integer.toString(txtMinutoFinalizacion.getValue());
@@ -759,19 +864,67 @@ public class AdicionalesForm extends javax.swing.JPanel {
         if (!acuerdo.isEmpty() && !tipoExamen.isEmpty()
                 && !fechaAcuerdo.isEmpty() && !fechaAplicacion.isEmpty()
                 && !horaAplicacion.isEmpty() && !minutoAplicacion.isEmpty()
-                && !horaDuracion.isEmpty() && !minutoDuracion.isEmpty()
+                && !minutoDuracion.isEmpty()
                 && !horaFinalizacion.isEmpty() && !minutoFinalizacion.isEmpty()
                 && !presidente.isEmpty() && !secretario.isEmpty()
                 && !vocal.isEmpty() && !acta.isEmpty() && !libro.isEmpty()
                 && !hoja.isEmpty() && !nombreTesis.isEmpty()) {
 
+            if (titulacion == null) {
+                titulacion = new TitulacionModelo();
+                titulacion.setAcuerdo(acuerdo);
+                titulacion.setTipoExamen(tipoExamen);
+                SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
+                fechaAcuerdo = s.format(txtFechaAcuerdo.getDate());
+                fechaAplicacion = s.format(txtFechaAplicacion.getDate());
+
+                titulacion.setFechaAcuerdo(fechaAcuerdo);
+                titulacion.setFechaAplicacion(fechaAplicacion);
+
+                titulacion.setHoraAplicacion(horaAplicacion + ":" + minutoAplicacion);
+                titulacion.setDuracion(minutoDuracion);
+
+                titulacion.setHoraFinalizacion(horaFinalizacion + ":" + minutoFinalizacion);
+
+                titulacion.setPresidente(presidente);
+                titulacion.setSecretario(secretario);
+                titulacion.setVocal(vocal);
+                titulacion.setFolio(acta);
+                titulacion.setLibro(libro);
+                titulacion.setFoja(hoja);
+                titulacion.setNombre(nombreTesis);
+                titulacion.setIdAlumno(estudiante.getMatricula());
+                opTitulacion.crearTitulacion(titulacion);
+            } else {
+
+                titulacion.setAcuerdo(acuerdo);
+                titulacion.setTipoExamen(tipoExamen);
+                titulacion.setFechaAcuerdo(fechaAcuerdo);
+                titulacion.setFechaAplicacion(fechaAplicacion);
+
+                titulacion.setHoraAplicacion(horaAplicacion + ":" + minutoAplicacion);
+                titulacion.setDuracion(minutoDuracion);
+
+                titulacion.setHoraFinalizacion(horaFinalizacion + ":" + minutoFinalizacion);
+
+                titulacion.setPresidente(presidente);
+                titulacion.setSecretario(secretario);
+                titulacion.setVocal(vocal);
+                titulacion.setFolio(acta);
+                titulacion.setLibro(libro);
+                titulacion.setFoja(hoja);
+                titulacion.setNombre(nombreTesis);
+
+                opTitulacion.updateTitulacionByIdAlumno(titulacion);
+            }
+
             modificador.rellarTitulo(estudiante, acuerdo, tipoExamen, fechaAcuerdo,
                     fechaAplicacion, horaAplicacion + ":" + minutoAplicacion,
-                    horaDuracion + ":" + minutoDuracion,
+                    minutoDuracion,
                     horaFinalizacion + ":" + minutoFinalizacion,
                     presidente, secretario, vocal, acta, libro, hoja, nombreTesis);
         } else {
-            // Mostrar mensaje de error si algún campo está vacío
+
             JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos antes de continuar.");
         }
 
@@ -783,17 +936,21 @@ public class AdicionalesForm extends javax.swing.JPanel {
         String acuerdo = txtTipoCurso.getText().trim();
         String tipoExamen = txtNombreCurso.getText().trim();
         String fehchaInicio = sdf.format(txtFechaInicio.getDate());
-        LocalDate fechaHoy = LocalDate.now();
-        String fecha = sdf.format(fechaHoy);
+
         String duracionHoras = Integer.toString(txtHorasDuracion.getValue());
 
+        String fecha = sdf.format(fechaCreacion.getDate());
         String fechaFinalizacion = sdf.format(txtFechaFinalizacion.getDate());
+        String nombreRepartidor = txtNombreImpartidor.getText();
+        String puesto = txtPuestoImpartidor.getText();
+        String escuelaProcedencia = txtEscuelaProcRepartidor.getText();
+        String modalidad = txtModalidad.getText().trim();
 
-        if (!acuerdo.isEmpty() && !tipoExamen.isEmpty() && fehchaInicio != null && fechaFinalizacion != null) {
+        if (!acuerdo.isEmpty() && !tipoExamen.isEmpty() && fehchaInicio != null && fechaFinalizacion != null && !nombreRepartidor.isEmpty() && !puesto.isEmpty() && !escuelaProcedencia.isEmpty()) {
 
             PPTModifier pptModifier = new PPTModifier();
 
-            pptModifier.modificarPPT(estudiante, duracionHoras, acuerdo, tipoExamen, fehchaInicio, fechaFinalizacion , fecha);
+            pptModifier.modificarPPT(estudiante, duracionHoras, acuerdo, tipoExamen, fehchaInicio, fechaFinalizacion, fecha, modalidad, nombreRepartidor, puesto, escuelaProcedencia);
 
         } else {
 
@@ -808,6 +965,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
     private swim.botones.ButtonRounded buttonRounded2;
     private swim.botones.ButtonRounded buttonRounded3;
     private javax.swing.JComboBox comboReporte;
+    private com.toedter.calendar.JDateChooser fechaCreacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -818,15 +976,19 @@ public class AdicionalesForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
@@ -835,6 +997,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -848,6 +1011,7 @@ public class AdicionalesForm extends javax.swing.JPanel {
     private swim.panel.MyPanel myPanel5;
     private swim.text.TextField txtActa;
     private swim.text.TextField txtAcuerdo;
+    private swim.text.TextField txtEscuelaProcRepartidor;
     private com.toedter.calendar.JDateChooser txtFechaAcuerdo;
     private com.toedter.calendar.JDateChooser txtFechaAplicacion;
     private com.toedter.calendar.JDateChooser txtFechaFinalizacion;
@@ -855,17 +1019,19 @@ public class AdicionalesForm extends javax.swing.JPanel {
     private com.toedter.calendar.JDateChooser txtFechaInicio;
     private swim.text.TextField txtHoja;
     private com.toedter.components.JSpinField txtHoraAplicacion;
-    private com.toedter.components.JSpinField txtHoraDuracion;
     private com.toedter.components.JSpinField txtHoraFinalizacion;
     private com.toedter.components.JSpinField txtHorasDuracion;
     private swim.text.TextField txtLibro;
     private com.toedter.components.JSpinField txtMinutoAplicacion;
     private com.toedter.components.JSpinField txtMinutoDuracion;
     private com.toedter.components.JSpinField txtMinutoFinalizacion;
+    private swim.text.TextField txtModalidad;
     private swim.text.TextField txtNombreCurso;
+    private swim.text.TextField txtNombreImpartidor;
     private swim.text.TextField txtNombreTesis;
     private javax.swing.JPasswordField txtPass;
     private swim.text.TextField txtPresidente;
+    private swim.text.TextField txtPuestoImpartidor;
     private swim.text.TextField txtSecretario;
     private swim.text.TextField txtTipoCurso;
     private swim.text.TextField txtTipoExamen;

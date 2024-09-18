@@ -27,6 +27,8 @@ public class EstudianteModelo {
     private String sexo;
     private String semestre;
     private CarrerasModelo carrera;
+    private String direccion;
+    private String nacimiento;
     
 
     public EstudianteModelo() {
@@ -225,6 +227,22 @@ public class EstudianteModelo {
     public void setCarrera(CarrerasModelo carrera) {
         this.carrera = carrera;
     }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getNacimiento() {
+        return nacimiento;
+    }
+
+    public void setNacimiento(String nacimiento) {
+        this.nacimiento = nacimiento;
+    }
     
     public Object[] toRowTable(EventoAccion evento) {
         return new Object[]{this.getMatricula(), this.getNombre(),this.getApPaterno(),this.getApMaterno(), new AccionModelo(this, evento)};
@@ -237,25 +255,30 @@ public class EstudianteModelo {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.matricula);
-        hash = 67 * hash + Objects.hashCode(this.nombre);
-        hash = 67 * hash + Objects.hashCode(this.apPaterno);
-        hash = 67 * hash + Objects.hashCode(this.apMaterno);
-        hash = 67 * hash + Objects.hashCode(this.emailPersonal);
-        hash = 67 * hash + Objects.hashCode(this.emailInstitucional);
-        hash = 67 * hash + Objects.hashCode(this.generacion);
-        hash = 67 * hash + Objects.hashCode(this.numCelular);
-        hash = 67 * hash + Objects.hashCode(this.estado);
-        hash = 67 * hash + Objects.hashCode(this.municipio);
-        hash = 67 * hash + Objects.hashCode(this.escProcedencia);
-        hash = 67 * hash + Objects.hashCode(this.grado);
-        hash = 67 * hash + Objects.hashCode(this.grupo);
-        hash = 67 * hash + Objects.hashCode(this.Status);
-        hash = 67 * hash + Objects.hashCode(this.password);
-        hash = 67 * hash + Objects.hashCode(this.passwordTemporal);
-        hash = 67 * hash + Objects.hashCode(this.foto);
-        hash = 67 * hash + Objects.hashCode(this.sexo);
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.id);
+        hash = 59 * hash + Objects.hashCode(this.matricula);
+        hash = 59 * hash + Objects.hashCode(this.nombre);
+        hash = 59 * hash + Objects.hashCode(this.apPaterno);
+        hash = 59 * hash + Objects.hashCode(this.apMaterno);
+        hash = 59 * hash + Objects.hashCode(this.emailPersonal);
+        hash = 59 * hash + Objects.hashCode(this.emailInstitucional);
+        hash = 59 * hash + Objects.hashCode(this.generacion);
+        hash = 59 * hash + Objects.hashCode(this.numCelular);
+        hash = 59 * hash + Objects.hashCode(this.estado);
+        hash = 59 * hash + Objects.hashCode(this.municipio);
+        hash = 59 * hash + Objects.hashCode(this.escProcedencia);
+        hash = 59 * hash + Objects.hashCode(this.grado);
+        hash = 59 * hash + Objects.hashCode(this.grupo);
+        hash = 59 * hash + Objects.hashCode(this.Status);
+        hash = 59 * hash + Objects.hashCode(this.password);
+        hash = 59 * hash + Objects.hashCode(this.passwordTemporal);
+        hash = 59 * hash + Objects.hashCode(this.foto);
+        hash = 59 * hash + Objects.hashCode(this.sexo);
+        hash = 59 * hash + Objects.hashCode(this.semestre);
+        hash = 59 * hash + Objects.hashCode(this.carrera);
+        hash = 59 * hash + Objects.hashCode(this.direccion);
+        hash = 59 * hash + Objects.hashCode(this.nacimiento);
         return hash;
     }
 
@@ -271,6 +294,9 @@ public class EstudianteModelo {
             return false;
         }
         final EstudianteModelo other = (EstudianteModelo) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
         if (!Objects.equals(this.matricula, other.matricula)) {
             return false;
         }
@@ -322,7 +348,21 @@ public class EstudianteModelo {
         if (!Objects.equals(this.foto, other.foto)) {
             return false;
         }
-        return Objects.equals(this.sexo, other.sexo);
+        if (!Objects.equals(this.sexo, other.sexo)) {
+            return false;
+        }
+        if (!Objects.equals(this.semestre, other.semestre)) {
+            return false;
+        }
+        if (!Objects.equals(this.direccion, other.direccion)) {
+            return false;
+        }
+        if (!Objects.equals(this.nacimiento, other.nacimiento)) {
+            return false;
+        }
+        return Objects.equals(this.carrera, other.carrera);
     }
+
+   
 
 }

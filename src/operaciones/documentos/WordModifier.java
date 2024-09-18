@@ -292,6 +292,8 @@ public class WordModifier {
 
         replaceInDocument(document, "name", modelo.toString().toUpperCase());
         replaceInDocument(document, "date", fecha);
+        replaceInDocument(document, "birth", modelo.getNacimiento());
+        replaceInDocument(document, "addres", modelo.getDireccion());
         replaceInDocument(document, "tuition", modelo.getMatricula().toLowerCase());
         replaceInDocument(document, "career", modelo.getCarrera().getNombre().toUpperCase());
         replaceInDocument(document, "totalAsignaturas", Integer.toString(calificaciones.size()));
@@ -323,6 +325,7 @@ public class WordModifier {
             String carrera = Arrays.stream(modelo.getCarrera().toString().split(" ")).map(palabra -> palabra.substring(0, 1).toUpperCase() + palabra.substring(1).toLowerCase()).collect(Collectors.joining(" "));
 
             replaceInDocument(document, "date", fechaAcuerdo);
+            replaceInDocument(document, "tezt", tipoExamen);
             replaceInDocument(document, "hoursI", horaAp);
             replaceInDocument(document, "date", fechaAcuerdo);
             replaceInDocument(document, "tesispresident", presidente);

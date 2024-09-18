@@ -206,8 +206,8 @@ public class AlumnosGruposForm extends javax.swing.JPanel {
 
                 Periodo periodo = opPeriodo.getUltimoPeriodo();
                 boolean seAgregaron = opAlumno.insertarCalificaciones(estudiantesSinMaterias, maestro.getId(), materia.getIdMateria(), periodo.getId());
-
-                if (seAgregaron) {
+                boolean agregarGrupo = opAlumno.actualizarGrupoEstudiantes(grupoModelo.getId(), estudiantesSinMaterias);
+                if (seAgregaron && agregarGrupo) {
                     alumnos = opAlumno.getEstudiantesByMateria(materia.getIdMateria(), periodo.getId());
                     JOptionPane.showMessageDialog(null, "Se les asigno la materia a el alumno correctamente");
                     actualizarTabla();
@@ -256,7 +256,7 @@ public class AlumnosGruposForm extends javax.swing.JPanel {
                     Periodo periodo = opPeriodo.getUltimoPeriodo();
 
                     boolean insertaCalificacion = opAlumno.insertarCalificacion(estudiante, maestro.getId(), materia.getIdMateria(), periodo.getId());
-
+                    boolean agregarGrupo = opAlumno.actualizarIdGrupoEstudiante(grupoModelo.getId(), estudiante);
                     if (insertaCalificacion) {
                         alumnos = opAlumno.getEstudiantesByMateria(materia.getIdMateria(), periodo.getId());
                         JOptionPane.showMessageDialog(null, "Se les asigno la materia a el alumno correctamente");

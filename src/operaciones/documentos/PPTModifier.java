@@ -16,7 +16,7 @@ import org.apache.poi.xslf.usermodel.XSLFTextShape;
 
 public class PPTModifier {
 
-    public void modificarPPT(EstudianteModelo estudiante, String horasDuracion, String tipoCurso, String nombreCurso, String fechaInicio, String fechaFinalizacion, String fehcaHoy) {
+    public void modificarPPT(EstudianteModelo estudiante, String horasDuracion, String tipoCurso, String nombreCurso, String fechaInicio, String fechaFinalizacion, String fehcaHoy, String modalidad, String nombre, String puesto, String esc) {
 
         Config config = new Config();
         String rutaBD = config.obtenerConfiguracion("06 RUTA Documentos");
@@ -32,6 +32,9 @@ public class PPTModifier {
 
             XSLFSlide diapositiva = ppt.getSlides().get(0);
 
+            remplazarTexto(diapositiva, "boss", nombre);
+            remplazarTexto(diapositiva, "puest", puesto);
+            remplazarTexto(diapositiva, "place", esc);
             remplazarTexto(diapositiva, "person", estudiante.toString());
             remplazarTexto(diapositiva, "mood", tipoCurso);
             remplazarTexto(diapositiva, "name", nombreCurso);
@@ -39,6 +42,7 @@ public class PPTModifier {
             remplazarTexto(diapositiva, "init", fechaInicio);
             remplazarTexto(diapositiva, "enda", fechaFinalizacion);
             remplazarTexto(diapositiva, "today", fehcaHoy);
+            remplazarTexto(diapositiva, "covid", modalidad);
 
             String rutaDelDocumentoCreado = rutaBD + "\\Generados" + "\\" + "" + "_" + "constancia.pptx";
             File documentoGenerado = new File(rutaDelDocumentoCreado);
