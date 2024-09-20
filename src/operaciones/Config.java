@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class Config {
     
-    private static final String CONFIG_FILE_PATH = "src\\operaciones\\Configuraciones.txt";
+    private static final String CONFIG_FILE_PATH = "C:\\Guba\\Configuraciones.txt";
 
     private Map<String, String> configuraciones = new HashMap<>();
 
