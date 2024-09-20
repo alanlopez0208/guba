@@ -49,6 +49,7 @@ import modelos.*;
 import operaciones.FTPUploader;
 import operaciones.web.ApiClient;
 import operaciones.web.InsertWeb;
+import operaciones.web.InsertWebpass;
 import org.json.JSONArray;
 
 
@@ -484,11 +485,18 @@ public class Main extends javax.swing.JFrame {
                             Thread hilo = new Thread() {
                                 @Override
                                 public void run() {
-                                    JSONArray calificaciones = ApiClient.getCalificaciones();
+                                   JSONArray calificaciones = ApiClient.getCalificaciones();
+                                    JSONArray alumnos = ApiClient.getAlumnos();
+                                    JSONArray profesores = ApiClient.getDocentes();
                                     if (calificaciones != null) {
                                         InsertWeb iw = new InsertWeb();
+                                        InsertWebpass iwp = new InsertWebpass();
+
                                         iw.insertOrUpdateCalificaciones(calificaciones);
+                                        iwp.upsertDataToLocalDB("Alumnos", alumnos, "IdAlumno", "Password");
+                                        iwp.upsertDataToLocalDB("Docentes", profesores, "IdDocente", "Password");
                                     }
+
 
                                     JOptionPane.showMessageDialog(null, "Se ha descargado la información con exito");
                                 }

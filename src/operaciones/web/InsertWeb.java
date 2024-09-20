@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import operaciones.Config;
-import operaciones.web.ApiClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

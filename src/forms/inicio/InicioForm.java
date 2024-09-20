@@ -14,7 +14,7 @@ public class InicioForm extends javax.swing.JPanel {
     }
     
     public void init(){
-      CustomTextField imagen = new CustomTextField("src\\icon\\fondo.jpg");
+      CustomTextField imagen = new CustomTextField("C:\\Guba\\fondo.jpg");
       this.add(imagen);
     }
 
